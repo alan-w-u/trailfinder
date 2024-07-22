@@ -1,5 +1,6 @@
 # Trails Central 
 <!--- Name can be anything -->
+Find and discover hiking trails with us! Trails Central allows you and your friends to connect and go on hikes together, with information such as reviews, previews, transit options, and more, deciding on a trail to go hiking on has never been easier!
 
 authors:
 - Allan <!--- Description -->
@@ -7,7 +8,7 @@ authors:
 - Brandon <!--- Description -->
 
 ### Timeline and task breakdown/assignment:
-
+<!--- Tasks need to be assigned to each person -->
 
 #### July 22 - July 28 (Week 1): Core Backend Development
 <pre>
