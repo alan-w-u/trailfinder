@@ -1,10 +1,10 @@
 # Trails Central 
-<!--- Name can be anything --->
+<!--- Name can be anything -->
 
 authors:
-- Allan <!--- Description --->
+- Allan <!--- Description -->
 - Dylan Zhang; biking enthusiast
-- Brandon<!--- Description --->
+- Brandon <!--- Description -->
 
 ### Timeline and task breakdown/assignment:
 
@@ -48,4 +48,4 @@ Refine UI/UX based on team feedback
 <pre>Prepare and deliver project demonstration</pre>
 
 ### Images
-<!-- Needs to be created in the repo and added here -->
+<!--- Needs to be created in the repo and added here -->
