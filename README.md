@@ -5,7 +5,7 @@ Find and discover hiking trails with us! Trails Central allows you and your frie
 authors:
 - Alan <!--- Description -->
 - Dylan Zhang; biking enthusiast
-- Brandon; also biking entusiast, nooby runner
+- Brandon; also biking enthusiast, nooby runner
 
 ### Timeline and task breakdown/assignment:
 <!--- Tasks need to be assigned to each person -->
