@@ -1,13 +1,13 @@
-# Trails Central
+# TrailFinder
 <!--- Name can be anything -->
 
 ### Project Description
-Discover and explore hiking trails near you with **Trails Central**! This web app consolidates all the hiking trail information you need, making it easy to find, prepare for, and document your next adventure. Access detailed trail descriptions, image previews, hazard alerts, and user reviews to make informed decisions for your excursions. Track your hiking history, set new challenges, or share your progress with friends. Reconnecting with nature and deciding on your next hiking destination has never been simpler!
+Discover and explore hiking trails near you with **TrailFinder**! This web app consolidates all the hiking trail information you need, making it easy to find, prepare for, and document your next adventure. Access detailed trail descriptions, image previews, hazard alerts, and user reviews to make informed decisions for your excursions. Track your hiking history, set new challenges, or share your progress with friends. Reconnecting with nature and deciding on your next hiking destination has never been simpler!
 
 
 ### Authors
 - Alan :: *3rd year CPSC student, hiking enthusiast, gym goer*
-- Dylan Zhang :: *3rd year CPSC student, biking enthusiast*
+- Dylan :: *3rd year CPSC student, biking enthusiast*
 - Brandon :: *3rd year CPSC student, biking enthusiast, nooby runner*
 
 
@@ -70,5 +70,8 @@ Discover and explore hiking trails near you with **Trails Central**! This web ap
 </pre>
 
 
-<!-- ### Images -->
-<!-- Needs to be created in the repo and added here -->
+### GUI Mock Images
+![hiking-app-homepage](https://media.github.students.cs.ubc.ca/user/20736/files/c87ae1c8-62a4-47fd-9616-7e3187c4f83d)
+![trail-details-page](https://media.github.students.cs.ubc.ca/user/20736/files/f7307710-80ef-460e-9167-bfbad62688eb)
+![user-profile-friends-page](https://media.github.students.cs.ubc.ca/user/20736/files/a046c14d-775d-41d6-824e-dfda7f818d49)
+
