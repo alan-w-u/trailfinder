@@ -75,3 +75,5 @@ Discover and explore hiking trails near you with **TrailFinder**! This web app c
 ![trail-details-page](https://media.github.students.cs.ubc.ca/user/20736/files/f7307710-80ef-460e-9167-bfbad62688eb)
 ![user-profile-friends-page](https://media.github.students.cs.ubc.ca/user/20736/files/a046c14d-775d-41d6-824e-dfda7f818d49)
 
+GITHUB URL : https://github.students.cs.ubc.ca/CPSC304-2024S-T2/project_i3i8a_n2p8m_u0n4i
+
