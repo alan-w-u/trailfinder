@@ -1,4 +1,4 @@
-# TrailFinder
+# TrailFinder <img src="trailfinder.png" alt="trailfinder" width=25 />
 <!--- Name can be anything -->
 
 ### Project Description
