@@ -1,5 +1,4 @@
-# TrailFinder <img src="trailfinder.png" alt="trailfinder" width=25 />
-<!--- Name can be anything -->
+# TrailFinder <img src="trailfinder.png" alt="trailfinder" width=30 />
 
 ### Project Description
 Discover and explore hiking trails near you with **TrailFinder**! This web app consolidates all the hiking trail information you need, making it easy to find, prepare for, and document your next adventure. Access detailed trail descriptions, image previews, hazard alerts, and user reviews to make informed decisions for your excursions. Track your hiking history, set new challenges, or share your progress with friends. Reconnecting with nature and deciding on your next hiking destination has never been simpler!
@@ -23,7 +22,6 @@ Discover and explore hiking trails near you with **TrailFinder**! This web app c
 
 
 ### Timeline and Task Breakdown/Assignment
-<!--- Tasks need to be assigned to each person -->
 
 #### July 22 - July 28 (Week 1): Skeleton Frontend Development and Core Backend Development
 <pre>
@@ -74,6 +72,3 @@ Discover and explore hiking trails near you with **TrailFinder**! This web app c
 ![hiking-app-homepage](https://media.github.students.cs.ubc.ca/user/20736/files/c87ae1c8-62a4-47fd-9616-7e3187c4f83d)
 ![trail-details-page](https://media.github.students.cs.ubc.ca/user/20736/files/f7307710-80ef-460e-9167-bfbad62688eb)
 ![user-profile-friends-page](https://media.github.students.cs.ubc.ca/user/20736/files/a046c14d-775d-41d6-824e-dfda7f818d49)
-
-GITHUB URL : https://github.students.cs.ubc.ca/CPSC304-2024S-T2/project_i3i8a_n2p8m_u0n4i
-
