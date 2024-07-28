@@ -31,8 +31,8 @@
   --seasalt: #faf9f9;
 
   /* Light/Dark Mode Colours */
-  --text: light-dark(var(--oxford-blue), var(--anti-flash-white));
-  --inverse-text: light-dark(var(--anti-flash-white), var(--oxford-blue));
+  --text: light-dark(var(--oxford-blue), var(--seasalt));
+  --inverse-text: light-dark(var(--seasalt), var(--oxford-blue));
   --background: light-dark(var(--anti-flash-white), var(--oxford-blue));
   --nav-background: light-dark(var(--mint), var(--sea-green));
   --logo-background: light-dark(var(--sunset), var(--buff));
