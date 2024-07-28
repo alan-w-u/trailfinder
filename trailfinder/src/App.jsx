@@ -1,17 +1,20 @@
-// import { useState } from 'react'
+import { useState } from 'react'
+import Auth from './assets/Auth'
 import './App.css'
 
 function App() {
+  const[userID, setUserID] = useState(null);
+
   return (
     <>
-      <nav>
+      <header>
         <div id="logo">
           <img src="trailfinder.png" alt="TrailFinder" draggable="false" />
           <h1>TrailFinder</h1>
         </div>
-      </nav>
+      </header>
       <main>
-
+        {userID === null && <Auth setUserID={setUserID} />}
       </main>
     </>
   )
