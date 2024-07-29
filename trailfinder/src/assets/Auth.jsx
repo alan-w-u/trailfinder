@@ -4,19 +4,24 @@ import './Auth.css'
 function Auth(props) {
   const [authMode, setAuthMode] = useState("Log In");
   const [showPassword, setShowPassword] = useState(false);
-  const handleLogin = () => {
+
+  const handleLogin = (e) => {
+    e.preventDefault();
     props.setUserID(0)
   };
-  const handleSignUp = () => {
 
+  const handleSignUp = (e) => {
+    e.preventDefault();
   };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword)
+  };
+
   const toggleAuthMode = () => {
     setAuthMode(authMode === "Log In" ? "Sign Up" : "Log In");
     setShowPassword(false);
-  }
-  const toggleShowPassword = () => {
-    setShowPassword(!showPassword)
-  }
+  };
 
   return (
     <>
@@ -26,11 +31,11 @@ function Auth(props) {
             <h1>Log In</h1>
             <form onSubmit={handleLogin}>
               <div className="input-container">
-                <input type="text" name="email" required autocomplete="off" />
+                <input type="email" name="email" required autocomplete="off" placeholder="" />
                 <label htmlFor="email">Email</label>
               </div>
               <div className="input-container">
-                <input type={showPassword ? "text" : "password"} name="password" required autocomplete="off" />
+                <input type={showPassword ? "text" : "password"} name="password" required autocomplete="off" placeholder="" />
                 <label htmlFor="password">Password</label>
               </div>
               <div className="show-password">
@@ -52,15 +57,15 @@ function Auth(props) {
             <h1>Sign Up</h1>
             <form onSubmit={handleSignUp}>
               <div className="input-container">
-                <input type="text" name="name" required autocomplete="off" />
+                <input type="text" name="name" required autocomplete="off" placeholder="" />
                 <label htmlFor="name">Full Name</label>
               </div>
               <div className="input-container">
-                <input type="text" name="email" required autocomplete="off" />
+                <input type="email" name="email" required autocomplete="off" placeholder="" />
                 <label htmlFor="email">Email</label>
               </div>
               <div className="input-container">
-                <input type={showPassword ? "text" : "password"} name="password" required autocomplete="off" />
+                <input type={showPassword ? "text" : "password"} name="password" required autocomplete="off" placeholder="" />
                 <label htmlFor="password">Password</label>
               </div>
               <div className="show-password">
