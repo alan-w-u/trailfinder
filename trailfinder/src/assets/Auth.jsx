@@ -25,7 +25,7 @@ function Auth(props) {
 
   return (
     <>
-      <div className="auth-box">
+      <div className="auth-container">
         {authMode === "Log In" && (
           <>
             <h1>Log In</h1>

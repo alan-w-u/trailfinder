@@ -1,4 +1,4 @@
-.auth-box {
+.auth-container {
   display: flex;
   flex-direction: column;
   width: 20rem;
@@ -10,13 +10,13 @@
   align-items: center;
 }
 
-.auth-box h1 {
+.auth-container h1 {
   margin: 1.5rem 0;
   font-size: 2.5rem;
   letter-spacing: -0.1rem;
 }
 
-.auth-box form {
+.auth-container form {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -24,7 +24,7 @@
   align-items: center;
 }
 
-.auth-box button {
+.auth-container button {
   width: 85%;
   height: auto;
   padding: 0.5rem;
@@ -41,12 +41,12 @@
   transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.auth-box button:hover {
+.auth-container button:hover {
   border-color: var(--asset-hover);
   background-color: var(--asset-hover);
 }
 
-.auth-box button:active {
+.auth-container button:active {
   border-color: var(--asset-active);
   background-color: var(--asset-active);
 }
@@ -95,6 +95,14 @@
   align-items: center;
 }
 
+.show-password input[type="checkbox"] {
+  display: none;
+}
+
+.show-password input[type="checkbox"]:checked + .checkbox {
+  background-color: var(--asset-hover);
+}
+
 .checkbox {
   width: 1.25rem;
   height: 1.25rem;
@@ -103,14 +111,6 @@
   background-color: var(--seasalt);
   cursor: pointer;
   transition: 100ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.show-password input[type="checkbox"]:checked + .checkbox {
-  background-color: var(--asset-hover);
-}
-
-.show-password input[type="checkbox"] {
-  display: none;
 }
 
 .auth-mode {
