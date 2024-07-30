@@ -11,6 +11,16 @@ const envVariables = loadEnvFile('./.env');
 const dataSql = fs.readFileSync("./sql/hikinginfo.sql").toString();
 console.log(dataSql);
 
+//need to change the split operator so we can isolate the queries!!!
+const dataArr = dataSql.toString().split(');');
+
+console.log("HELLLO TESTING 123!!!!")
+
+dataArr.forEach((sqlQueries) => {
+    console.log(sqlQueries);
+    console.log("YOOO SQL QUERY?!");
+})
+
 // Database configuration setup. Ensure your .env file has the required database credentials.
 const dbConfig = {
     user: envVariables.ORACLE_USER,
