@@ -12,7 +12,7 @@ const dataSql = fs.readFileSync("./sql/hikinginfo.sql").toString();
 console.log(dataSql);
 
 //need to change the split operator so we can isolate the queries!!!
-const dataArr = dataSql.toString().split(');');
+const dataArr = dataSql.toString().split('cut');
 
 console.log("HELLLO TESTING 123!!!!")
 
