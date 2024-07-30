@@ -1,7 +1,11 @@
 import oracledb from 'oracledb';
 import loadEnvFile from './utils/envUtil.js';
+import fs from 'fs';
 
 const envVariables = loadEnvFile('./.env');
+
+const dataSql = fs.readFileSync("./sql/hikinginfo.sql").toString();
+console.log(dataSql);
 
 // Database configuration setup. Ensure your .env file has the required database credentials.
 const dbConfig = {

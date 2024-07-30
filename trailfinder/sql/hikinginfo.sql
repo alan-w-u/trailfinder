@@ -29,3 +29,5 @@ CREATE TABLE equipment
 
 grant select on equipment to public; 
 
+
+
