@@ -25,3 +25,35 @@ function App() {
 }
 
 export default App;
+
+// import { useState } from 'react'
+// import Auth from './assets/Auth'
+// import TrailWidget from './assets/TrailWidget'
+// import './App.css'
+
+// function App() {
+//   const [userID, setUserID] = useState(null);
+
+//   return (
+//     <>
+//       <header>
+//         <div className="logo">
+//           <img src="trailfinder.png" alt="TrailFinder" draggable="false" />
+//           <h1>TrailFinder</h1>
+//         </div>
+//       </header>
+//       <main>
+//         {userID === null && <Auth setUserID={setUserID} />}
+//         {userID != null &&
+//           <div className="trailwidgets">
+//             <TrailWidget trailname="Mountain Trail" difficulty="Medium" preview="./trailfinder.png" />
+//             <TrailWidget trailname="Lakeside Path" difficulty="Easy" preview="./trailfinder.png" />
+//             <TrailWidget trailname="Forest Adventure" difficulty="Hard" preview="./trailfinder.png" />
+//           </div>
+//         }
+//       </main>
+//     </>
+//   )
+// }
+
+// export default App
