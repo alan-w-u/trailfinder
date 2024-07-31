@@ -8,7 +8,7 @@ const envVariables = loadEnvFile('./.env');
 //https://levelup.gitconnected.com/running-sql-queries-from-an-sql-file-in-a-nodejs-app-sqlite-a927f0e8a545
 //source for sql parsing
 
-const dataSql = fs.readFileSync("./sql/hikinginfo.sql").toString();
+const dataSql = fs.readFileSync("./hikinginfo.sql").toString();
 console.log(dataSql);
 
 //need to change the split operator so we can isolate the queries!!!
