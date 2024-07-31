@@ -4,9 +4,11 @@ function loadEnvFile(filePath) {
     if (fs.existsSync(filePath)) {
         const envFile = fs.readFileSync(filePath, 'utf8');
 
-        const envVars = envFile.split('\n').reduce((acc, line) => {
+        const envVars = envFile.split('\r\n').reduce((acc, line) => {
             const [key, value] = line.split('=');
-            acc[key] = value;
+            let trimVal = value;
+            if (value) trimVal = value.trim();
+            acc[key] = trimVal;
             return acc;
         }, {});
 

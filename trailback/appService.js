@@ -48,7 +48,7 @@ process
 async function withOracleDB(action) {
     let connection;
     try {
-        connection = await oracledb.getConnection(); // Gets a connection from the default pool 
+        connection = await oracledb.getConnection(); // Gets a connection from the default pool
         return await action(connection);
     } catch (err) {
         console.error(err);
