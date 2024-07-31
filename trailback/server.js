@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import router from './appController.js';
 import loadEnvFile from './utils/envUtil.js';
 
@@ -12,6 +13,7 @@ const PORT = envVariables.PORT || 65534;  // Adjust the PORT if needed (e.g., if
 // Middleware setup
 app.use(express.static('public'));  // Serve static files from the 'public' directory
 app.use(express.json());             // Parse incoming JSON payloads
+app.use(cors());
 
 // If you prefer some other file as default page other than 'index.html',
 //      you can adjust and use the bellow line of code to

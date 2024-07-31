@@ -22,8 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# User specific files
-.env
-local-start.sh
-local-start.cmd
