@@ -1,5 +1,3 @@
--- DROP STATEMENTS
-
 drop table Equipment;
 drop table TransportationToLocation;
 drop table RetailerFeaturesGear;
@@ -23,7 +21,7 @@ drop table UserProfile5;
 drop table UserProfile3;
 drop table UserProfile1;
 
--- CREATE STATEMENTS
+
 
 CREATE TABLE UserProfile1 (
     TrailsHiked	    INTEGER         DEFAULT 0       PRIMARY KEY,
@@ -277,7 +275,7 @@ CREATE TABLE RetailerFeaturesGear (
 
 grant select on RetailerFeaturesGear to public;
 
--- INSERT STATEMENTS
+
 
 INSERT ALL
     INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (15, 3)

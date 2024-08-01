@@ -1,7 +1,6 @@
 import oracledb from 'oracledb';
 import loadEnvFile from './utils/envUtil.js';
 import fs from 'fs';
-import { connect } from 'http2';
 
 const envVariables = loadEnvFile('./.env');
 
@@ -16,10 +15,11 @@ const dbConfig = {
     poolTimeout: 60
 };
 
-// initialize connection pool
+// Initialize connection pool
 async function initializeConnectionPool() {
     try {
         await oracledb.createPool(dbConfig);
+        clearDB();
         console.log('Connection pool started');
     } catch (err) {
         console.error('Initialization error: ' + err.message);
@@ -82,7 +82,29 @@ async function testOracleConnection() {
 // Run SQL file to create and populate tables
 async function initializeDB() {
     try {
-        const script = fs.readFileSync('./hikinginfo.sql', 'utf-8');
+        const script = fs.readFileSync('./database.sql', 'utf-8');
+        const statements = script.split(';').filter(statement => statement.trim());
+        return await withOracleDB(async (connection) => {
+            for (const statement of statements) {
+                try {
+                    await connection.execute(statement);
+                } catch (err) {
+                    console.log('Failed to run statement:', statement);
+                }
+            }
+            return true;
+        }).catch(() => {
+            return false;
+        })
+    } catch (err) {
+        console.log('Failed to read or process SQL script');
+    }
+}
+
+// Run SQL file to clear tables
+async function clearDB() {
+    try {
+        const script = fs.readFileSync('./clear.sql', 'utf-8');
         const statements = script.split(';').filter(statement => statement.trim());
         return await withOracleDB(async (connection) => {
             for (const statement of statements) {
@@ -161,6 +183,7 @@ async function countDB(relation) {
 export {
     testOracleConnection,
     initializeDB,
+    clearDB,
     fetchDB,
     insertDB,
     deleteDB,
