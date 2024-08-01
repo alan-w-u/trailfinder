@@ -4,15 +4,47 @@ import './Auth.css'
 function Auth(props) {
   const [authMode, setAuthMode] = useState("Log In");
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
 
-  const handleLogin = (e) => {
+  async function handleLogin(e) {
     e.preventDefault();
-    props.setUserID(0)
-  };
+    const response = await fetch('http://localhost:65535/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-  const handleSignUp = (e) => {
+    const responseData = await response.json();
+
+    if (responseData.success) {
+      props.setUserID(responseData.userID);
+    } else {
+      console.log('Invalid credentials');
+    }
+  }
+
+  async function handleSignUp(e) {
     e.preventDefault();
-  };
+    const response = await fetch('http://localhost:65535/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, password }),
+    });
+
+    const responseData = await response.json();
+
+    if (responseData.success) {
+      props.setUserID(responseData.userID);
+    } else {
+      console.log('Sign up error');
+    }
+  }
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword)
@@ -31,11 +63,11 @@ function Auth(props) {
             <h1>Log In</h1>
             <form onSubmit={handleLogin}>
               <div className="input-container">
-                <input type="email" name="email" required autocomplete="off" placeholder="" />
+                <input type="email" name="email" required autocomplete="off" placeholder="" onChange={(e) => setEmail(e.target.value)} />
                 <label htmlFor="email">Email</label>
               </div>
               <div className="input-container">
-                <input type={showPassword ? "text" : "password"} name="password" required autocomplete="off" placeholder="" />
+                <input type={showPassword ? "text" : "password"} name="password" required autocomplete="off" placeholder="" onChange={(e) => setPassword(e.target.value)} />
                 <label htmlFor="password">Password</label>
               </div>
               <div className="show-password">
@@ -57,15 +89,15 @@ function Auth(props) {
             <h1>Sign Up</h1>
             <form onSubmit={handleSignUp}>
               <div className="input-container">
-                <input type="text" name="name" required autocomplete="off" placeholder="" />
+                <input type="text" name="name" required autocomplete="off" placeholder="" onChange={(e) => setName(e.target.value)} />
                 <label htmlFor="name">Full Name</label>
               </div>
               <div className="input-container">
-                <input type="email" name="email" required autocomplete="off" placeholder="" />
+                <input type="email" name="email" required autocomplete="off" placeholder="" onChange={(e) => setEmail(e.target.value)} />
                 <label htmlFor="email">Email</label>
               </div>
               <div className="input-container">
-                <input type={showPassword ? "text" : "password"} name="password" required autocomplete="off" placeholder="" />
+                <input type={showPassword ? "text" : "password"} name="password" required autocomplete="off" placeholder="" onChange={(e) => setPassword(e.target.value)} />
                 <label htmlFor="password">Password</label>
               </div>
               <div className="show-password">
