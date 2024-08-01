@@ -1,63 +1,74 @@
-DROP TABLE Equipment;
-DROP TABLE TransportationToLocation;
-DROP TABLE RetailerFeaturesGear;
-DROP TABLE UserHikesTrail;
-DROP TABLE Transportation;
-DROP TABLE Retailer2;
-DROP TABLE Retailer1;
-DROP TABLE Preview2;
-DROP TABLE Preview1;
-DROP TABLE Gear2; 
-DROP TABLE Gear1;
-DROP TABLE Review;
-DROP TABLE Photo;
-DROP TABLE Friends;
-DROP TABLE UGC;
-DROP TABLE Trail2;
-DROP TABLE Trail1;
-DROP TABLE Location;
-DROP TABLE UserProfile6;
-DROP TABLE UserProfile5;
-DROP TABLE UserProfile3;
-DROP TABLE UserProfile1;
+drop table Equipment;
+drop table TransportationToLocation;
+drop table RetailerFeaturesGear;
+drop table UserHikesTrail;
+drop table Transportation;
+drop table Retailer2;
+drop table Retailer1;
+drop table Preview2;
+drop table Preview1;
+drop table Gear2;
+drop table Gear1;
+drop table Review;
+drop table Photo;
+drop table Friends;
+drop table UGC;
+drop table Trail2;
+drop table Trail1;
+drop table Location;
+-- drop table UserProfile6;
+-- drop table UserProfile5;
+-- drop table UserProfile3;
+-- drop table UserProfile1;
+drop table UserProfile;
 
 
-
-CREATE TABLE UserProfile1 (
-    TrailsHiked	    INTEGER         DEFAULT 0       PRIMARY KEY,
-    ExperienceLvl   INTEGER         DEFAULT 0
+-- CREATE TABLE UserProfile1 (
+--     TrailsHiked	    INTEGER         DEFAULT 0       PRIMARY KEY,
+--     ExperienceLvl   INTEGER         DEFAULT 0
+-- );
+--
+-- grant select on UserProfile1 to public;
+--
+-- CREATE TABLE UserProfile3 (
+--     Email           VARCHAR(320)    PRIMARY KEY,
+--     ProfilePicture  BLOB,
+--     TrailsHiked     INTEGER         DEFAULT 0,
+--     FOREIGN KEY (TrailsHiked) REFERENCES UserProfile1
+-- );
+--
+-- grant select on UserProfile3 to public;
+--
+-- CREATE TABLE UserProfile5 (
+--     Name            VARCHAR(50),
+--     Email           VARCHAR(320),
+--     Password        VARCHAR(50),
+--     NumberOfFriends	INTEGER         DEFAULT 0,
+--     PRIMARY KEY (Name, Email)
+-- );
+--
+-- grant select on UserProfile5 to public;
+--
+-- CREATE TABLE UserProfile6 (
+--     UserID          INTEGER         PRIMARY KEY,
+--     Name            VARCHAR(50),
+--     Email           VARCHAR(320),
+--     Password        VARCHAR(50),
+--     FOREIGN KEY (Name, Email, Password) REFERENCES UserProfile5
+-- );
+--
+-- grant select on UserProfile6 to public;
+CREATE TABLE UserProfile (
+    userID INTEGER PRIMARY KEY,
+    name VARCHAR2(50),
+    email VARCHAR2(320) UNIQUE,
+    password VARCHAR2(72),  -- Hashed password
+    trailsHiked INTEGER DEFAULT 0,
+    experienceLevel INTEGER DEFAULT 0,
+    profilePicture BLOB,
+    numberOfFriends INTEGER DEFAULT 0,
+    googleId VARCHAR2(255) UNIQUE  -- For Google Auth
 );
-
-grant select on UserProfile1 to public;
-
-CREATE TABLE UserProfile3 (
-    Email           VARCHAR(320)    PRIMARY KEY,
-    ProfilePicture  BLOB,
-    TrailsHiked     INTEGER         DEFAULT 0,
-    FOREIGN KEY (TrailsHiked) REFERENCES UserProfile1
-);
-
-grant select on UserProfile3 to public;
-
-CREATE TABLE UserProfile5 (
-    Name            VARCHAR(50),
-    Email           VARCHAR(320),
-    Password        VARCHAR(50),
-    NumberOfFriends	INTEGER         DEFAULT 0,
-    PRIMARY KEY (Name, Email, Password)
-);
-
-grant select on UserProfile5 to public;
-
-CREATE TABLE UserProfile6 (
-    UserID          INTEGER         PRIMARY KEY,
-    Name            VARCHAR(50),
-    Email           VARCHAR(320),
-    Password        VARCHAR(50),
-    FOREIGN KEY (Name, Email, Password) REFERENCES UserProfile5
-);
-
-grant select on UserProfile6 to public;
 
 CREATE TABLE Equipment (
     EquipmentID     INTEGER         PRIMARY KEY,
@@ -66,7 +77,7 @@ CREATE TABLE Equipment (
     Brand           VARCHAR(50),
     Amount          INTEGER,
     Weight          FLOAT,
-    FOREIGN KEY (UserID) REFERENCES UserProfile6
+    FOREIGN KEY (UserID) REFERENCES UserProfile
         ON DELETE CASCADE
 );
 
@@ -186,7 +197,7 @@ CREATE TABLE UGC (
     Longitude       Decimal(9, 6)   NOT NULL,
     TrailName       VARCHAR(50)     NOT NULL,
     DatePosted      DATE,
-    FOREIGN KEY (UserID) REFERENCES UserProfile6
+    FOREIGN KEY (UserID) REFERENCES UserProfile
         ON DELETE CASCADE,
     FOREIGN KEY (LocationName, Latitude, Longitude) REFERENCES Location
         ON DELETE CASCADE,
@@ -220,7 +231,7 @@ CREATE TABLE Friends (
     FriendID        INTEGER,
     DateFriended    DATE,
     PRIMARY KEY (UserID, FriendID),
-    FOREIGN KEY (UserID) REFERENCES UserProfile6
+    FOREIGN KEY (UserID) REFERENCES UserProfile
         ON DELETE CASCADE
 );
 
@@ -251,7 +262,7 @@ CREATE TABLE UserHikesTrail (
     DateHiked       DATE,
     TimeToComplete  INTEGER,
     PRIMARY KEY (UserID, LocationName, Latitude, Longitude, TrailName),
-    FOREIGN KEY (UserID) REFERENCES UserProfile6
+    FOREIGN KEY (UserID) REFERENCES UserProfile
         ON DELETE CASCADE,
     FOREIGN KEY (LocationName, Latitude, Longitude) REFERENCES Location
         ON DELETE CASCADE,
@@ -277,36 +288,30 @@ grant select on RetailerFeaturesGear to public;
 
 
 
-INSERT ALL
-    INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (15, 3)
-    INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (8, 2)
-    INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (25, 4)
-    INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (5, 1)
-    INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (20, 3)
-SELECT * FROM DUAL;
 
-INSERT ALL
-    INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES ('john.doe@email.com', EMPTY_BLOB(), 15)
-    INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES ('jane.smith@email.com', EMPTY_BLOB(), 8)
-    INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES ('mike.johnson@email.com', EMPTY_BLOB(), 25)
-    INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES ('emily.brown@email.com', EMPTY_BLOB(), 5)
-    INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES ('david.lee@email.com', EMPTY_BLOB(), 20)
-SELECT * FROM DUAL;
-
-INSERT ALL
-    INTO UserProfile5 (Name, Email, Password, NumberOfFriends) VALUES ('John Doe', 'john.doe@email.com', '1234', 7)
-    INTO UserProfile5 (Name, Email, Password, NumberOfFriends) VALUES ('Jane Smith', 'jane.smith@email.com', '2345', 5)
-    INTO UserProfile5 (Name, Email, Password, NumberOfFriends) VALUES ('Mike Johnson', 'mike.johnson@email.com', '3456', 12)
-    INTO UserProfile5 (Name, Email, Password, NumberOfFriends) VALUES ('Emily Brown', 'emily.brown@email.com', '4567', 3)
-    INTO UserProfile5 (Name, Email, Password, NumberOfFriends) VALUES ('David Lee', 'david.lee@email.com', '5678', 9)
-SELECT * FROM DUAL;
-
-INSERT ALL
-    INTO USERProfile6 (UserID, Name, Email) VALUES (1, 'John Doe', 'john.doe@email.com')
-    INTO USERProfile6 (UserID, Name, Email) VALUES (2, 'Jane Smith', 'jane.smith@email.com')
-    INTO USERProfile6 (UserID, Name, Email) VALUES (3, 'Mike Johnson', 'mike.johnson@email.com')
-    INTO USERProfile6 (UserID, Name, Email) VALUES (4, 'Emily Brown', 'emily.brown@email.com')
-    INTO USERProfile6 (UserID, Name, Email) VALUES (5, 'David Lee', 'david.lee@email.com')
-SELECT * FROM DUAL;
+-- INSERT INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (15, 3);
+-- INSERT INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (8, 2);
+-- INSERT INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (25, 4);
+-- INSERT INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (5, 1);
+-- INSERT INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (20, 3);
+--
+-- INSERT INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES ('john.doe@email.com', EMPTY_BLOB(), 15);
+-- INSERT INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES ('jane.smith@email.com', EMPTY_BLOB(), 8);
+-- INSERT INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES ('mike.johnson@email.com', EMPTY_BLOB(), 25);
+-- INSERT INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES ('emily.brown@email.com', EMPTY_BLOB(), 5);
+-- INSERT INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES ('david.lee@email.com', EMPTY_BLOB(), 20);
+--
+--
+-- INSERT INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES ('John Doe', 'john.doe@email.com', 7);
+-- INSERT INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES ('Jane Smith', 'jane.smith@email.com', 5);
+-- INSERT INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES ('Mike Johnson', 'mike.johnson@email.com', 12);
+-- INSERT INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES ('Emily Brown', 'emily.brown@email.com', 3);
+-- INSERT INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES ('David Lee', 'david.lee@email.com', 9);
+--
+-- INSERT INTO USERProfile6 (UserID, Name, Email) VALUES (1, 'John Doe', 'john.doe@email.com');
+-- INSERT INTO USERProfile6 (UserID, Name, Email) VALUES (2, 'Jane Smith', 'jane.smith@email.com');
+-- INSERT INTO USERProfile6 (UserID, Name, Email) VALUES (3, 'Mike Johnson', 'mike.johnson@email.com');
+-- INSERT INTO USERProfile6 (UserID, Name, Email) VALUES (4, 'Emily Brown', 'emily.brown@email.com');
+-- INSERT INTO USERProfile6 (UserID, Name, Email) VALUES (5, 'David Lee', 'david.lee@email.com');
 
 COMMIT;

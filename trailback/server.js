@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import router from './appController.js';
+import dataRouter from './routes/dataRouter.js';
+import authRouter from './routes/authRouter.js';
 import loadEnvFile from './utils/envUtil.js';
 
 // Load environment variables from .env file
@@ -11,20 +12,23 @@ const app = express();
 const PORT = envVariables.PORT || 65534;  // Adjust the PORT if needed (e.g., if you encounter a "port already occupied" error)
 
 // Middleware setup
-app.use(express.static('public'));  // Serve static files from the 'public' directory
+// app.use(express.static('public'));  // Serve static files from the 'public' directory
 app.use(express.json());             // Parse incoming JSON payloads
 app.use(cors());
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
-// If you prefer some other file as default page other than 'index.html',
-//      you can adjust and use the bellow line of code to
-//      route to send 'DEFAULT_FILE_NAME.html' as default for root URL
-// app.get('/', (req, res) => {
-//     res.sendFile(__dirname + '/public/DEFAULT_FILE_NAME.html');
-// });
+app.get('/', (req, res) => {
+    res.json('backend running');
+});
 
 
 // mount the router
-app.use('/', router);
+app.use('/', dataRouter);
+app.use('/auth', authRouter);
 
 
 // ----------------------------------------------------------
