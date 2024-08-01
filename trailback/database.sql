@@ -44,7 +44,7 @@ CREATE TABLE UserProfile5 (
     Email           VARCHAR(320),
     Password        VARCHAR(50),
     NumberOfFriends	INTEGER         DEFAULT 0,
-    PRIMARY KEY (Name, Email)
+    PRIMARY KEY (Name, Email, Password)
 );
 
 grant select on UserProfile5 to public;
@@ -127,8 +127,6 @@ CREATE TABLE Trail2 (
     TrailName       VARCHAR(50),
     Difficulty      INTEGER,
     PRIMARY KEY (LocationName, Latitude, Longitude, TrailName),
-    FOREIGN KEY (LocationName, Latitude, Longitude) REFERENCES Location
-        ON DELETE CASCADE,
     FOREIGN KEY (LocationName, Latitude, Longitude, TrailName) REFERENCES Trail1
 );
 
@@ -296,11 +294,11 @@ INSERT ALL
 SELECT * FROM DUAL;
 
 INSERT ALL
-    INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES ('John Doe', 'john.doe@email.com', 7)
-    INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES ('Jane Smith', 'jane.smith@email.com', 5)
-    INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES ('Mike Johnson', 'mike.johnson@email.com', 12)
-    INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES ('Emily Brown', 'emily.brown@email.com', 3)
-    INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES ('David Lee', 'david.lee@email.com', 9)
+    INTO UserProfile5 (Name, Email, Password, NumberOfFriends) VALUES ('John Doe', 'john.doe@email.com', '1234', 7)
+    INTO UserProfile5 (Name, Email, Password, NumberOfFriends) VALUES ('Jane Smith', 'jane.smith@email.com', '2345', 5)
+    INTO UserProfile5 (Name, Email, Password, NumberOfFriends) VALUES ('Mike Johnson', 'mike.johnson@email.com', '3456', 12)
+    INTO UserProfile5 (Name, Email, Password, NumberOfFriends) VALUES ('Emily Brown', 'emily.brown@email.com', '4567', 3)
+    INTO UserProfile5 (Name, Email, Password, NumberOfFriends) VALUES ('David Lee', 'david.lee@email.com', '5678', 9)
 SELECT * FROM DUAL;
 
 INSERT ALL
