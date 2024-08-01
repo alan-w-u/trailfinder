@@ -41,7 +41,8 @@ grant select on UserProfile3 to public;
 
 CREATE TABLE UserProfile5 (
     Name            VARCHAR(50),
-    Email           VARCHAR(320), 
+    Email           VARCHAR(320),
+    Password        VARCHAR(50),
     NumberOfFriends	INTEGER         DEFAULT 0,
     PRIMARY KEY (Name, Email)
 );
@@ -52,7 +53,8 @@ CREATE TABLE UserProfile6 (
     UserID          INTEGER         PRIMARY KEY,
     Name            VARCHAR(50),
     Email           VARCHAR(320),
-    FOREIGN KEY (Name, Email) REFERENCES UserProfile5
+    Password        VARCHAR(50),
+    FOREIGN KEY (Name, Email, Password) REFERENCES UserProfile5
 );
 
 grant select on UserProfile6 to public;
