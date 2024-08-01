@@ -1,30 +1,30 @@
-drop table UserProfile3;
-drop table UserProfile1;
+-- DROP STATEMENTS
+
 drop table Equipment6;
-drop table Equipment1; 
 drop table Equipment5;
 drop table Equipment3;
+drop table Equipment1;
 drop table TransportationToLocation;
-drop table Transportation;
 drop table RetailerFeaturesGear;
-drop table Retailer1;
+drop table UserHikesTrail;
+drop table Transportation;
 drop table Retailer2;
-drop table Trail2;
+drop table Retailer1;
+drop table Preview2;
+drop table Preview1;
 drop table Gear2; 
 drop table Gear1;
-drop table Preview2;
 drop table Review;
 drop table Photo;
 drop table Friends;
 drop table UGC;
-drop table UserHikesTrail;
+drop table Trail2;
+drop table Trail1;
+drop table Location;
 drop table UserProfile6;
 drop table UserProfile5;
-drop table Trail1;
-drop table Location; 
-drop table Preview1;
-
-
+drop table UserProfile3;
+drop table UserProfile1;
 
 CREATE TABLE UserProfile1 (
 TrailsHiked		INTEGER		DEFAULT 0		PRIMARY KEY,
@@ -59,15 +59,6 @@ FOREIGN KEY (Name, Email) REFERENCES UserProfile5
 
 grant select on UserProfile6 to public;
 
-CREATE TABLE Equipment6 (
-Equipment 		INTEGER 		PRIMARY KEY,
-UserID			INTEGER,
-FOREIGN KEY (UserID) REFERENCES UserProfile6
-ON DELETE CASCADE
-);
-
-grant select on Equipment6 to public; 
-
 CREATE TABLE Equipment1 (
 UserID	 		INTEGER 		PRIMARY KEY,
 Amount 		INTEGER,
@@ -91,8 +82,16 @@ Weight 		FLOAT,
 FOREIGN KEY (EquipmentID) REFERENCES Equipment3
 );
 
-grant select on Equipment5 to public; 
+grant select on Equipment5 to public;
 
+CREATE TABLE Equipment6 (
+Equipment 		INTEGER 		PRIMARY KEY,
+UserID			INTEGER,
+FOREIGN KEY (UserID) REFERENCES UserProfile6
+    ON DELETE CASCADE
+);
+
+grant select on Equipment6 to public;
 
 CREATE TABLE Transportation (
 TransportID 		INTEGER 		PRIMARY KEY,
@@ -111,7 +110,8 @@ grant select on Retailer1 to public;
 
 CREATE TABLE Retailer2 (
 RetailerID 		INTEGER 		PRIMARY KEY,
-RetailerName 	VARCHAR(50)
+RetailerName 	VARCHAR(50),
+FOREIGN KEY (RetailerName) REFERENCES Retailer1
 );
 
 grant select on Retailer2 to public; 
@@ -297,3 +297,33 @@ ON DELETE CASCADE
 );
 
 grant select on RetailerFeaturesGear to public;
+
+-- INSERT STATEMENTS
+
+INSERT INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES
+(15, 3),
+(8, 2),
+(25, 4),
+(5, 1),
+(20, 3);
+
+INSERT INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES
+('john.doe@email.com', EMPTY_BLOB(), 15),
+('jane.smith@email.com', EMPTY_BLOB(), 8),
+('mike.johnson@email.com', EMPTY_BLOB(), 25),
+('emily.brown@email.com', EMPTY_BLOB(), 5),
+('david.lee@email.com', EMPTY_BLOB(), 20);
+
+INSERT INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES
+    ('John Doe', 'john.doe@email.com', 7),
+    ('Jane Smith', 'jane.smith@email.com', 5),
+    ('Mike Johnson', 'mike.johnson@email.com', 12),
+    ('Emily Brown', 'emily.brown@email.com', 3),
+    ('David Lee', 'david.lee@email.com', 9);
+
+INSERT INTO USERProfile6 (UserID, Name, Email) VALUES
+(1, 'John Doe', 'john.doe@email.com'),
+(2, 'Jane Smith', 'jane.smith@email.com'),
+(3, 'Mike Johnson', 'mike.johnson@email.com'),
+(4, 'Emily Brown', 'emily.brown@email.com'),
+(5, 'David Lee', 'david.lee@email.com');
