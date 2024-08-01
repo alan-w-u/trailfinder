@@ -1,25 +1,9 @@
-import oracledb from 'oracledb';
+import oracledb, { autoCommit } from 'oracledb';
 import loadEnvFile from './utils/envUtil.js';
 import fs from 'fs';
+import { connect } from 'http2';
 
 const envVariables = loadEnvFile('./.env');
-
-
-//https://levelup.gitconnected.com/running-sql-queries-from-an-sql-file-in-a-nodejs-app-sqlite-a927f0e8a545
-//source for sql parsing
-
-const dataSql = fs.readFileSync("./hikinginfo.sql").toString();
-console.log(dataSql);
-
-//need to change the split operator so we can isolate the queries!!!
-const dataArr = dataSql.toString().split('cut');
-
-console.log("HELLLO TESTING 123!!!!")
-
-dataArr.forEach((sqlQueries) => {
-    console.log(sqlQueries);
-    console.log("YOOO SQL QUERY?!");
-})
 
 // Database configuration setup. Ensure your .env file has the required database credentials.
 const dbConfig = {
@@ -85,7 +69,8 @@ async function withOracleDB(action) {
 
 // ----------------------------------------------------------
 // Core functions for database operations
-// Modify these functions, especially the SQL queries, based on your project's requirements and design.
+
+// Test connection to Oracle database
 async function testOracleConnection() {
     return await withOracleDB(async (connection) => {
         return true;
@@ -94,66 +79,79 @@ async function testOracleConnection() {
     });
 }
 
-async function fetchDemotableFromDb() {
+// Run SQL file to create and populate tables
+async function initializeDB() {
+    try {
+        const script = fs.readFileSync('./hikinginfo.sql', 'utf-8');
+        const statements = script.split(';').filter(statement => statement.trim());
+        return await withOracleDB(async (connection) => {
+            for (const statement of statements) {
+                try {
+                    await connection.execute(statement);
+                } catch (err) {
+                    console.log('Failed to run statement:', statement);
+                }
+            }
+            return true;
+        }).catch(() => {
+            return false;
+        })
+    } catch (err) {
+        console.log('Failed to read or process SQL script');
+    }
+}
+
+// Fetch table
+async function fetchDB(relations, attributes, predicates) {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT * FROM DEMOTABLE');
+        const attributesStr = Array.isArray(attributes) ? attributes.join(', ') : attributes;
+        const relationsStr = Array.isArray(relations) ? relations.join(', ') : relations;
+        const predicatesStr = Array.isArray(predicates) ? predicates.join(' AND ') : predicates;
+        const result = await connection.execute(
+            `SELECT ${attributesStr} FROM ${relationsStr} WHERE ${predicatesStr}`,
+            [],
+            { autoCommit: true }
+        );
         return result.rows;
     }).catch(() => {
         return [];
     });
 }
 
-async function initiateDemotable() {
+// Insert data into table
+async function insertDB(relation, data) {
     return await withOracleDB(async (connection) => {
-        try {
-            await connection.execute(`DROP TABLE DEMOTABLE`);
-        } catch(err) {
-            console.log('Table might not exist, proceeding to create...');
-        }
-
-        const result = await connection.execute(`
-            CREATE TABLE DEMOTABLE (
-                id NUMBER PRIMARY KEY,
-                name VARCHAR2(20)
-            )
-        `);
-        return true;
-    }).catch(() => {
-        return false;
-    });
-}
-
-async function insertDemotable(id, name) {
-    return await withOracleDB(async (connection) => {
+        const placeholders = data.map((_, index) => `:${index + 1}`).join(', ');
         const result = await connection.execute(
-            `INSERT INTO DEMOTABLE (id, name) VALUES (:id, :name)`,
-            [id, name],
+            `INSERT INTO ${relation} VALUES (${placeholders})`,
+            data,
             { autoCommit: true }
         );
-
         return result.rowsAffected && result.rowsAffected > 0;
     }).catch(() => {
         return false;
     });
 }
 
-async function updateNameDemotable(oldName, newName) {
+// Delete data in table
+async function deleteDB(relation, predicates) {
     return await withOracleDB(async (connection) => {
+        const predicatesStr = Array.isArray(predicates) ? predicates.join(' AND ') : predicates;
         const result = await connection.execute(
-            `UPDATE DEMOTABLE SET name=:newName where name=:oldName`,
-            [newName, oldName],
+            `DELETE FROM ${relation} WHERE ${predicatesStr}`,
+            [],
             { autoCommit: true }
         );
-
         return result.rowsAffected && result.rowsAffected > 0;
     }).catch(() => {
         return false;
     });
 }
 
-async function countDemotable() {
+// Count data in table
+async function countDB(relation) {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute('SELECT Count(*) FROM DEMOTABLE');
+        const result = await connection.execute(`SELECT COUNT (*) FROM ${relation}`);
         return result.rows[0][0];
     }).catch(() => {
         return -1;
@@ -162,9 +160,9 @@ async function countDemotable() {
 
 export {
     testOracleConnection,
-    fetchDemotableFromDb,
-    initiateDemotable, 
-    insertDemotable, 
-    updateNameDemotable, 
-    countDemotable
+    initializeDB,
+    fetchDB,
+    insertDB,
+    deleteDB,
+    countDB
 };
