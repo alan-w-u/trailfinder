@@ -90,16 +90,16 @@ SQL>
 
 ### Useful SQL*Plus Commands
 
-Find tables owned by someone:
-```
-SELECT table_name 
-FROM all_tables 
-WHERE owner = 'ORA_CWL';
-```
-
-See all attributes:
+See all attributes
 ```
 DESCRIBE all_tables
+```
+
+Find tables and number of rows in tables owned by someone
+```
+SELECT table_name, num_rows
+FROM all_tables 
+WHERE owner = 'ORA_CWL';
 ```
 
 <br>
