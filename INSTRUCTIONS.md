@@ -92,7 +92,13 @@ SQL>
 
 See all attributes
 ```
-DESCRIBE all_tables
+DESCRIBE all_tables;
+```
+
+Find tables owned by you
+```
+SELECT table_name
+FROM user_tables;
 ```
 
 Find tables and number of rows in tables owned by someone
