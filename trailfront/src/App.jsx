@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Auth from './assets/Auth'
 import TrailWidget from './assets/TrailWidget'
 import './App.css'
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
 import DatabaseStatus from './components/DatabaseStatus';
 import DemotableDisplay from './components/DemotableDisplay';
@@ -13,13 +14,17 @@ import CountDemotable from './components/CountDemotable';
 function App() {
   const [userID, setUserID] = useState(null);
   const [status, setStatus] = useState('');
+  const [connected, setConnected] = useState(false);
 
   useEffect(() => {
     async function checkConnection() {
       try {
-        const response = await fetch('http://localhost:65535/check-db-connection');
+        const response = await fetch('http://localhost:65535/check-db-connection', {
+          mode: "cors"
+        });
         const text = await response.text();
         setStatus(text);
+        setConnected(true);
       } catch (err) {
         setStatus('connection timed out');
       }
@@ -28,8 +33,30 @@ function App() {
     checkConnection();
   }, []);
 
+  useEffect(() => {
+    async function initializeDB() {
+      if (connected) {
+        await fetch("http://localhost:65535/initialize", {
+          method: 'POST'
+        });
+      }
+    }
+
+    // initializeDB();
+  }, [connected]);
+
   return (
     <>
+      {/*<AuthProvider>*/}
+        <Router>
+          <Routes>
+            <Route path="/login" element={<InsertDemotable />} />
+            <Route path="/register" element={<InsertDemotable />} />
+            {/*<PrivateRoute path="/profile" element={<InsertDemotable />} />*/}
+            <Route path="*" element={<Navigate to="/profile" />} />
+          </Routes>
+        </Router>
+      {/*</AuthProvider>*/}
       <header>
         <div className="logo">
           <img src="trailfinder.png" alt="TrailFinder" draggable="false" />
@@ -38,19 +65,6 @@ function App() {
         <span>{status}</span>
       </header>
       <main>
-        <div className="App">
-          <DatabaseStatus />
-          <hr />
-          <DemotableDisplay />
-          <hr />
-          <ResetDemotable />
-          <hr />
-          <InsertDemotable />
-          <hr />
-          <UpdateNameDemotable />
-          <hr />
-          <CountDemotable />
-        </div>
         {userID === null && <Auth setUserID={setUserID} />}
         {userID !== null &&
           <div className="trailwidgets">

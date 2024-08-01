@@ -10,8 +10,9 @@ function Auth(props) {
 
   async function handleLogin(e) {
     e.preventDefault();
-    const response = await fetch('http://localhost:65535/login', {
+    const response = await fetch('http://localhost:65535/auth/login', {
       method: 'POST',
+      mode: "cors",
       headers: {
         'Content-Type': 'application/json',
       },
@@ -29,8 +30,9 @@ function Auth(props) {
 
   async function handleSignUp(e) {
     e.preventDefault();
-    const response = await fetch('http://localhost:65535/signup', {
+    const response = await fetch('http://localhost:65535/auth/register', {
       method: 'POST',
+      mode: "cors",
       headers: {
         'Content-Type': 'application/json',
       },
