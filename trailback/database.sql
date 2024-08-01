@@ -308,3 +308,5 @@ INSERT ALL
     INTO USERProfile6 (UserID, Name, Email) VALUES (4, 'Emily Brown', 'emily.brown@email.com')
     INTO USERProfile6 (UserID, Name, Email) VALUES (5, 'David Lee', 'david.lee@email.com')
 SELECT * FROM DUAL;
+
+COMMIT;
