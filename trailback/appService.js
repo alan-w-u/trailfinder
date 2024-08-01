@@ -1,4 +1,4 @@
-import oracledb, { autoCommit } from 'oracledb';
+import oracledb from 'oracledb';
 import loadEnvFile from './utils/envUtil.js';
 import fs from 'fs';
 import { connect } from 'http2';
