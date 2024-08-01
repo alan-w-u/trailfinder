@@ -1,9 +1,6 @@
 -- DROP STATEMENTS
 
-drop table Equipment6;
-drop table Equipment5;
-drop table Equipment3;
-drop table Equipment1;
+drop table Equipment;
 drop table TransportationToLocation;
 drop table RetailerFeaturesGear;
 drop table UserHikesTrail;
@@ -59,39 +56,18 @@ FOREIGN KEY (Name, Email) REFERENCES UserProfile5
 
 grant select on UserProfile6 to public;
 
-CREATE TABLE Equipment1 (
-UserID	 		INTEGER 		PRIMARY KEY,
-Amount 		INTEGER,
+CREATE TABLE Equipment (
+EquipmentID INTEGER PRIMARY KEY,
+UserID INTEGER,
+Type VARCHAR(50),
+Brand VARCHAR(50),
+Amount INTEGER,
+Weight FLOAT,
 FOREIGN KEY (UserID) REFERENCES UserProfile6
-ON DELETE CASCADE
+   ON DELETE CASCADE
 );
 
-grant select on Equipment1 to public; 
-
-CREATE TABLE Equipment3 (
-EquipmentID 		INTEGER 		PRIMARY KEY,
-Type 			VARCHAR(50),
-Brand 			VARCHAR(50)
-);
-
-grant select on Equipment3 to public; 
-
-CREATE TABLE Equipment5 (
-EquipmentID 		INTEGER 		PRIMARY KEY,
-Weight 		FLOAT,
-FOREIGN KEY (EquipmentID) REFERENCES Equipment3
-);
-
-grant select on Equipment5 to public;
-
-CREATE TABLE Equipment6 (
-Equipment 		INTEGER 		PRIMARY KEY,
-UserID			INTEGER,
-FOREIGN KEY (UserID) REFERENCES UserProfile6
-    ON DELETE CASCADE
-);
-
-grant select on Equipment6 to public;
+grant select on Equipment to public;
 
 CREATE TABLE Transportation (
 TransportID 		INTEGER 		PRIMARY KEY,
@@ -300,30 +276,34 @@ grant select on RetailerFeaturesGear to public;
 
 -- INSERT STATEMENTS
 
-INSERT INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES
-(15, 3),
-(8, 2),
-(25, 4),
-(5, 1),
-(20, 3);
+INSERT ALL
+    INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (15, 3)
+    INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (8, 2)
+    INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (25, 4)
+    INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (5, 1)
+    INTO UserProfile1 (TrailsHiked, ExperienceLvl) VALUES (20, 3)
+SELECT 1 FROM DUAL;
 
-INSERT INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES
-('john.doe@email.com', EMPTY_BLOB(), 15),
-('jane.smith@email.com', EMPTY_BLOB(), 8),
-('mike.johnson@email.com', EMPTY_BLOB(), 25),
-('emily.brown@email.com', EMPTY_BLOB(), 5),
-('david.lee@email.com', EMPTY_BLOB(), 20);
+INSERT ALL
+    INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES ('john.doe@email.com', EMPTY_BLOB(), 15)
+    INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES ('jane.smith@email.com', EMPTY_BLOB(), 8)
+    INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES ('mike.johnson@email.com', EMPTY_BLOB(), 25)
+    INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES ('emily.brown@email.com', EMPTY_BLOB(), 5)
+    INTO UserProfile3 (Email, ProfilePicture, TrailsHiked) VALUES ('david.lee@email.com', EMPTY_BLOB(), 20)
+SELECT 1 FROM DUAL;
 
-INSERT INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES
-    ('John Doe', 'john.doe@email.com', 7),
-    ('Jane Smith', 'jane.smith@email.com', 5),
-    ('Mike Johnson', 'mike.johnson@email.com', 12),
-    ('Emily Brown', 'emily.brown@email.com', 3),
-    ('David Lee', 'david.lee@email.com', 9);
+INSERT ALL
+    INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES ('John Doe', 'john.doe@email.com', 7)
+    INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES ('Jane Smith', 'jane.smith@email.com', 5)
+    INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES ('Mike Johnson', 'mike.johnson@email.com', 12)
+    INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES ('Emily Brown', 'emily.brown@email.com', 3)
+    INTO UserProfile5 (Name, Email, NumberOfFriends) VALUES ('David Lee', 'david.lee@email.com', 9)
+SELECT 1 FROM DUAL;
 
-INSERT INTO USERProfile6 (UserID, Name, Email) VALUES
-(1, 'John Doe', 'john.doe@email.com'),
-(2, 'Jane Smith', 'jane.smith@email.com'),
-(3, 'Mike Johnson', 'mike.johnson@email.com'),
-(4, 'Emily Brown', 'emily.brown@email.com'),
-(5, 'David Lee', 'david.lee@email.com');
+INSERT ALL
+    INTO USERProfile6 (UserID, Name, Email) VALUES (1, 'John Doe', 'john.doe@email.com')
+    INTO USERProfile6 (UserID, Name, Email) VALUES (2, 'Jane Smith', 'jane.smith@email.com')
+    INTO USERProfile6 (UserID, Name, Email) VALUES (3, 'Mike Johnson', 'mike.johnson@email.com')
+    INTO USERProfile6 (UserID, Name, Email) VALUES (4, 'Emily Brown', 'emily.brown@email.com')
+    INTO USERProfile6 (UserID, Name, Email) VALUES (5, 'David Lee', 'david.lee@email.com')
+SELECT 1 FROM DUAL;
