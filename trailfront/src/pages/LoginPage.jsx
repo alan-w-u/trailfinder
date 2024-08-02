@@ -110,13 +110,13 @@ function LoginPage() {
                             </div>
                             <button type="submit">Log In</button>
                         </form>
+                        <button onClick={() => googleLogin()} className="google-login-button">
+                            Continue with Google
+                        </button>
                         <div className="auth-mode">
                             <p>New to TrailFinder?</p>
                             <a onClick={toggleAuthMode}>Sign Up</a>
                         </div>
-                        <button onClick={() => googleLogin()} className="google-login-button">
-                            Login with Google
-                        </button>
                     </>
                 )}
 

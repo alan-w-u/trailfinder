@@ -1,136 +1,136 @@
 .auth-container {
-  display: flex;
-  flex-direction: column;
-  width: 20rem;
-  height: 30rem;
-  padding: 1rem 0;
-  margin: auto;
-  border-radius: 1rem;
-  background-color: var(--asset-background);
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+    height: 30rem;
+    padding: 1rem 0;
+    margin: auto;
+    border-radius: 1rem;
+    background-color: var(--asset-background);
+    align-items: center;
 }
 
 .auth-container h1 {
-  margin: 1.5rem 0;
-  font-size: 2.5rem;
-  letter-spacing: -0.1rem;
+    margin: 1.5rem 0;
+    font-size: 2.5rem;
+    letter-spacing: -0.1rem;
 }
 
 .auth-container form {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: auto;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    align-items: center;
 }
 
 .auth-container button {
-  width: 85%;
-  height: auto;
-  padding: 0.5rem;
-  margin: 1.5rem 0;
-  border-style: solid;
-  border-radius: 0.5rem;
-  border-color: var(--asset-border);
-  background-color: var(--asset-border);
-  font-family: inherit;
-  color: var(--inverse-text);
-  font-size: 1rem;
-  font-weight: bold;
-  text-shadow: 0 0 2rem var(--text);
-  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    width: 85%;
+    height: auto;
+    padding: 0.5rem;
+    margin: 1.5rem 0;
+    border-style: solid;
+    border-radius: 0.5rem;
+    border-color: var(--asset-border);
+    background-color: var(--asset-border);
+    font-family: inherit;
+    color: var(--inverse-text);
+    font-size: 1rem;
+    font-weight: bold;
+    text-shadow: 0 0 2rem var(--text);
+    transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .auth-container button:hover {
-  border-color: var(--asset-hover);
-  background-color: var(--asset-hover);
+    border-color: var(--asset-hover);
+    background-color: var(--asset-hover);
 }
 
 .auth-container button:active {
-  border-color: var(--asset-active);
-  background-color: var(--asset-active);
+    border-color: var(--asset-active);
+    background-color: var(--asset-active);
 }
 
 .input-container {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  width: 100%;
-  height: auto;
-  margin: 0.5rem 0;
-  font-size: 1.1rem;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+    align-items: center;
 }
 
 .input-container input {
-  all: unset;
-  width: 75%;
-  height: auto;
-  padding: 1rem;
-  border: 0.15rem solid var(--grey);
-  border-radius: 0.5rem;
-  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    all: unset;
+    width: 75%;
+    height: auto;
+    padding: 1rem;
+    border: 0.15rem solid var(--grey);
+    border-radius: 0.5rem;
+    transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .input-container label {
-  position: absolute;
-  top: 1rem;
-  left: 2.5rem;
-  pointer-events: none;
-  transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    position: absolute;
+    top: 1rem;
+    left: 2.5rem;
+    pointer-events: none;
+    transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .input-container input:focus {
-  border-color: var(--asset-active);
+    border-color: var(--asset-active);
 }
 
-.input-container input:is(:focus, :not(:placeholder-shown)) ~ label {
-  padding-inline: 0.5rem;
-  background-color: var(--asset-background);
-  transform: translateY(-120%) scale(0.75);
+.input-container input:is(:focus, :not(:placeholder-shown))~label {
+    padding-inline: 0.5rem;
+    background-color: var(--asset-background);
+    transform: translateY(-120%) scale(0.75);
 }
 
 .show-password {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .show-password input[type="checkbox"] {
-  display: none;
+    display: none;
 }
 
-.show-password input[type="checkbox"]:checked + .checkbox {
-  background-color: var(--asset-hover);
+.show-password input[type="checkbox"]:checked+.checkbox {
+    background-color: var(--asset-hover);
 }
 
 .checkbox {
-  width: 1.25rem;
-  height: 1.25rem;
-  margin: 0 0.5rem;
-  border: 0.1rem solid var(--asset-border);
-  background-color: var(--seasalt);
-  cursor: pointer;
-  transition: 100ms cubic-bezier(0.4, 0, 0.2, 1);
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0 0.5rem;
+    border: 0.1rem solid var(--asset-border);
+    background-color: var(--seasalt);
+    cursor: pointer;
+    transition: 100ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .auth-mode {
-  display: flex;
-  margin: auto 0 0 0;
-  align-items: center;
+    display: flex;
+    margin: auto 0 0 0;
+    align-items: center;
 }
 
 .auth-mode a {
-  padding: 0.25rem;
-  margin: 0 0.25rem;
-  color: var(--asset-active);
-  font-weight: bold;
-  text-decoration: none;
-  cursor: pointer;
-  transition: 100ms cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0.25rem;
+    margin: 0 0.25rem;
+    color: var(--asset-active);
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 100ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .auth-mode a:hover {
-  border-radius: 0.5rem;
-  background-color: var(--tea-green);
-  text-decoration: underline;
+    border-radius: 0.5rem;
+    background-color: var(--tea-green);
+    text-decoration: underline;
 }
