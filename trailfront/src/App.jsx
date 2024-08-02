@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
-import Auth from './assets/Auth'
-import TrailWidget from './assets/TrailWidget'
+import Auth from './components/Auth.jsx'
+import TrailWidget from './components/TrailWidget.jsx'
 import './App.css'
 import {BrowserRouter as Router, Route, Routes, Navigate, Outlet} from 'react-router-dom';
-import { AuthProvider, useAuth } from './assets/AuthContext.jsx';
+import { AuthProvider, useAuth } from './components/AuthContext.jsx';
 
 import LoginPage from './pages/LoginPage.jsx'
 import ProfilePage from "./pages/ProfilePage.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import Navbar from "./components/Navbar.jsx";
 
 
 
@@ -51,33 +53,21 @@ function App() {
 
   return (
     <>
-      <header>
-        <div className="logo">
-          <img src="trailfinder.png" alt="TrailFinder" draggable="false" />
-          <h1>TrailFinder</h1>
-        </div>
-        <span>{status}</span>
-      </header>
       <AuthProvider>
         <Router>
+          <Navbar status={status} />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<ProfilePage />} />
             </Route>
+            <Route element={<PrivateRoute />}>
+              <Route path="/home" element={<HomePage />} />
+            </Route>
             <Route path="*" element={<Navigate to="/login" replace />} />
           </Routes>
         </Router>
       </AuthProvider>
-      <main>
-        {userID !== null &&
-          <div className="trailwidgets">
-            <TrailWidget trailname="Mountain Trail" difficulty="Medium" preview="./trailfinder.png" />
-            <TrailWidget trailname="Lakeside Path" difficulty="Easy" preview="./trailfinder.png" />
-            <TrailWidget trailname="Forest Adventure" difficulty="Hard" preview="./trailfinder.png" />
-          </div>
-        }
-      </main>
     </>
   )
 }

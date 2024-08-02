@@ -103,6 +103,11 @@ main {
   align-items: center;
 }
 
+a {
+  color: inherit;
+  text-decoration: none; /* no underline */
+}
+
 .trailwidgets {
   display: flex;
   margin: 5rem auto;

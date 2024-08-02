@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../assets/AuthContext';
+import { useAuth } from '../components/AuthContext.jsx';
 
 const ProfilePage = () => {
     const [profile, setProfile] = useState(null);
@@ -30,11 +30,11 @@ const ProfilePage = () => {
     return (
         <div>
             <h1>Profile</h1>
-            <p>Name: {profile.name}</p>
-            <p>Email: {profile.email}</p>
-            <p>Trails Hiked: {profile.trailsHiked}</p>
-            <p>Experience Level: {profile.experienceLevel}</p>
-            <p>Number of Friends: {profile.numberOfFriends}</p>
+            <p>Name: {profile["NAME"]}</p>
+            <p>Email: {profile["EMAIL"]}</p>
+            <p>Trails Hiked: {profile["TRAILSHIKED"]}</p>
+            <p>Experience Level: {profile["EXPERIENCELEVEL"]}</p>
+            <p>Number of Friends: {profile["NUMBEROFFRIENDS"]}</p>
         </div>
     );
 };
