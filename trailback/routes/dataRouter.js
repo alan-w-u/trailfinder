@@ -1,5 +1,5 @@
 import express from 'express';
-import * as appService from './appService.js';
+import * as dataService from '../services/dataService.js';
 
 const router = express.Router();
 
@@ -8,7 +8,7 @@ const router = express.Router();
 
 // Test connection to Oracle database
 router.get('/check-db-connection', async (req, res) => {
-    const isConnect = await appService.testOracleConnection();
+    const isConnect = await dataService.testOracleConnection();
     if (isConnect) {
         res.send('connected');
     } else {
@@ -18,7 +18,7 @@ router.get('/check-db-connection', async (req, res) => {
 
 // Run SQL file to create and populate tables
 router.post('/initialize', async (req, res) => {
-    const initiateResult = await appService.initializeDB();
+    const initiateResult = await dataService.initializeDB();
     if (initiateResult) {
         res.json({ success: true });
     } else {
@@ -36,7 +36,7 @@ router.get('/fetch', async (req, res) => {
     const relationsArr = Array.isArray(relations) ? relations : [relations];
     const attributesArr = Array.isArray(attributes) ? attributes : [attributes];
     const predicatesArr = Array.isArray(predicates) ? predicates : [predicates];
-    const tableContent = await appService.fetchDB(relationsArr, attributesArr, predicatesArr);
+    const tableContent = await dataService.fetchDB(relationsArr, attributesArr, predicatesArr);
     res.json({ data: tableContent });
 });
 
@@ -50,7 +50,7 @@ router.post('/insert', async (req, res) => {
     if (!Array.isArray(data)) {     // Inserted data has to be in array form
         return res.status(400).json({ success: false, error: 'Data must be an array' });
     }
-    const insertResult = await appService.insertDB(relation, data);
+    const insertResult = await dataService.insertDB(relation, data);
     if (insertResult) {
         res.json({ success: true });
     } else {
@@ -66,7 +66,7 @@ router.delete('/delete', async (req, res) => {
         return res.status(400).json({ success: false, error: 'Predicates are required' });
     }
     const predicatesArray = Array.isArray(predicates) ? predicates : [predicates];
-    const deleteResult = await appService.deleteDB(relation, predicatesArray);
+    const deleteResult = await dataService.deleteDB(relation, predicatesArray);
     if (deleteResult) {
         res.json({ success: true });
     } else {
@@ -81,7 +81,7 @@ router.get('/count', async (req, res) => {
     if (!relation) {    // Count query requires target relation
         return res.status(400).json({ success: false, error: 'Table name (relation) is required' });
     }
-    const tableCount = await appService.countDB(relation);
+    const tableCount = await dataService.countDB(relation);
     if (tableCount >= 0) {
         res.json({ success: true, count: tableCount });
     } else {
@@ -92,7 +92,7 @@ router.get('/count', async (req, res) => {
 // Log in
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    const user = await appService.fetchDB('UserProfile6', 'UserID', [`Email = '${email}'`, `Password = '${password}'`]);
+    const user = await dataService.fetchDB('UserProfile6', 'UserID', [`Email = '${email}'`, `Password = '${password}'`]);
     if (user.length > 0) {
         res.json({ success: true, userID: user[0].USERID });
     } else {
@@ -103,10 +103,10 @@ router.post('/login', async (req, res) => {
 // Sign up
 router.post('/signup', async (req, res) => {
     const { name, email, password } = req.body;
-    const result1 = await appService.insertDB('UserProfile5', [name, email, password, 0]);
+    const result1 = await dataService.insertDB('UserProfile5', [name, email, password, 0]);
 
     const userID = Math.floor(Math.random() * 1000); // Gerate random UserID (temporary solution)
-    const result2 = await appService.insertDB('UserProfile6', [userID, name, email, password]);
+    const result2 = await dataService.insertDB('UserProfile6', [userID, name, email, password]);
     if (result1 && result2) {
         res.json({ success: true, userID });
     } else {
