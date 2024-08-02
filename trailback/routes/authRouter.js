@@ -15,6 +15,7 @@ router.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
     const registerResult = await authService.registerUser(name, email, password);
     if (registerResult) {
+        console.log(`User ${name} successfully registered - 200`);
         res.json({ success: true });
     } else {
         res.status(500).json({ success: false, error: 'Failed to register' });
@@ -25,26 +26,17 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     const loginResult = await authService.loginUser(email, password);
-
-    if (loginResult.rows.length > 0) {
-        const user = loginResult.rows[0];
-        if (await bcrypt.compare(password, user["PASSWORD"])) {
-            const token = jwt.sign({ userId: user["USERID"] }, envVariables["JWT_SECRET"], { expiresIn: '1h' });
-            res.json({ success:true, token });
-        } else {
-            res.status(400).json({ error: "Invalid Password" });
-        }
+    if (loginResult) {
+        console.log('User successfully logged in - 200');
+        res.json({ success: true, token: loginResult });
     } else {
-        res.status(400).json({ error: "User not found" });
+        res.status(400).json({ error: "Login failed" });
     }
 });
 
-// Google Auth
-const client = new OAuth2Client(envVariables["GOOGLE_CLIENTID"], envVariables["GOOGLE_SECRET"]);
-
 router.post('/google-login', async (req, res) => {
     const { token } = req.body;
-    const googleResult = await authService.googleLogin(token, client);
+    const googleResult = await authService.googleLogin(token);
     if (googleResult) {
         res.json({ success: true, token: googleResult });
     } else {
@@ -54,11 +46,11 @@ router.post('/google-login', async (req, res) => {
 
 // Get user profile
 router.get('/profile', authenticateToken, async (req, res) => {
-    const { userID } = req.user;
-    console.log(req.user);
-    const profileResult = await authService.getProfile(userID);
+    const { userId } = req.user;
+
+    const profileResult = await authService.getProfile(userId);
     if (profileResult) {
-        res.json({success: true});
+        res.json({ success: true, profile: profileResult });
     } else {
         res.status(500).json({ success:false, error: 'Failed to GET Profile'} )
     }
@@ -84,7 +76,7 @@ function authenticateToken(req, res, next) {
 
     jwt.verify(token, envVariables["JWT_SECRET"], (err, user) => {
         if (err) return res.sendStatus(403);
-        console.log(user);
+
         req.user = user;
         next();
     });

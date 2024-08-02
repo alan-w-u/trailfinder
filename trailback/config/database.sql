@@ -62,15 +62,14 @@ drop sequence user_id_seq;
 
 
 CREATE TABLE UserProfile (
-    userID INTEGER PRIMARY KEY,
+    userID NUMBER PRIMARY KEY,
     name VARCHAR2(50),
     email VARCHAR2(320) UNIQUE,
     password VARCHAR2(72),  -- Hashed password
     trailsHiked INTEGER DEFAULT 0,
     experienceLevel INTEGER DEFAULT 0,
     profilePicture BLOB,
-    numberOfFriends INTEGER DEFAULT 0,
-    googleId VARCHAR2(255) UNIQUE  -- For Google Auth
+    numberOfFriends INTEGER DEFAULT 0
 );
 
 CREATE TABLE Equipment (
