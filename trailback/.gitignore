@@ -27,3 +27,4 @@ dist-ssr
 .env
 local-start.sh
 ../local-start.cmd
+/local-start.cmd
