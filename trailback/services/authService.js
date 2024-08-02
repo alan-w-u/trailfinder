@@ -10,16 +10,12 @@ const envVariables = loadEnvFile('./.env');
 async function registerUser(name, email, password) {
     const hashedPassword = await bcrypt.hash(password, 10);
     return await withOracleDB(async (connection)=> {
-        const result = await connection.execute(
-            `SELECT user_id_seq.NEXTVAL FROM DUAL`
-        );
-        const userID = result.rows[0][0];
 
         try {
             return await connection.execute(
                 `INSERT INTO UserProfile (userID, name, email, password)
-                 VALUES (:userID, :name, :email, :hashedPassword, 1)`,
-                [userID, name, email, hashedPassword],
+                 VALUES (user_id_seq.NEXTVAL, :name, :email, :hashedPassword)`,
+                [name, email, hashedPassword],
                 {autoCommit: true}
             );
         } catch (err) {

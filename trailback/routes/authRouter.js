@@ -48,13 +48,14 @@ router.post('/google-login', async (req, res) => {
     if (googleResult) {
         res.json({ success: true, token: googleResult });
     } else {
-        res.status(500).json({ success: false, error: 'Google Login Failed' });
+        res.status(500).json({ success: false, error: 'Google LoginPage Failed' });
     }
 });
 
 // Get user profile
 router.get('/profile', authenticateToken, async (req, res) => {
-    const { userID } = req.body;
+    const { userID } = req.user;
+    console.log(req.user);
     const profileResult = await authService.getProfile(userID);
     if (profileResult) {
         res.json({success: true});
@@ -83,6 +84,7 @@ function authenticateToken(req, res, next) {
 
     jwt.verify(token, envVariables["JWT_SECRET"], (err, user) => {
         if (err) return res.sendStatus(403);
+        console.log(user);
         req.user = user;
         next();
     });

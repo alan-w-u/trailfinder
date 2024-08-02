@@ -2,19 +2,23 @@ import { useState, useEffect } from 'react'
 import Auth from './assets/Auth'
 import TrailWidget from './assets/TrailWidget'
 import './App.css'
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes, Navigate, Outlet} from 'react-router-dom';
+import { AuthProvider, useAuth } from './assets/AuthContext.jsx';
 
-import DatabaseStatus from './components/DatabaseStatus';
-import DemotableDisplay from './components/DemotableDisplay';
-import ResetDemotable from './components/ResetDemotable';
-import InsertDemotable from './components/InsertDemotable';
-import UpdateNameDemotable from './components/UpdateNameDemotable';
-import CountDemotable from './components/CountDemotable';
+import LoginPage from './pages/LoginPage.jsx'
+import ProfilePage from "./pages/ProfilePage.jsx";
+
+
+
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  const { isAuthenticated } = useAuth();
+  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
+};
 
 function App() {
   const [userID, setUserID] = useState(null);
   const [status, setStatus] = useState('');
-  const [connected, setConnected] = useState(false);
+
 
   useEffect(() => {
     async function checkConnection() {
@@ -24,7 +28,6 @@ function App() {
         });
         const text = await response.text();
         setStatus(text);
-        setConnected(true);
       } catch (err) {
         setStatus('connection timed out');
       }
@@ -35,28 +38,19 @@ function App() {
 
   useEffect(() => {
     async function initializeDB() {
-      if (connected) {
+      if (status) {
         await fetch("http://localhost:65535/initialize", {
           method: 'POST'
         });
       }
     }
 
+    //use this code to initialize the DB on tunnel connection success
     // initializeDB();
-  }, [connected]);
+  }, [status]);
 
   return (
     <>
-      {/*<AuthProvider>*/}
-        <Router>
-          <Routes>
-            <Route path="/login" element={<InsertDemotable />} />
-            <Route path="/register" element={<InsertDemotable />} />
-            {/*<PrivateRoute path="/profile" element={<InsertDemotable />} />*/}
-            <Route path="*" element={<Navigate to="/profile" />} />
-          </Routes>
-        </Router>
-      {/*</AuthProvider>*/}
       <header>
         <div className="logo">
           <img src="trailfinder.png" alt="TrailFinder" draggable="false" />
@@ -64,8 +58,18 @@ function App() {
         </div>
         <span>{status}</span>
       </header>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route element={<PrivateRoute />}>
+              <Route path="/profile" element={<ProfilePage />} />
+            </Route>
+            <Route path="*" element={<Navigate to="/login" replace />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
       <main>
-        {userID === null && <Auth setUserID={setUserID} />}
         {userID !== null &&
           <div className="trailwidgets">
             <TrailWidget trailname="Mountain Trail" difficulty="Medium" preview="./trailfinder.png" />
