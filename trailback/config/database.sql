@@ -21,6 +21,7 @@ drop table Location;
 -- drop table UserProfile3;
 -- drop table UserProfile1;
 drop table UserProfile;
+drop sequence user_id_seq;
 
 
 -- CREATE TABLE UserProfile1 (
@@ -58,6 +59,8 @@ drop table UserProfile;
 -- );
 --
 -- grant select on UserProfile6 to public;
+
+
 CREATE TABLE UserProfile (
     userID INTEGER PRIMARY KEY,
     name VARCHAR2(50),
@@ -313,5 +316,20 @@ grant select on RetailerFeaturesGear to public;
 -- INSERT INTO USERProfile6 (UserID, Name, Email) VALUES (3, 'Mike Johnson', 'mike.johnson@email.com');
 -- INSERT INTO USERProfile6 (UserID, Name, Email) VALUES (4, 'Emily Brown', 'emily.brown@email.com');
 -- INSERT INTO USERProfile6 (UserID, Name, Email) VALUES (5, 'David Lee', 'david.lee@email.com');
+
+
+CREATE SEQUENCE user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+DECLARE
+    highest_user_id NUMBER;
+BEGIN
+    SELECT NVL(MAX(userID), 1) INTO highest_user_id FROM userprofile;
+    EXECUTE IMMEDIATE 'ALTER SEQUENCE user_id_seq RESTART START WITH ' || (highest_user_id + 1);
+END;
+/
 
 COMMIT;
