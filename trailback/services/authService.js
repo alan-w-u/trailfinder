@@ -12,7 +12,7 @@ async function registerUser(name, email, password) {
     return await withOracleDB(async (connection) => {
         try {
             const result = await connection.execute(
-                `SELECT * FROM UserProfile WHERE email = :email`,
+                `SELECT * FROM userprofile WHERE email = :email`,
                 {email},
                 {outFormat: oracledb.OUT_FORMAT_OBJECT}
             );
@@ -25,7 +25,7 @@ async function registerUser(name, email, password) {
                 } else if (password) {
                     // User exists without password, update with new password
                     await connection.execute(
-                        `UPDATE UserProfile SET password = :hashedPassword WHERE email = :email`,
+                        `UPDATE userprofile SET password = :hashedPassword WHERE email = :email`,
                         { hashedPassword, email },
                         { autoCommit: true }
                     );
@@ -34,7 +34,7 @@ async function registerUser(name, email, password) {
             } else {
                 // New user, create account
                 await connection.execute(
-                    `INSERT INTO UserProfile (userID, name, email, password)
+                    `INSERT INTO userprofile (userID, name, email, password)
                      VALUES (user_id_seq.NEXTVAL, :name, :email, :hashedPassword)`,
                     [name, email, hashedPassword],
                     {autoCommit: true}
@@ -52,7 +52,7 @@ async function loginUser(email, password) {
         const result = await connection.execute(
             `SELECT TO_CHAR(userID) AS userID, 
             name, email, password, trailshiked, experiencelevel,profilepicture,numberoffriends 
-            FROM UserProfile WHERE email = :email`,
+            FROM userprofile WHERE email = :email`,
             {email},
             {outFormat: oracledb.OUT_FORMAT_OBJECT}
         );
@@ -81,7 +81,7 @@ async function googleLogin(token) {
 
     return await withOracleDB(async (connection) => {
         let result = await connection.execute(
-            `SELECT * FROM UserProfile WHERE email = :email`,
+            `SELECT * FROM userprofile WHERE email = :email`,
             {email},
             {outFormat: oracledb.OUT_FORMAT_OBJECT}
         );
@@ -89,7 +89,7 @@ async function googleLogin(token) {
         if (result.rows.length === 0) {
             // Create new user
             await connection.execute(
-                `INSERT INTO UserProfile (userID, name, email)
+                `INSERT INTO userprofile (userID, name, email)
                  VALUES (:googleId, :name, :email)`,
                 {googleId, name, email},
                 {autoCommit: true}
@@ -99,7 +99,7 @@ async function googleLogin(token) {
             if (user.USERID !== googleId) {
                 // Update existing user with Google ID
                 await connection.execute(
-                    `UPDATE UserProfile SET userID = :googleId WHERE email = :email`,
+                    `UPDATE userprofile SET userID = :googleId WHERE email = :email`,
                     { googleId, email },
                     { autoCommit: true }
                 );
@@ -114,7 +114,7 @@ async function getProfile(userID) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `SELECT userID, name, email, trailsHiked, experienceLevel, numberOfFriends
-             FROM UserProfile
+             FROM userprofile
              WHERE userID = :userId`,
             {userId: userID},
             {outFormat: oracledb.OUT_FORMAT_OBJECT}
@@ -130,7 +130,7 @@ async function getProfile(userID) {
 async function updateProfile(name, trailsHiked, experienceLevel, userID) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `UPDATE UserProfile 
+            `UPDATE userprofile 
              SET name = :name, trailsHiked = :trailsHiked, experienceLevel = :experienceLevel 
              WHERE userID = :userId`,
             { name, trailsHiked, experienceLevel, userId: userID },

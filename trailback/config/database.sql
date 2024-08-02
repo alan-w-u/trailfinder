@@ -1,290 +1,290 @@
-drop table Equipment;
-drop table TransportationToLocation;
-drop table RetailerFeaturesGear;
-drop table UserHikesTrail;
-drop table Transportation;
-drop table Retailer2;
-drop table Retailer1;
-drop table Preview2;
-drop table Preview1;
-drop table Gear2;
-drop table Gear1;
-drop table Review;
-drop table Photo;
-drop table Friends;
-drop table UGC;
-drop table Trail;
-drop table Location;
-drop table UserProfile;
+drop table equipment;
+drop table transportationtolocation;
+drop table retailerfeaturesgear;
+drop table userhikestrail;
+drop table transportation;
+drop table retailer2;
+drop table retailer1;
+drop table preview2;
+drop table preview1;
+drop table gear2;
+drop table gear1;
+drop table review;
+drop table photo;
+drop table friends;
+drop table ugc;
+drop table trail;
+drop table location;
+drop table userprofile;
 drop sequence user_id_seq;
 
 
 
-CREATE TABLE UserProfile (
-    userID NUMBER PRIMARY KEY,
-    name VARCHAR2(50),
-    email VARCHAR2(320) UNIQUE,
-    password VARCHAR2(72),
-    trailsHiked INTEGER DEFAULT 0,
-    experienceLevel INTEGER DEFAULT 0,
-    profilePicture BLOB,
-    numberOfFriends INTEGER DEFAULT 0
+CREATE TABLE userprofile (
+    userid          NUMBER          PRIMARY KEY,
+    name            VARCHAR2(50),
+    email           VARCHAR2(320)   UNIQUE,
+    password        VARCHAR2(72),
+    trailshiked     INTEGER         DEFAULT 0,
+    experiencelevel INTEGER         DEFAULT 0,
+    profilepicture  BLOB,
+    numberoffriends INTEGER         DEFAULT 0
 );
 
-CREATE TABLE Equipment (
-    EquipmentID     INTEGER         PRIMARY KEY,
-    UserID          INTEGER,
-    Type            VARCHAR(50),
-    Brand           VARCHAR(50),
-    Amount          INTEGER,
-    Weight          FLOAT,
-    FOREIGN KEY (UserID) REFERENCES UserProfile
+CREATE TABLE equipment (
+    equipmentid     INTEGER         PRIMARY KEY,
+    userid          INTEGER,
+    type            VARCHAR(50),
+    brand           VARCHAR(50),
+    amount          INTEGER,
+    weight          FLOAT,
+    FOREIGN KEY (userid) REFERENCES userprofile
         ON DELETE CASCADE
 );
 
-grant select on Equipment to public;
+grant select on equipment to public;
 
-CREATE TABLE Transportation (
-    TransportID     INTEGER         PRIMARY KEY,
-    Type            VARCHAR(50),
-    TransportCost   FLOAT
+CREATE TABLE transportation (
+    transportid     INTEGER         PRIMARY KEY,
+    type            VARCHAR(50),
+    transportcost   FLOAT
 );
 
-grant select on Transportation to public; 
+grant select on transportation to public; 
 
-CREATE TABLE Retailer1 (
-    RetailerWebsite VARCHAR2(100)    PRIMARY KEY,
-    RetailerName    VARCHAR2(50)
+CREATE TABLE retailer1 (
+    retailerwebsite VARCHAR2(100)   PRIMARY KEY,
+    retailername    VARCHAR2(50)
 );
 
-grant select on Retailer1 to public; 
+grant select on retailer1 to public; 
 
-CREATE TABLE Retailer2 (
-    RetailerID      INTEGER         PRIMARY KEY,
-    RetailerName    VARCHAR2(50),
-    FOREIGN KEY (RetailerName) REFERENCES Retailer1
+CREATE TABLE retailer2 (
+    retailerid      INTEGER         PRIMARY KEY,
+    retailername    VARCHAR2(50),
+    FOREIGN KEY (retailername) REFERENCES retailer1
 );
 
-grant select on Retailer2 to public; 
+grant select on retailer2 to public; 
 
-CREATE TABLE Location (
-    LocationName    VARCHAR(50),
-    Latitude        Decimal(8, 6),
-    Longitude       Decimal(9, 6),
-    Weather         VARCHAR(30),
-    PRIMARY KEY (LocationName, Latitude, Longitude)
+CREATE TABLE location (
+    locationname    VARCHAR(50),
+    latitude        Decimal(8, 6),
+    longitude       Decimal(9, 6),
+    weather         VARCHAR(30),
+    PRIMARY KEY (locationname, latitude, longitude)
 );
 
-grant select on Location to public; 
+grant select on location to public; 
 
-CREATE TABLE Trail (
-    LocationName    VARCHAR(50)     NOT NULL,
-    Latitude        Decimal(8, 6)   NOT NULL,
-    Longitude       Decimal(9, 6)   NOT NULL,
-    TrailName       VARCHAR(50),
-    TimeToComplete  INTERVAL DAY TO SECOND,
-    Description     VARCHAR(3000),
-    Hazards         VARCHAR(100),
-    Difficulty      INTEGER,
-    PRIMARY KEY (LocationName, Latitude, Longitude, TrailName),
-    FOREIGN KEY (LocationName, Latitude, Longitude) REFERENCES Location
+CREATE TABLE trail (
+    locationname    VARCHAR(50)     NOT NULL,
+    latitude        Decimal(8, 6)   NOT NULL,
+    longitude       Decimal(9, 6)   NOT NULL,
+    trailname       VARCHAR(50),
+    timetocomplete  INTERVAL DAY TO SECOND,
+    description     VARCHAR(3000),
+    hazards         VARCHAR(100),
+    difficulty      INTEGER,
+    PRIMARY KEY (locationname, latitude, longitude, trailname),
+    FOREIGN KEY (locationname, latitude, longitude) REFERENCES location
         ON DELETE CASCADE
 );
 
-grant select on Trail to public;
+grant select on trail to public;
 
-CREATE TABLE Gear1 (
-    GearName        VARCHAR(50)     PRIMARY KEY,
-    GearType        VARCHAR(50)
+CREATE TABLE gear1 (
+    gearname        VARCHAR(50)     PRIMARY KEY,
+    geartype        VARCHAR(50)
 );
 
-grant select on Gear1 to public; 
+grant select on gear1 to public; 
 
-CREATE TABLE Gear2 (
-    GearName        VARCHAR(50)     PRIMARY KEY,
-    LocationName    VARCHAR(50),
-    Latitude        Decimal(8, 6)   NOT NULL,
-    Longitude       Decimal(9, 6)   NOT NULL,
-    TrailName       VARCHAR(50),
-    FOREIGN KEY (GearName) REFERENCES Gear1,
-    FOREIGN KEY (LocationName, Latitude, Longitude) REFERENCES Location
+CREATE TABLE gear2 (
+    gearname        VARCHAR(50)     PRIMARY KEY,
+    locationname    VARCHAR(50),
+    latitude        Decimal(8, 6)   NOT NULL,
+    longitude       Decimal(9, 6)   NOT NULL,
+    trailname       VARCHAR(50),
+    FOREIGN KEY (gearname) REFERENCES gear1,
+    FOREIGN KEY (locationname, latitude, longitude) REFERENCES location
         ON DELETE SET NULL,
-    FOREIGN KEY (LocationName, Latitude, Longitude, TrailName) REFERENCES Trail
+    FOREIGN KEY (locationname, latitude, longitude, trailname) REFERENCES trail
         ON DELETE SET NULL
 );
 
-grant select on Gear2 to public; 
+grant select on gear2 to public; 
 
-CREATE TABLE Preview1 (
-    PreviewID       INTEGER	    PRIMARY KEY,
-    Image           BLOB
+CREATE TABLE preview1 (
+    previewid       INTEGER	        PRIMARY KEY,
+    image           BLOB
 );
 
-grant select on Preview1 to public; 
+grant select on preview1 to public; 
 
-CREATE TABLE Preview2 (
-    LocationName    VARCHAR(50)     NOT NULL,
-    Latitude        Decimal(8, 6)   NOT NULL,
-    Longitude       Decimal(9, 6)   NOT NULL,
-    TrailName       VARCHAR(50)     NOT NULL,
-    PreviewID       INTEGER,
-    PRIMARY KEY (LocationName, Latitude, Longitude, TrailName, PreviewID),
-    FOREIGN KEY (LocationName, Latitude, Longitude) REFERENCES Location
+CREATE TABLE preview2 (
+    locationname    VARCHAR(50)     NOT NULL,
+    latitude        Decimal(8, 6)   NOT NULL,
+    longitude       Decimal(9, 6)   NOT NULL,
+    trailname       VARCHAR(50)     NOT NULL,
+    previewid       INTEGER,
+    PRIMARY KEY (locationname, latitude, longitude, trailname, previewid),
+    FOREIGN KEY (locationname, latitude, longitude) REFERENCES Location
         ON DELETE CASCADE,
-    FOREIGN KEY (LocationName, Latitude, Longitude, TrailName) REFERENCES Trail
+    FOREIGN KEY (locationname, latitude, longitude, trailname) REFERENCES trail
         ON DELETE CASCADE,
-    FOREIGN KEY (PreviewID) REFERENCES Preview1
+    FOREIGN KEY (previewid) REFERENCES preview1
 );
 
-grant select on Preview2 to public; 
+grant select on preview2 to public; 
 
-CREATE TABLE UGC (
-    UGCID           INTEGER         PRIMARY KEY,
-    UserID          INTEGER         NOT NULL,
-    LocationName    VARCHAR(50)     NOT NULL,
-    Latitude        Decimal(8, 6)   NOT NULL,
-    Longitude       Decimal(9, 6)   NOT NULL,
-    TrailName       VARCHAR(50)     NOT NULL,
-    DatePosted      DATE,
-    FOREIGN KEY (UserID) REFERENCES UserProfile
+CREATE TABLE ugc (
+    ugcid           INTEGER         PRIMARY KEY,
+    userid          INTEGER         NOT NULL,
+    locationname    VARCHAR(50)     NOT NULL,
+    latitude        Decimal(8, 6)   NOT NULL,
+    longitude       Decimal(9, 6)   NOT NULL,
+    trailname       VARCHAR(50)     NOT NULL,
+    dateposted      DATE,
+    FOREIGN KEY (userid) REFERENCES userprofile
         ON DELETE CASCADE,
-    FOREIGN KEY (LocationName, Latitude, Longitude) REFERENCES Location
+    FOREIGN KEY (locationname, latitude, longitude) REFERENCES Location
         ON DELETE CASCADE,
-    FOREIGN KEY (LocationName, Latitude, Longitude, TrailName) REFERENCES Trail
+    FOREIGN KEY (locationname, latitude, longitude, trailname) REFERENCES trail
         ON DELETE CASCADE 
 );
 
-grant select on UGC to public; 
+grant select on ugc to public; 
 
-CREATE TABLE Review (
-    UGCID           INTEGER         PRIMARY KEY,
-    Rating          INTEGER,
-    Description     VARCHAR(500),
-    FOREIGN KEY (UGCID) REFERENCES UGC
+CREATE TABLE review (
+    ugcid           INTEGER         PRIMARY KEY,
+    rating          INTEGER,
+    description     VARCHAR(500),
+    FOREIGN KEY (ugcid) REFERENCES ugc
         ON DELETE CASCADE
 );
 
-grant select on Review to public; 
+grant select on review to public; 
 
-CREATE TABLE Photo (
-    UGCID           INTEGER         PRIMARY KEY,
-    Image           BLOB,
-    FOREIGN KEY (UGCID) REFERENCES UGC
+CREATE TABLE photo (
+    ugcid           INTEGER         PRIMARY KEY,
+    image           BLOB,
+    FOREIGN KEY (ugcid) REFERENCES ugc
         ON DELETE CASCADE
 );
 
-grant select on Photo to public; 
+grant select on photo to public; 
 
-CREATE TABLE Friends (
-    UserID          INTEGER,
-    FriendID        INTEGER,
-    DateFriended    DATE,
-    PRIMARY KEY (UserID, FriendID),
-    FOREIGN KEY (UserID) REFERENCES UserProfile
+CREATE TABLE friends (
+    userid          INTEGER,
+    friendid        INTEGER,
+    datefriended    DATE,
+    PRIMARY KEY (userid, friendid),
+    FOREIGN KEY (userid) REFERENCES userprofile
         ON DELETE CASCADE
 );
 
-grant select on Friends to public; 
+grant select on friends to public; 
 
-CREATE TABLE TransportationToLocation (
-    TransportID     INTEGER,
-    LocationName    VARCHAR(50),
-    Latitude        Decimal(8, 6)   NOT NULL,
-    Longitude       Decimal(9, 6)   NOT NULL,
-    Duration        INTEGER,
-    TripCost        FLOAT,
-    PRIMARY KEY (TransportID, LocationName, Latitude, Longitude),
-    FOREIGN KEY (TransportID) REFERENCES Transportation
+CREATE TABLE transportationtolocation (
+    transportid     INTEGER,
+    locationname    VARCHAR(50),
+    latitude        Decimal(8, 6)   NOT NULL,
+    longitude       Decimal(9, 6)   NOT NULL,
+    duration        INTEGER,
+    tripcost        FLOAT,
+    PRIMARY KEY (transportid, locationname, latitude, longitude),
+    FOREIGN KEY (transportid) REFERENCES transportation
         ON DELETE CASCADE,
-    FOREIGN KEY (LocationName, Latitude, Longitude) REFERENCES Location
+    FOREIGN KEY (locationname, latitude, longitude) REFERENCES Location
         ON DELETE CASCADE
 );
 
-grant select on TransportationToLocation to public;
+grant select on transportationtolocation to public;
 
-CREATE TABLE UserHikesTrail (
-    UserID          INTEGER,
-    LocationName    VARCHAR(50),
-    Latitude        Decimal(8, 6)   NOT NULL,
-    Longitude       Decimal(9, 6)   NOT NULL,
-    TrailName       VARCHAR(50),
-    DateHiked       DATE,
-    TimeToComplete  INTEGER,
-    PRIMARY KEY (UserID, LocationName, Latitude, Longitude, TrailName),
-    FOREIGN KEY (UserID) REFERENCES UserProfile
+CREATE TABLE userhikestrail (
+    userid          INTEGER,
+    locationname    VARCHAR(50),
+    latitude        Decimal(8, 6)   NOT NULL,
+    longitude       Decimal(9, 6)   NOT NULL,
+    trailname       VARCHAR(50),
+    datehiked       DATE,
+    timetocomplete  INTEGER,
+    PRIMARY KEY (userid, locationname, latitude, longitude, trailname),
+    FOREIGN KEY (userid) REFERENCES userprofile
         ON DELETE CASCADE,
-    FOREIGN KEY (LocationName, Latitude, Longitude) REFERENCES Location
+    FOREIGN KEY (locationname, latitude, longitude) REFERENCES Location
         ON DELETE CASCADE,
-    FOREIGN KEY (LocationName, Latitude, Longitude, TrailName) REFERENCES Trail
+    FOREIGN KEY (locationname, latitude, longitude, trailname) REFERENCES trail
         ON DELETE CASCADE
 );
 
-grant select on UserHikesTrail to public;
+grant select on userhikestrail to public;
 
-CREATE TABLE RetailerFeaturesGear (
-    RetailerID      INTEGER,
-    GearType        VARCHAR(50),
-    ProductName     VARCHAR(50),
-    ProductWebsite  VARCHAR(100), 
-    PRIMARY KEY (RetailerID, GearType),
-    FOREIGN KEY (RetailerID) REFERENCES Retailer2
+CREATE TABLE retailerfeaturesgear (
+    retailerid      INTEGER,
+    geartype        VARCHAR(50),
+    productname     VARCHAR(50),
+    productwebsite  VARCHAR(100), 
+    PRIMARY KEY (retailerid, geartype),
+    FOREIGN KEY (retailerid) REFERENCES retailer2
         ON DELETE CASCADE,
-    FOREIGN KEY (GearType) REFERENCES Gear1
+    FOREIGN KEY (geartype) REFERENCES gear1
         ON DELETE CASCADE
 );
 
-grant select on RetailerFeaturesGear to public;
+grant select on retailerfeaturesgear to public;
 
 
 INSERT ALL
-    INTO UserProfile (UserID, Name, Email, Password, ProfilePicture, TrailsHiked, experienceLevel, NumberOfFriends) VALUES
+    INTO userprofile (userid, name, email, password, profilepicture, trailsHiked, experienceLevel, numberoffriends) VALUES
     (1, 'John Doe', 'john.doe@email.com', '$2b$10$ymRAycGV5EegDAsSVLyrh.qa6Om2ahTPHRpVsHd7Lzmyz/XLza9MG', EMPTY_BLOB(), 15, 3, 7)
-    INTO UserProfile (UserID, Name, Email, Password, ProfilePicture, TrailsHiked, experienceLevel, NumberOfFriends) VALUES
+    INTO userprofile (userid, name, email, password, profilepicture, trailsHiked, experienceLevel, numberoffriends) VALUES
     (2, 'Jane Smith', 'jane.smith@email.com', '$2b$10$3Ist2BK.9IdeHLcw1uiA7eabIx7j4H0W/6T3QDZHsu06cN64sijje', EMPTY_BLOB(), 8, 2, 5)
-    INTO UserProfile (UserID, Name, Email, Password, ProfilePicture, TrailsHiked, experienceLevel, NumberOfFriends) VALUES
+    INTO userprofile (userid, name, email, password, profilepicture, trailsHiked, experienceLevel, numberoffriends) VALUES
     (3, 'Mike Johnson', 'mike.johnson@email.com', '$2b$10$/K9BkOSJB8PI4wj2IpM4HuKsXKwsSIfUeznS56Z4KvYqGi9jtKfMG', EMPTY_BLOB(), 25, 4, 12)
-    INTO UserProfile (UserID, Name, Email, Password, ProfilePicture, TrailsHiked, experienceLevel, NumberOfFriends) VALUES
+    INTO userprofile (userid, name, email, password, profilepicture, trailsHiked, experienceLevel, numberoffriends) VALUES
     (4, 'Emily Brown', 'emily.brown@email.com', '$2b$10$.42a6Cwng0dU.XnCpQAOousfZtYrgV167Z4.BxJvwVQQx0wPVOegm', EMPTY_BLOB(), 5, 1, 3)
-    INTO UserProfile (UserID, Name, Email, Password, ProfilePicture, TrailsHiked, experienceLevel, NumberOfFriends) VALUES
+    INTO userprofile (userid, name, email, password, profilepicture, trailsHiked, experienceLevel, numberoffriends) VALUES
     (5, 'David Lee', 'david.lee@email.com', '$2b$10$ZmHZlgWCjOTe69MHLgar/ejkZQIVaorvk2wo10MzkQhvyhPwrmLIq', EMPTY_BLOB(), 20, 3, 9)
 SELECT * FROM DUAL;
 
 INSERT ALL
-    INTO Equipment (EquipmentID, UserID, Type, Brand, Amount, Weight) VALUES
+    INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
     (1, 1, 'Hiking Boots', 'Merrell', 1, 2.5)
-    INTO Equipment (EquipmentID, UserID, Type, Brand, Amount, Weight) VALUES
+    INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
     (2, 1, 'Backpack', 'Osprey', 1, 1.8)
-    INTO Equipment (EquipmentID, UserID, Type, Brand, Amount, Weight) VALUES
+    INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
     (3, 2, 'Trekking Poles', 'Black Diamond', 2, 0.5)
-    INTO Equipment (EquipmentID, UserID, Type, Brand, Amount, Weight) VALUES
+    INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
     (4, 3, 'Tent', 'REI', 1, 3.2)
-    INTO Equipment (EquipmentID, UserID, Type, Brand, Amount, Weight) VALUES
+    INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
     (5, 4, 'Sleeping Bag', 'The North Face', 1, 1.5)
 SELECT * FROM DUAL;
 
 INSERT ALL
-    INTO Transportation (TransportID, Type, TransportCost) VALUES
+    INTO transportation (transportid, type, transportcost) VALUES
     (1, 'Car', 0.15)
-    INTO Transportation (TransportID, Type, TransportCost) VALUES
+    INTO transportation (transportid, type, transportcost) VALUES
     (2, 'Bus', 2.50)
-    INTO Transportation (TransportID, Type, TransportCost) VALUES
+    INTO transportation (transportid, type, transportcost) VALUES
     (3, 'Train', 5.00)
-    INTO Transportation (TransportID, Type, TransportCost) VALUES
+    INTO transportation (transportid, type, transportcost) VALUES
     (4, 'Bicycle', 0.00)
-    INTO Transportation (TransportID, Type, TransportCost) VALUES
+    INTO transportation (transportid, type, transportcost) VALUES
     (5, 'Shuttle', 10.00)
 SELECT * FROM DUAL;
 
 INSERT ALL
-    INTO Retailer1 (RetailerName, RetailerWebsite) VALUES
+    INTO retailer1 (retailername, retailerwebsite) VALUES
     ('Mountain Outfitters', 'www.mountainoutfitters.com')
-    INTO Retailer1 (RetailerName, RetailerWebsite) VALUES
-    ('Trail Blazer Gear', 'www.trailblazergear.com')
-    INTO Retailer1 (RetailerName, RetailerWebsite) VALUES
+    INTO retailer1 (retailername, retailerwebsite) VALUES
+    ('trail Blazer Gear', 'www.trailblazergear.com')
+    INTO retailer1 (retailername, retailerwebsite) VALUES
     ('Summit Supply Co.', 'www.summitsupply.com')
-    INTO Retailer1 (RetailerName, RetailerWebsite) VALUES
+    INTO retailer1 (retailername, retailerwebsite) VALUES
     ('Campsite Essentials', 'www.campsiteessentials.com')
-    INTO Retailer1 (RetailerName, RetailerWebsite) VALUES
+    INTO retailer1 (retailername, retailerwebsite) VALUES
     ('Wilderness Comfort', 'www.wildernesscomfort.com')
 SELECT * FROM DUAL;
 

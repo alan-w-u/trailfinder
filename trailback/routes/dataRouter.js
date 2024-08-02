@@ -28,7 +28,7 @@ router.post('/initialize', async (req, res) => {
 });
 
 // Fetch table
-// example query URL: /fetch-db?relations=UserProfile1&attributes=TrailsHiked&predicates=TrailsHiked%3E1
+// example query URL: /fetch-db?relations=userprofile1&attributes=TrailsHiked&predicates=TrailsHiked%3E1
 router.get('/fetch', async (req, res) => {
     const { relations, attributes, predicates } = req.query;
     if (!relations) {   // Fetch query requires target relation
@@ -42,7 +42,7 @@ router.get('/fetch', async (req, res) => {
 });
 
 // Insert data into table
-// example query: { 'relation': 'UserProfile1', 'data': [5, 2] }
+// example query: { 'relation': 'userprofile1', 'data': [5, 2] }
 router.post('/insert', async (req, res) => {
     const { relation, data } = req.body;
     if (!relation) {    // Insert query requires target relation
@@ -60,7 +60,7 @@ router.post('/insert', async (req, res) => {
 });
 
 // Delete data in table
-// example query: { 'relation': 'UserProfile1', 'predicates': ['TrailsHiked > 10'] }
+// example query: { 'relation': 'userprofile1', 'predicates': ['TrailsHiked > 10'] }
 router.delete('/delete', async (req, res) => {
     const { relation, predicates } = req.body;
     if (!predicates) {      // Delete query requires predicates
@@ -76,7 +76,7 @@ router.delete('/delete', async (req, res) => {
 });
 
 // Count data in table
-// example query URL: /count?relation=UserProfile1
+// example query URL: /count?relation=userprofile1
 router.get('/count', async (req, res) => {
     const { relation } = req.query;
     if (!relation) {    // Count query requires target relation
@@ -93,7 +93,7 @@ router.get('/count', async (req, res) => {
 // Log in
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    const user = await dataService.fetchDB('UserProfile6', 'UserID', [`Email = '${email}'`, `Password = '${password}'`]);
+    const user = await dataService.fetchDB('userprofile6', 'UserID', [`Email = '${email}'`, `Password = '${password}'`]);
     if (user.length > 0) {
         res.json({ success: true, userID: user[0].USERID });
     } else {
@@ -104,10 +104,10 @@ router.post('/login', async (req, res) => {
 // Sign up
 router.post('/signup', async (req, res) => {
     const { name, email, password } = req.body;
-    const result1 = await dataService.insertDB('UserProfile5', [name, email, password, 0]);
+    const result1 = await dataService.insertDB('userprofile5', [name, email, password, 0]);
 
     const userID = Math.floor(Math.random() * 1000); // Gerate random UserID (temporary solution)
-    const result2 = await dataService.insertDB('UserProfile6', [userID, name, email, password]);
+    const result2 = await dataService.insertDB('userprofile6', [userID, name, email, password]);
     if (result1 && result2) {
         res.json({ success: true, userID });
     } else {
