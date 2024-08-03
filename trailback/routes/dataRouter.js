@@ -115,4 +115,15 @@ router.post('/signup', async (req, res) => {
     }
 });
 
+router.get('/selectEquipment', async (req, res) => {
+    const {whereClause} = req.body;
+    const result = await dataService.selectionEquipment(whereClause);
+    console.log(result);
+    if (result === -1) {
+        res.status(500).json({ success: false, error: 'whereClause Invalid or No Rows Exist' });
+    } else {
+        res.json({ success: true, data: result });
+    }
+});
+
 export default router;

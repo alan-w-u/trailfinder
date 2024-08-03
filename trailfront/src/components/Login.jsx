@@ -44,7 +44,7 @@ const Login = () => {
                 const data = await response.json();
                 if (response.ok) {
                     login(data.token);
-                    navigate('/profile');
+                    navigate('/home');
                 } else {
                     alert(data.error);
                 }

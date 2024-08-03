@@ -25,7 +25,7 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     const loginResult = await authService.loginUser(email, password);
     if (loginResult) {
-        console.log('User successfully logged in - 200');
+        console.log('User successfully logged in via password - 200');
         res.json({ success: true, token: loginResult });
     } else {
         res.status(400).json({ error: "Login failed" });
@@ -36,6 +36,7 @@ router.post('/google-login', async (req, res) => {
     const { token } = req.body;
     const googleResult = await authService.googleLogin(token);
     if (googleResult) {
+        console.log('User successfully logged in via google - 200');
         res.json({ success: true, token: googleResult });
     } else {
         res.status(500).json({ success: false, error: 'Google LoginPage Failed' });
@@ -47,6 +48,7 @@ router.get('/profile', authenticateToken, async (req, res) => {
     const { userId } = req.user;
     const profileResult = await authService.getProfile(userId);
     if (profileResult) {
+        console.log('User profile GET success - 200');
         res.json({ success: true, profile: profileResult });
     } else {
         res.status(500).json({ success:false, error: 'Failed to GET Profile'} )
@@ -58,6 +60,7 @@ router.put('/profile', authenticateToken, async (req, res) => {
     const { name, trailsHiked, experienceLevel, userID } = req.body;
     const updateResult = await authService.updateProfile(name, trailsHiked, experienceLevel, userID);
     if (updateResult) {
+        console.log('User profile PUT update success - 200');
         res.json({success: true});
     } else {
         res.status(500).json({ success:false, error: 'Failed to Update Profile'} )
@@ -66,12 +69,7 @@ router.put('/profile', authenticateToken, async (req, res) => {
 
 router.get('/verify-token', authenticateToken, (req, res) => {
     const { userId } = req.user;
-
-    try {
-        res.json({ valid: true, userId: userId });
-    } catch (error) {
-        res.status(401).json({ error: 'Invalid token' });
-    }
+    res.json({ valid: true, userId: userId });
 });
 
 function authenticateToken(req, res, next) {
