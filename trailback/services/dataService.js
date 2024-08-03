@@ -114,7 +114,7 @@ async function countDB(relation) {
 async function selectionEquipment(whereClause) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(`SELECT * FROM EQUIPMENT WHERE ${whereClause}`);
-        return result.rows[0][0];
+        return result.rows;
     }).catch(() => {
         return -1;
     });
