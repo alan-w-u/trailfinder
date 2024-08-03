@@ -1,7 +1,7 @@
 DROP TABLE equipment;
-DROP TABLE transportation_to_location;
-DROP TABLE retailer_features_gear;
-DROP TABLE user_hikes_trail;
+DROP TABLE transportationtolocation;
+DROP TABLE retailerfeaturesgear;
+DROP TABLE userhikestrail;
 DROP TABLE transportation;
 DROP TABLE retailer2;
 DROP TABLE retailer1;
@@ -15,5 +15,5 @@ DROP TABLE friends;
 DROP TABLE ugc;
 DROP TABLE trail;
 DROP TABLE location;
-DROP TABLE users;
+DROP TABLE userprofile;
 DROP SEQUENCE user_id_seq;
