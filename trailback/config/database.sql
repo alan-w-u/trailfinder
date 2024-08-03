@@ -1,22 +1,22 @@
-drop table equipment;
-drop table transportationtolocation;
-drop table retailerfeaturesgear;
-drop table userhikestrail;
-drop table transportation;
-drop table retailer2;
-drop table retailer1;
-drop table preview2;
-drop table preview1;
-drop table gear2;
-drop table gear1;
-drop table review;
-drop table photo;
-drop table friends;
-drop table ugc;
-drop table trail;
-drop table location;
-drop table userprofile;
-drop sequence user_id_seq;
+DROP TABLE equipment;
+DROP TABLE transportationtolocation;
+DROP TABLE retailerfeaturesgear;
+DROP TABLE userhikestrail;
+DROP TABLE transportation;
+DROP TABLE retailer2;
+DROP TABLE retailer1;
+DROP TABLE preview2;
+DROP TABLE preview1;
+DROP TABLE gear2;
+DROP TABLE gear1;
+DROP TABLE review;
+DROP TABLE photo;
+DROP TABLE friends;
+DROP TABLE ugc;
+DROP TABLE trail;
+DROP TABLE location;
+DROP TABLE userprofile;
+DROP SEQUENCE user_id_seq;
 
 
 
@@ -69,8 +69,8 @@ grant select on retailer2 to public;
 
 CREATE TABLE location (
     locationname    VARCHAR(50),
-    latitude        Decimal(8, 6),
-    longitude       Decimal(9, 6),
+    latitude        DECIMAL(8, 6),
+    longitude       DECIMAL(9, 6),
     weather         VARCHAR(30),
     PRIMARY KEY (locationname, latitude, longitude)
 );
@@ -79,8 +79,8 @@ grant select on location to public;
 
 CREATE TABLE trail (
     locationname    VARCHAR(50)     NOT NULL,
-    latitude        Decimal(8, 6)   NOT NULL,
-    longitude       Decimal(9, 6)   NOT NULL,
+    latitude        DECIMAL(8, 6)   NOT NULL,
+    longitude       DECIMAL(9, 6)   NOT NULL,
     trailname       VARCHAR(50),
     timetocomplete  INTERVAL DAY TO SECOND,
     description     VARCHAR(3000),
@@ -103,8 +103,8 @@ grant select on gear1 to public;
 CREATE TABLE gear2 (
     gearname        VARCHAR(50)     PRIMARY KEY,
     locationname    VARCHAR(50),
-    latitude        Decimal(8, 6)   NOT NULL,
-    longitude       Decimal(9, 6)   NOT NULL,
+    latitude        DECIMAL(8, 6)   NOT NULL,
+    longitude       DECIMAL(9, 6)   NOT NULL,
     trailname       VARCHAR(50),
     FOREIGN KEY (gearname) REFERENCES gear1,
     FOREIGN KEY (locationname, latitude, longitude) REFERENCES location
@@ -124,8 +124,8 @@ grant select on preview1 to public;
 
 CREATE TABLE preview2 (
     locationname    VARCHAR(50)     NOT NULL,
-    latitude        Decimal(8, 6)   NOT NULL,
-    longitude       Decimal(9, 6)   NOT NULL,
+    latitude        DECIMAL(8, 6)   NOT NULL,
+    longitude       DECIMAL(9, 6)   NOT NULL,
     trailname       VARCHAR(50)     NOT NULL,
     previewid       INTEGER,
     PRIMARY KEY (locationname, latitude, longitude, trailname, previewid),
@@ -142,8 +142,8 @@ CREATE TABLE ugc (
     ugcid           INTEGER         PRIMARY KEY,
     userid          INTEGER         NOT NULL,
     locationname    VARCHAR(50)     NOT NULL,
-    latitude        Decimal(8, 6)   NOT NULL,
-    longitude       Decimal(9, 6)   NOT NULL,
+    latitude        DECIMAL(8, 6)   NOT NULL,
+    longitude       DECIMAL(9, 6)   NOT NULL,
     trailname       VARCHAR(50)     NOT NULL,
     dateposted      DATE,
     FOREIGN KEY (userid) REFERENCES userprofile
@@ -189,8 +189,8 @@ grant select on friends to public;
 CREATE TABLE transportationtolocation (
     transportid     INTEGER,
     locationname    VARCHAR(50),
-    latitude        Decimal(8, 6)   NOT NULL,
-    longitude       Decimal(9, 6)   NOT NULL,
+    latitude        DECIMAL(8, 6)   NOT NULL,
+    longitude       DECIMAL(9, 6)   NOT NULL,
     duration        INTEGER,
     tripcost        FLOAT,
     PRIMARY KEY (transportid, locationname, latitude, longitude),
@@ -205,8 +205,8 @@ grant select on transportationtolocation to public;
 CREATE TABLE userhikestrail (
     userid          INTEGER,
     locationname    VARCHAR(50),
-    latitude        Decimal(8, 6)   NOT NULL,
-    longitude       Decimal(9, 6)   NOT NULL,
+    latitude        DECIMAL(8, 6)   NOT NULL,
+    longitude       DECIMAL(9, 6)   NOT NULL,
     trailname       VARCHAR(50),
     datehiked       DATE,
     timetocomplete  INTEGER,
@@ -295,5 +295,7 @@ CREATE SEQUENCE user_id_seq
     INCREMENT BY 1
     NOCACHE
     NOCYCLE;
+
+
 
 COMMIT;
