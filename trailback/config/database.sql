@@ -7,8 +7,7 @@ drop table retailer2;
 drop table retailer1;
 drop table preview2;
 drop table preview1;
-drop table gear2;
-drop table gear1;
+drop table gear;
 drop table review;
 drop table photo;
 drop table friends;
@@ -53,8 +52,8 @@ CREATE TABLE transportation (
 grant select on transportation to public; 
 
 CREATE TABLE retailer1 (
-    retailerwebsite VARCHAR2(100)   PRIMARY KEY,
-    retailername    VARCHAR2(50)
+    retailername VARCHAR2(50)   PRIMARY KEY,
+    retailerwebsite    VARCHAR2(100)
 );
 
 grant select on retailer1 to public; 
@@ -93,27 +92,19 @@ CREATE TABLE trail (
 
 grant select on trail to public;
 
-CREATE TABLE gear1 (
-    gearname        VARCHAR(50)     PRIMARY KEY,
-    geartype        VARCHAR(50)
-);
 
-grant select on gear1 to public; 
-
-CREATE TABLE gear2 (
+CREATE TABLE gear (
     gearname        VARCHAR(50)     PRIMARY KEY,
+    geartype        VARCHAR(50),
     locationname    VARCHAR(50),
     latitude        Decimal(8, 6)   NOT NULL,
     longitude       Decimal(9, 6)   NOT NULL,
     trailname       VARCHAR(50),
-    FOREIGN KEY (gearname) REFERENCES gear1,
-    FOREIGN KEY (locationname, latitude, longitude) REFERENCES location
-        ON DELETE SET NULL,
     FOREIGN KEY (locationname, latitude, longitude, trailname) REFERENCES trail
         ON DELETE SET NULL
 );
 
-grant select on gear2 to public; 
+grant select on gear to public;
 
 CREATE TABLE preview1 (
     previewid       INTEGER	        PRIMARY KEY,
@@ -129,8 +120,6 @@ CREATE TABLE preview2 (
     trailname       VARCHAR(50)     NOT NULL,
     previewid       INTEGER,
     PRIMARY KEY (locationname, latitude, longitude, trailname, previewid),
-    FOREIGN KEY (locationname, latitude, longitude) REFERENCES Location
-        ON DELETE CASCADE,
     FOREIGN KEY (locationname, latitude, longitude, trailname) REFERENCES trail
         ON DELETE CASCADE,
     FOREIGN KEY (previewid) REFERENCES preview1
@@ -159,8 +148,7 @@ grant select on ugc to public;
 CREATE TABLE review (
     ugcid           INTEGER         PRIMARY KEY,
     rating          INTEGER,
-    description     VARCHAR(500),
-    FOREIGN KEY (ugcid) REFERENCES ugc
+    description     VARCHAR(500),    FOREIGN KEY (ugcid) REFERENCES ugc
         ON DELETE CASCADE
 );
 
@@ -223,13 +211,13 @@ grant select on userhikestrail to public;
 
 CREATE TABLE retailerfeaturesgear (
     retailerid      INTEGER,
-    geartype        VARCHAR(50),
+    gearname        VARCHAR(50),
     productname     VARCHAR(50),
     productwebsite  VARCHAR(100), 
-    PRIMARY KEY (retailerid, geartype),
+    PRIMARY KEY (retailerid, gearname),
     FOREIGN KEY (retailerid) REFERENCES retailer2
         ON DELETE CASCADE,
-    FOREIGN KEY (geartype) REFERENCES gear1
+    FOREIGN KEY (gearname) REFERENCES gear
         ON DELETE CASCADE
 );
 
@@ -279,7 +267,7 @@ INSERT ALL
     INTO retailer1 (retailername, retailerwebsite) VALUES
     ('Mountain Outfitters', 'www.mountainoutfitters.com')
     INTO retailer1 (retailername, retailerwebsite) VALUES
-    ('trail Blazer Gear', 'www.trailblazergear.com')
+    ('Trail Blazer Gear', 'www.trailblazergear.com')
     INTO retailer1 (retailername, retailerwebsite) VALUES
     ('Summit Supply Co.', 'www.summitsupply.com')
     INTO retailer1 (retailername, retailerwebsite) VALUES
@@ -288,7 +276,78 @@ INSERT ALL
     ('Wilderness Comfort', 'www.wildernesscomfort.com')
 SELECT * FROM DUAL;
 
+INSERT ALL
+    INTO retailer2 (retailerid, retailername) VALUES (1, 'Mountain Outfitters')
+    INTO retailer2 (retailerid, retailername) VALUES (2, 'Trail Blazer Gear')
+    INTO retailer2 (retailerid, retailername) VALUES (3, 'Summit Supply Co.')
+    INTO retailer2 (retailerid, retailername) VALUES (4, 'Campsite Essentials')
+    INTO retailer2 (retailerid, retailername) VALUES (5, 'Wilderness Comfort')
+SELECT * FROM DUAL;
 
+INSERT ALL
+    INTO location (locationname, latitude, longitude, weather) VALUES
+    ('Yosemite National Park', 37.865100, -119.538300, 'Sunny')
+    INTO location (locationname, latitude, longitude, weather) VALUES
+    ('Rocky Mountain National Park', 40.342800, -105.683600, 'Partly Cloudy')
+    INTO location (locationname, latitude, longitude, weather) VALUES
+    ('Grand Canyon National Park', 36.054400, -112.140100, 'Hot')
+    INTO location (locationname, latitude, longitude, weather) VALUES
+    ('Yellowstone National Park', 44.428000, -110.588500, 'Rainy')
+    INTO location (locationname, latitude, longitude, weather) VALUES
+    ('Glacier National Park', 48.759600, -113.787000, 'Snowy')
+SELECT * FROM DUAL;
+
+INSERT ALL
+    INTO trail (locationName, latitude, longitude, trailName, difficulty, timetocomplete, description, hazards) VALUES
+    ('Yosemite National Park', 37.865100, -119.538300, 'Half Dome Trail', 5, INTERVAL '10:00:00' HOUR TO SECOND, 'Challenging hike with stunning views of Yosemite Valley', 'Steep cliffs, wildlife')
+    INTO trail (locationName, latitude, longitude, trailName, difficulty, timetocomplete, description, hazards) VALUES
+    ('Rocky Mountain National Park', 40.342800, -105.683600, 'Longs Peak Trail', 5, INTERVAL '12:00:00' HOUR TO SECOND, 'Difficult ascent to one of Colorados famous 14ers', 'Altitude sickness, lightning')
+    INTO trail (locationName, latitude, longitude, trailName, difficulty, timetocomplete, description, hazards) VALUES
+    ('Grand Canyon National Park', 36.054400, -112.140100, 'Bright Angel Trail', 4, INTERVAL '08:00:00' HOUR TO SECOND, 'Popular rim-to-river trail with rest houses along the way', 'Heat exhaustion, steep drop-offs')
+    INTO trail (locationName, latitude, longitude, trailName, difficulty, timetocomplete, description, hazards) VALUES
+    ('Yellowstone National Park', 44.428000, -110.588500, 'Lamar Valley Trail', 2, INTERVAL '03:00:00' HOUR TO SECOND, 'Easy trail known for wildlife viewing, especially wolves and bison', 'Wildlife encounters')
+    INTO trail (locationName, latitude, longitude, trailName, difficulty, timetocomplete, description, hazards) VALUES
+    ('Glacier National Park', 48.759600, -113.787000, 'Highline Trail', 3, INTERVAL '06:00:00' HOUR TO SECOND, 'Scenic trail along the Continental Divide with panoramic views', 'Narrow paths, grizzly bears')
+SELECT * FROM DUAL;
+
+INSERT ALL
+    INTO gear (geartype, gearname, locationname, latitude, longitude, trailname) VALUES
+    ('Hiking Boots', 'All-Terrain Hikers', 'Yosemite National Park', 37.865100, -119.538300, 'Half Dome Trail')
+    INTO gear (geartype, gearname, locationname, latitude, longitude, trailname) VALUES
+    ('Backpack', 'Mountaineer Pack', 'Rocky Mountain National Park', 40.342800, -105.683600, 'Longs Peak Trail')
+    INTO gear (geartype, gearname, locationname, latitude, longitude, trailname) VALUES
+    ('Trekking Poles', 'Ultralight Trekkers' , 'Grand Canyon National Park', 36.054400, -112.140100, 'Bright Angel Trail')
+    INTO gear (geartype, gearname, locationname, latitude, longitude, trailname) VALUES
+    ('Tent', 'Wilderness Shelter', 'Yellowstone National Park', 44.428000, -110.588500, 'Lamar Valley Trail')
+    INTO gear (geartype, gearname, locationname, latitude, longitude, trailname) VALUES
+    ('Sleeping Bag', 'Apine Dreamer', 'Glacier National Park', 48.759600, -113.787000, 'Highline Trail')
+SELECT * FROM DUAL;
+
+INSERT ALL
+    INTO preview1 (previewid, image) VALUES
+    (1, EMPTY_BLOB())
+    INTO preview1 (previewid, image) VALUES
+    (2, EMPTY_BLOB())
+    INTO preview1 (previewid, image) VALUES
+    (3, EMPTY_BLOB())
+    INTO preview1 (previewid, image) VALUES
+    (4, EMPTY_BLOB())
+    INTO preview1 (previewid, image) VALUES
+    (5, EMPTY_BLOB())
+SELECT * FROM DUAL;
+
+INSERT ALL
+    INTO preview2 (locationName, latitude, longitude, trailname, previewid) VALUES
+    ('Yosemite National Park', 37.865100, -119.538300, 'Half Dome Trail', 1)
+    INTO preview2 (locationName, latitude, longitude, trailname, previewid) VALUES
+    ('Rocky Mountain National Park', 40.342800, -105.683600, 'Longs Peak Trail', 2)
+    INTO preview2 (locationName, latitude, longitude, trailname, previewid) VALUES
+    ('Grand Canyon National Park', 36.054400, -112.140100, 'Bright Angel Trail', 3)
+    INTO preview2 (locationName, latitude, longitude, trailname, previewid) VALUES
+    ('Yellowstone National Park', 44.428000, -110.588500, 'Lamar Valley Trail', 4)
+    INTO preview2 (locationName, latitude, longitude, trailname, previewid) VALUES
+    ('Glacier National Park', 48.759600, -113.787000, 'Highline Trail', 5)
+SELECT * FROM DUAL;
 
 CREATE SEQUENCE user_id_seq
     START WITH 6
