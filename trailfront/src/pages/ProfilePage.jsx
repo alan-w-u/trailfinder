@@ -5,6 +5,7 @@ import '../components/Profile.css';
 
 const ProfilePage = () => {
     const [profile, setProfile] = useState(null);
+    const [friends, setFriends] = useState([]);
     const [error, setError] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const [updatedProfile, setUpdatedProfile] = useState({
@@ -40,7 +41,27 @@ const ProfilePage = () => {
             }
         };
 
+        const fetchFriends = async () => {
+            try {
+                const response = await fetch('http://localhost:65535/auth/friends', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    setFriends(data.friends);
+                } else {
+                    setError(data.error || 'Failed to fetch friends');
+                }
+            } catch (error) {
+                setError('Network error: ' + error.message);
+            }
+        };
+
         fetchProfile();
+        // fetchFriends(); // uncomment to deal with friends
     }, []);
 
     const handleLogout = () => {
@@ -97,36 +118,51 @@ const ProfilePage = () => {
     if (!profile) return <div>Loading...</div>;
 
     return (
-        <div className="profile">
-            <h1>Profile</h1>
-            {isEditing ? (
-                <form onSubmit={handleSubmit} className="profile-form">
-                    <div className="profile-form-group">
-                        <label>Name:</label>
-                        <input type="text" name="name" value={updatedProfile.name} onChange={handleChange} />
+        <div className="profile-container">
+            <div className="profile">
+                <h1>Profile</h1>
+                {isEditing ? (
+                    <form onSubmit={handleSubmit} className="profile-form">
+                        <div className="profile-form-group">
+                            <label>Name:</label>
+                            <input type="text" name="name" value={updatedProfile.name} onChange={handleChange} />
+                        </div>
+                        <div className="profile-form-group">
+                            <label>Trails Hiked:</label>
+                            <input type="number" name="trailsHiked" value={updatedProfile.trailsHiked} onChange={handleChange} />
+                        </div>
+                        <div className="profile-form-group">
+                            <label>Experience Level:</label>
+                            <input type="text" name="experienceLevel" value={updatedProfile.experienceLevel} onChange={handleChange} />
+                        </div>
+                        <button className="positive" type="submit">Save</button>
+                        <button className="negative" type="button" onClick={handleEditToggle}>Cancel</button>
+                    </form>
+                ) : (
+                    <div className="profile">
+                        <p>Name: <b>{profile.NAME}</b></p>
+                        <p>Email: <b>{profile.EMAIL}</b></p>
+                        <p>Trails Hiked: <b>{profile.TRAILSHIKED}</b></p>
+                        <p>Experience Level: <b>{profile.EXPERIENCELEVEL}</b></p>
+                        <p>Number of Friends: <b>{profile.NUMBEROFFRIENDS}</b></p>
+                        <button className="positive" onClick={handleEditToggle}>Edit</button>
+                        <button className="negative" onClick={handleLogout}>Logout</button>
                     </div>
-                    <div className="profile-form-group">
-                        <label>Trails Hiked:</label>
-                        <input type="number" name="trailsHiked" value={updatedProfile.trailsHiked} onChange={handleChange} />
-                    </div>
-                    <div className="profile-form-group">
-                        <label>Experience Level:</label>
-                        <input type="text" name="experienceLevel" value={updatedProfile.experienceLevel} onChange={handleChange} />
-                    </div>
-                    <button className="positive" type="submit">Save</button>
-                    <button className="negative" type="button" onClick={handleEditToggle}>Cancel</button>
-                </form>
-            ) : (
-                <div className="profile">
-                    <p>Name: <b>{profile.NAME}</b></p>
-                    <p>Email: <b>{profile.EMAIL}</b></p>
-                    <p>Trails Hiked: <b>{profile.TRAILSHIKED}</b></p>
-                    <p>Experience Level: <b>{profile.EXPERIENCELEVEL}</b></p>
-                    <p>Number of Friends: <b>{profile.NUMBEROFFRIENDS}</b></p>
-                    <button className="positive" onClick={handleEditToggle}>Edit</button>
-                    <button className="negative" onClick={handleLogout}>Logout</button>
+                )}
+            </div>
+
+            <div className="friends">
+                <h1>Friends</h1>
+                <div className="friend-list">
+                    {friends.map(friend => (
+                        <p key={friend.FRIENDID}>
+                            Friend ID: <b>{friend.FRIENDID}</b>
+                            <br></br>
+                            Date Friended: <b>{new Date(friend.DATEFRIENDED).toLocaleDateString()}</b>
+                        </p>
+                    ))}
                 </div>
-            )}
+            </div>
         </div>
     );
 }

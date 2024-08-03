@@ -1,4 +1,4 @@
-import {withOracleDB} from "../config/db.js";
+import { withOracleDB } from "../config/db.js";
 import oracledb from "oracledb";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -13,8 +13,8 @@ async function registerUser(name, email, password) {
         try {
             const result = await connection.execute(
                 `SELECT * FROM userprofile WHERE email = :email`,
-                {email},
-                {outFormat: oracledb.OUT_FORMAT_OBJECT}
+                { email },
+                { outFormat: oracledb.OUT_FORMAT_OBJECT }
             );
 
             if (result.rows.length > 0) {
@@ -37,7 +37,7 @@ async function registerUser(name, email, password) {
                     `INSERT INTO userprofile (userID, name, email, password)
                      VALUES (user_id_seq.NEXTVAL, :name, :email, :hashedPassword)`,
                     [name, email, hashedPassword],
-                    {autoCommit: true}
+                    { autoCommit: true }
                 );
                 return { message: "User registered successfully" };
             }
@@ -53,8 +53,8 @@ async function loginUser(email, password) {
             `SELECT TO_CHAR(userID) AS userID, 
             name, email, password, trailshiked, experiencelevel,profilepicture,numberoffriends 
             FROM userprofile WHERE email = :email`,
-            {email},
-            {outFormat: oracledb.OUT_FORMAT_OBJECT}
+            { email },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
 
         if (result.rows.length > 0) {
@@ -63,7 +63,7 @@ async function loginUser(email, password) {
                 return;
             }
             if (await bcrypt.compare(password, user["PASSWORD"])) {
-                return jwt.sign({userId: user["USERID"]}, envVariables["JWT_SECRET"], {expiresIn: '1h'});
+                return jwt.sign({ userId: user["USERID"] }, envVariables["JWT_SECRET"], { expiresIn: '1h' });
             }
         }
         console.error("Invalid credentials");
@@ -82,8 +82,8 @@ async function googleLogin(token) {
     return await withOracleDB(async (connection) => {
         let result = await connection.execute(
             `SELECT * FROM userprofile WHERE email = :email`,
-            {email},
-            {outFormat: oracledb.OUT_FORMAT_OBJECT}
+            { email },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
 
         if (result.rows.length === 0) {
@@ -91,8 +91,8 @@ async function googleLogin(token) {
             await connection.execute(
                 `INSERT INTO userprofile (userID, name, email)
                  VALUES (:googleId, :name, :email)`,
-                {googleId, name, email},
-                {autoCommit: true}
+                { googleId, name, email },
+                { autoCommit: true }
             );
         } else {
             const user = result.rows[0];
@@ -106,7 +106,7 @@ async function googleLogin(token) {
             }
         }
 
-        return jwt.sign({userId: googleId}, envVariables["JWT_SECRET"], {expiresIn: '1h'});
+        return jwt.sign({ userId: googleId }, envVariables["JWT_SECRET"], { expiresIn: '1h' });
     });
 }
 
@@ -116,8 +116,8 @@ async function getProfile(userID) {
             `SELECT userID, name, email, trailsHiked, experienceLevel, numberOfFriends
              FROM userprofile
              WHERE userID = :userId`,
-            {userId: userID},
-            {outFormat: oracledb.OUT_FORMAT_OBJECT}
+            { userId: userID },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
 
         if (result.rows.length > 0) {
@@ -144,10 +144,28 @@ async function updateProfile(name, trailsHiked, experienceLevel, userID) {
     });
 }
 
+async function getFriends(userid) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT userid, friendid, datefriended
+            FROM friends
+            WHERE userid = :userid`,
+            { userid: userid },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+        if (result.rows.length > 0) {
+            return result.rows;
+        }
+        console.error("Friends not found");
+    });
+}
+
 export {
     registerUser,
     loginUser,
     googleLogin,
     getProfile,
-    updateProfile
+    updateProfile,
+    getFriends
 }

@@ -67,6 +67,17 @@ router.put('/profile', authenticateToken, async (req, res) => {
     }
 });
 
+// Get user friends
+router.get('/friends', authenticateToken, async (req, res) => {
+    const { userid } = req.user;
+    const friendsResult = await authService.getFriends(userid);
+    if (friendsResult) {
+    res.json({ success: true, friends: friendsResult });
+    } else {
+    res.status(500).json({ success: false, error: 'Failed to GET Friends' })
+    }
+    });
+
 router.get('/verify-token', authenticateToken, (req, res) => {
     const { userId } = req.user;
     res.json({ valid: true, userId: userId });
