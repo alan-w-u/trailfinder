@@ -137,8 +137,6 @@ CREATE TABLE ugc (
     dateposted      DATE,
     FOREIGN KEY (userid) REFERENCES userprofile
         ON DELETE CASCADE,
-    FOREIGN KEY (locationname, latitude, longitude) REFERENCES Location
-        ON DELETE CASCADE,
     FOREIGN KEY (locationname, latitude, longitude, trailname) REFERENCES trail
         ON DELETE CASCADE 
 );
@@ -179,7 +177,7 @@ CREATE TABLE transportationtolocation (
     locationname    VARCHAR(50),
     latitude        Decimal(8, 6)   NOT NULL,
     longitude       Decimal(9, 6)   NOT NULL,
-    duration        INTEGER,
+    duration        INTERVAL DAY TO SECOND,
     tripcost        FLOAT,
     PRIMARY KEY (transportid, locationname, latitude, longitude),
     FOREIGN KEY (transportid) REFERENCES transportation
@@ -197,11 +195,9 @@ CREATE TABLE userhikestrail (
     longitude       Decimal(9, 6)   NOT NULL,
     trailname       VARCHAR(50),
     datehiked       DATE,
-    timetocomplete  INTEGER,
-    PRIMARY KEY (userid, locationname, latitude, longitude, trailname),
+    timetocomplete  INTERVAL DAY TO SECOND,
+    PRIMARY KEY (userid, locationname, latitude, longitude, trailname, datehiked),
     FOREIGN KEY (userid) REFERENCES userprofile
-        ON DELETE CASCADE,
-    FOREIGN KEY (locationname, latitude, longitude) REFERENCES Location
         ON DELETE CASCADE,
     FOREIGN KEY (locationname, latitude, longitude, trailname) REFERENCES trail
         ON DELETE CASCADE
@@ -213,7 +209,7 @@ CREATE TABLE retailerfeaturesgear (
     retailerid      INTEGER,
     gearname        VARCHAR(50),
     productname     VARCHAR(50),
-    productwebsite  VARCHAR(100), 
+    productwebsite  VARCHAR(150),
     PRIMARY KEY (retailerid, gearname),
     FOREIGN KEY (retailerid) REFERENCES retailer2
         ON DELETE CASCADE,
@@ -301,7 +297,7 @@ INSERT ALL
     INTO trail (locationName, latitude, longitude, trailName, difficulty, timetocomplete, description, hazards) VALUES
     ('Yosemite National Park', 37.865100, -119.538300, 'Half Dome Trail', 5, INTERVAL '10:00:00' HOUR TO SECOND, 'Challenging hike with stunning views of Yosemite Valley', 'Steep cliffs, wildlife')
     INTO trail (locationName, latitude, longitude, trailName, difficulty, timetocomplete, description, hazards) VALUES
-    ('Rocky Mountain National Park', 40.342800, -105.683600, 'Longs Peak Trail', 5, INTERVAL '12:00:00' HOUR TO SECOND, 'Difficult ascent to one of Colorados famous 14ers', 'Altitude sickness, lightning')
+    ('Rocky Mountain National Park', 40.342800, -105.683600, 'Longs Peak Trail', 5, INTERVAL '12:00:00' HOUR TO SECOND, 'Difficult ascent to one of Colorado’s famous 14ers', 'Altitude sickness, lightning')
     INTO trail (locationName, latitude, longitude, trailName, difficulty, timetocomplete, description, hazards) VALUES
     ('Grand Canyon National Park', 36.054400, -112.140100, 'Bright Angel Trail', 4, INTERVAL '08:00:00' HOUR TO SECOND, 'Popular rim-to-river trail with rest houses along the way', 'Heat exhaustion, steep drop-offs')
     INTO trail (locationName, latitude, longitude, trailName, difficulty, timetocomplete, description, hazards) VALUES
@@ -348,6 +344,98 @@ INSERT ALL
     INTO preview2 (locationName, latitude, longitude, trailname, previewid) VALUES
     ('Glacier National Park', 48.759600, -113.787000, 'Highline Trail', 5)
 SELECT * FROM DUAL;
+
+INSERT ALL
+    INTO ugc (ugcid, userid, locationname, latitude, longitude, trailname, dateposted) VALUES
+    (1, 1, 'Yosemite National Park', 37.865100, -119.538300, 'Half Dome Trail', DATE '2023-07-15')
+    INTO ugc (ugcid, userid, locationname, latitude, longitude, trailname, dateposted) VALUES
+    (2, 2, 'Rocky Mountain National Park', 40.342800, -105.683600, 'Longs Peak Trail', DATE '2023-08-02')
+    INTO ugc (ugcid, userid, locationname, latitude, longitude, trailname, dateposted) VALUES
+    (3, 3, 'Grand Canyon National Park', 36.054400, -112.140100, 'Bright Angel Trail', DATE '2023-06-20')
+    INTO ugc (ugcid, userid, locationname, latitude, longitude, trailname, dateposted) VALUES
+    (4, 4, 'Yellowstone National Park', 44.428000, -110.588500, 'Lamar Valley Trail', DATE '2023-09-10')
+    INTO ugc (ugcid, userid, locationname, latitude, longitude, trailname, dateposted) VALUES
+    (5, 5, 'Glacier National Park', 48.759600, -113.787000, 'Highline Trail', DATE '2023-07-30')
+select * FROM DUAL;
+
+INSERT ALL
+    INTO review (ugcid, rating, description) VALUES
+    (1, 5, 'Challenging but rewarding hike with unforgettable views!')
+    INTO review (ugcid, rating, description) VALUES
+    (2, 4, 'Tough climb, but the sense of accomplishment was worth it.')
+    INTO review (ugcid, rating, description) VALUES
+    (3, 5, 'Beautiful trail with plenty of shade and rest areas.')
+    INTO review (ugcid, rating, description) VALUES
+    (4, 5, 'Amazing wildlife viewing! Saw several bison and even a wolf pack.')
+    INTO review (ugcid, rating, description) VALUES
+    (5, 4, 'Stunning vistas, but some parts of the trail were a bit nerve-wracking.')
+SELECT * FROM DUAL;
+
+INSERT ALL
+    INTO photo (ugcid, image) VALUES
+    (1, EMPTY_BLOB())
+    INTO photo (ugcid, image) VALUES
+    (2, EMPTY_BLOB())
+    INTO photo (ugcid, image) VALUES
+    (3, EMPTY_BLOB())
+    INTO photo (ugcid, image) VALUES
+    (4, EMPTY_BLOB())
+    INTO photo (ugcid, image) VALUES
+    (5, EMPTY_BLOB())
+SELECT * FROM DUAL;
+
+INSERT ALL
+    INTO friends (userid, friendid) VALUES
+    (1, 2)
+    INTO friends (userid, friendid) VALUES
+    (1, 3)
+    INTO friends (userid, friendid) VALUES
+    (2, 1)
+    INTO friends (userid, friendid) VALUES
+    (3, 4)
+    INTO friends (userid, friendid) VALUES
+    (4, 5)
+SELECT * FROM DUAL;
+
+INSERT ALL
+    INTO transportationtolocation (transportid, locationname, latitude, longitude, duration, tripcost) VALUES
+    (1, 'Yosemite National Park', 37.865100, -119.538300, INTERVAL '04:00:00' HOUR TO SECOND, 50.00)
+    INTO transportationtolocation (transportid, locationname, latitude, longitude, duration, tripcost) VALUES
+    (2, 'Rocky Mountain National Park', 40.342800, -105.683600, INTERVAL '01:30:00' HOUR TO SECOND, 15.00)
+    INTO transportationtolocation (transportid, locationname, latitude, longitude, duration, tripcost) VALUES
+    (3, 'Grand Canyon National Park', 36.054400, -112.140100, INTERVAL '03:00:00' HOUR TO SECOND, 30.00)
+    INTO transportationtolocation (transportid, locationname, latitude, longitude, duration, tripcost) VALUES
+    (4, 'Yellowstone National Park', 44.428000, -110.588500, INTERVAL '02:00:00' HOUR TO SECOND, 0.00)
+    INTO transportationtolocation (transportid, locationname, latitude, longitude, duration, tripcost) VALUES
+    (5, 'Glacier National Park', 48.759600, -113.787000, INTERVAL '00:45:00' HOUR TO SECOND, 20.00)
+SELECT * FROM DUAL;
+
+INSERT ALL
+    INTO userhikestrail (userid, locationname, latitude, longitude, trailname, datehiked, timetocomplete) VALUES
+    (1, 'Yosemite National Park', 37.865100, -119.538300, 'Half Dome Trail', DATE '2023-07-15', INTERVAL '11:30:00' HOUR TO SECOND)
+    INTO userhikestrail (userid, locationname, latitude, longitude, trailname, datehiked, timetocomplete) VALUES
+    (2, 'Rocky Mountain National Park', 40.342800, -105.683600, 'Longs Peak Trail', DATE '2023-08-02',INTERVAL '13:45:00' HOUR TO SECOND)
+    INTO userhikestrail (userid, locationname, latitude, longitude, trailname, datehiked, timetocomplete) VALUES
+    (3, 'Grand Canyon National Park', 36.054400, -112.140100, 'Bright Angel Trail', DATE '2023-06-20', INTERVAL '07:15:00' HOUR TO SECOND)
+    INTO userhikestrail (userid, locationname, latitude, longitude, trailname, datehiked, timetocomplete) VALUES
+    (4, 'Yellowstone National Park', 44.428000, -110.588500, 'Lamar Valley Trail', DATE '2023-09-10', INTERVAL '02:50:00' HOUR TO SECOND)
+    INTO userhikestrail (userid, locationname, latitude, longitude, trailname, datehiked, timetocomplete) VALUES
+    (5, 'Glacier National Park', 48.759600, -113.787000, 'Highline Trail', DATE '2023-07-30', INTERVAL '06:20:00' HOUR TO SECOND)
+SELECT * FROM DUAL;
+
+INSERT ALL
+    INTO retailerfeaturesgear (retailerid, gearname, productname, productwebsite) VALUES
+    (1, 'All-Terrain Hikers', 'Vasque M’s Breeze AT GTX', 'https://www.themountainoutfitters.com/ms-breeze-at-gtx.html')
+    INTO retailerfeaturesgear (retailerid, gearname, productname, productwebsite) VALUES
+    (2, 'Mountaineer Pack', 'Waterproof EDC Waist Bag', 'https://www.trailblazergear.com/outdoor-tactical-molle-pouches-compact-waterproof-edc-waist-bag-for-hiking-backpacking-hiking?variantId=548')
+    INTO retailerfeaturesgear (retailerid, gearname, productname, productwebsite) VALUES
+    (3, 'Ultralight Trekkers', 'Sturdy Stainless Steel 7ft Hiking Pole', 'https://www.summitsupply.com/stainless-steel-hiking-pole?size=7')
+    INTO retailerfeaturesgear (retailerid, gearname, productname, productwebsite) VALUES
+    (4, 'Wilderness Shelter','4 person tent with rain cover', 'https://www.campsiteessentials.com/4-person-tent?color=red')
+    INTO retailerfeaturesgear (retailerid, gearname, productname, productwebsite) VALUES
+    (5, 'Apine Dreamer', 'Cotten lined 40C certified sleeping bag', 'www.wildernesscomfort.com/cotten-40c-sleeping-bag')
+SELECT * FROM DUAL;
+
 
 CREATE SEQUENCE user_id_seq
     START WITH 6

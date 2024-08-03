@@ -41,7 +41,7 @@ async function clearDB() {
                 try {
                     await connection.execute(statement);
                 } catch (err) {
-                    console.log('Failed to run statement:', statement);
+                    console.error('Failed to run statement:', statement);
                 }
             }
             return true;
