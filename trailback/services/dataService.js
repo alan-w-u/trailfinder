@@ -22,6 +22,7 @@ async function initializeDB() {
                     console.log('Failed to run statement:', statement);
                 }
             }
+            console.log("Database.sql successfully initialized. ");
             return true;
         }).catch(() => {
             return false;

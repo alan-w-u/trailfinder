@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
-import {useAuth} from "./AuthContext.jsx";
-import {useGoogleLogin} from "@react-oauth/google";
-import {useNavigate} from "react-router-dom";
-import './Auth.css'
+import React, { useState } from 'react';
+import { useAuth } from "./AuthContext.jsx";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
+import './Auth.css';
 
-// Define a functional component for the Navbar
-const Login = () => {
+const Login = ({ setErrorMessage, setSuccessMessage }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -23,15 +22,19 @@ const Login = () => {
             const data = await response.json();
             if (response.ok) {
                 login(data.token);
+                setSuccessMessage('Login successful!');
+                setErrorMessage('');
                 navigate('/home');
             } else {
-                alert(data.error);
+                setErrorMessage(data.error);
+                setSuccessMessage('');
             }
         } catch (error) {
             console.error('Error:', error);
+            setErrorMessage('An error occurred. Please try again.');
+            setSuccessMessage('');
         }
     };
-
 
     const googleLogin = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
@@ -44,21 +47,28 @@ const Login = () => {
                 const data = await response.json();
                 if (response.ok) {
                     login(data.token);
+                    setSuccessMessage('Google login successful!');
+                    setErrorMessage('');
                     navigate('/home');
                 } else {
-                    alert(data.error);
+                    setErrorMessage(data.error);
+                    setSuccessMessage('');
                 }
             } catch (error) {
                 console.error('Error:', error);
+                setErrorMessage('An error occurred. Please try again.');
+                setSuccessMessage('');
             }
         },
         onError: () => {
             console.error('Google Login Failed');
+            setErrorMessage('Google login failed. Please try again.');
+            setSuccessMessage('');
         },
     });
 
     const toggleShowPassword = () => {
-        setShowPassword(!showPassword)
+        setShowPassword(!showPassword);
     };
 
     return (
@@ -86,7 +96,6 @@ const Login = () => {
             <button onClick={() => googleLogin()} className="google-login-button">
                 Continue with Google
             </button>
-
         </>
     );
 };

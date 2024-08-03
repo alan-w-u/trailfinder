@@ -57,8 +57,8 @@ router.get('/profile', authenticateToken, async (req, res) => {
 
 // Update user profile
 router.put('/profile', authenticateToken, async (req, res) => {
-    const { name, trailsHiked, experienceLevel, userID } = req.body;
-    const updateResult = await authService.updateProfile(name, trailsHiked, experienceLevel, userID);
+    const { name, trailsHiked, experienceLevel } = req.body;
+    const updateResult = await authService.updateProfile(name, trailsHiked, experienceLevel, req.user["userId"]);
     if (updateResult) {
         console.log('User profile PUT update success - 200');
         res.json({success: true});
