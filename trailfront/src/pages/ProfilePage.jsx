@@ -113,8 +113,8 @@ const ProfilePage = () => {
                         <label>Experience Level:</label>
                         <input type="text" name="experienceLevel" value={updatedProfile.experienceLevel} onChange={handleChange} />
                     </div>
-                    <button type="submit">Save</button>
-                    <button type="button" onClick={handleEditToggle}>Cancel</button>
+                    <button className="positive" type="submit">Save</button>
+                    <button className="negative" type="button" onClick={handleEditToggle}>Cancel</button>
                 </form>
             ) : (
                 <div className="profile">
@@ -123,15 +123,12 @@ const ProfilePage = () => {
                     <p>Trails Hiked: <b>{profile.TRAILSHIKED}</b></p>
                     <p>Experience Level: <b>{profile.EXPERIENCELEVEL}</b></p>
                     <p>Number of Friends: <b>{profile.NUMBEROFFRIENDS}</b></p>
-
-                    <button onClick={handleEditToggle}>Edit</button>
-                    <button onClick={handleLogout}>Logout</button>
+                    <button className="positive" onClick={handleEditToggle}>Edit</button>
+                    <button className="negative" onClick={handleLogout}>Logout</button>
                 </div>
-                )}
-</div>
-)
-;
+            )}
+        </div>
+    );
 }
-;
 
 export default ProfilePage;
