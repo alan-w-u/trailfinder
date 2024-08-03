@@ -90,7 +90,6 @@ router.get('/count', async (req, res) => {
     }
 });
 
-<<<<<<< HEAD
 // Log in
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -127,7 +126,7 @@ router.get('/selectEquipment', async (req, res) => {
     }
 });
 
-//excluded password and profilepicture
+//project trail aatributes
 router.get('/projectTrailAttributes', async (req, res) => {
     const {projectionString} = req.body; 
 
@@ -139,6 +138,4 @@ router.get('/projectTrailAttributes', async (req, res) => {
     }
 })
 
-=======
->>>>>>> fd92c4a51494595abf77702bc17d1f655560f601
 export default router;
