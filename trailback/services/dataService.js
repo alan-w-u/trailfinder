@@ -110,7 +110,7 @@ async function countDB(relation) {
     });
 }
 
-// select something from userprofiles
+// select something from equipment to see what people are bringing
 async function selectionEquipment(whereClause) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(`SELECT * FROM EQUIPMENT WHERE ${whereClause}`);
@@ -120,6 +120,18 @@ async function selectionEquipment(whereClause) {
     });
 }
 
+//project attributes from trail
+async function projectTrailAttributes(attributes) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`SELECT ${attributes} FROM TRAIL`);
+        return result.rows;
+    }).catch(() => {
+        return -1;
+    })
+}
+
+
+
 export {
     testOracleConnection,
     initializeDB,
@@ -128,5 +140,6 @@ export {
     insertDB,
     deleteDB,
     countDB, 
-    selectionEquipment
+    selectionEquipment,
+    projectTrailAttributes
 };
