@@ -45,7 +45,6 @@ router.post('/google-login', async (req, res) => {
 // Get user profile
 router.get('/profile', authenticateToken, async (req, res) => {
     const { userId } = req.user;
-
     const profileResult = await authService.getProfile(userId);
     if (profileResult) {
         res.json({ success: true, profile: profileResult });
@@ -57,12 +56,21 @@ router.get('/profile', authenticateToken, async (req, res) => {
 // Update user profile
 router.put('/profile', authenticateToken, async (req, res) => {
     const { name, trailsHiked, experienceLevel, userID } = req.body;
-
     const updateResult = await authService.updateProfile(name, trailsHiked, experienceLevel, userID);
     if (updateResult) {
         res.json({success: true});
     } else {
         res.status(500).json({ success:false, error: 'Failed to Update Profile'} )
+    }
+});
+
+router.get('/verify-token', authenticateToken, (req, res) => {
+    const { userId } = req.user;
+
+    try {
+        res.json({ valid: true, userId: userId });
+    } catch (error) {
+        res.status(401).json({ error: 'Invalid token' });
     }
 });
 

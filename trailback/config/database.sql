@@ -38,7 +38,7 @@ CREATE TABLE equipment (
     amount          INTEGER,
     weight          FLOAT,
     FOREIGN KEY (userid) REFERENCES userprofile
-        ON DELETE CASCADE
+       ON DELETE CASCADE
 );
 
 grant select on equipment to public;
@@ -49,14 +49,14 @@ CREATE TABLE transportation (
     transportcost   FLOAT
 );
 
-grant select on transportation to public; 
+grant select on transportation to public;
 
 CREATE TABLE retailer1 (
     retailername VARCHAR2(50)   PRIMARY KEY,
     retailerwebsite    VARCHAR2(100)
 );
 
-grant select on retailer1 to public; 
+grant select on retailer1 to public;
 
 CREATE TABLE retailer2 (
     retailerid      INTEGER         PRIMARY KEY,
@@ -64,22 +64,22 @@ CREATE TABLE retailer2 (
     FOREIGN KEY (retailername) REFERENCES retailer1
 );
 
-grant select on retailer2 to public; 
+grant select on retailer2 to public;
 
 CREATE TABLE location (
     locationname    VARCHAR(50),
-    latitude        DECIMAL(8, 6),
-    longitude       DECIMAL(9, 6),
+    latitude        Decimal(8, 6),
+    longitude       Decimal(9, 6),
     weather         VARCHAR(30),
     PRIMARY KEY (locationname, latitude, longitude)
 );
 
-grant select on location to public; 
+grant select on location to public;
 
 CREATE TABLE trail (
     locationname    VARCHAR(50)     NOT NULL,
-    latitude        DECIMAL(8, 6)   NOT NULL,
-    longitude       DECIMAL(9, 6)   NOT NULL,
+    latitude        Decimal(8, 6)   NOT NULL,
+    longitude       Decimal(9, 6)   NOT NULL,
     trailname       VARCHAR(50),
     timetocomplete  INTERVAL DAY TO SECOND,
     description     VARCHAR(3000),
@@ -97,11 +97,11 @@ CREATE TABLE gear (
     gearname        VARCHAR(50)     PRIMARY KEY,
     geartype        VARCHAR(50),
     locationname    VARCHAR(50),
-    latitude        DECIMAL(8, 6)   NOT NULL,
-    longitude       DECIMAL(9, 6)   NOT NULL,
+    latitude        Decimal(8, 6)   NOT NULL,
+    longitude       Decimal(9, 6)   NOT NULL,
     trailname       VARCHAR(50),
     FOREIGN KEY (locationname, latitude, longitude, trailname) REFERENCES trail
-        ON DELETE SET NULL
+      ON DELETE SET NULL
 );
 
 grant select on gear to public;
@@ -111,12 +111,12 @@ CREATE TABLE preview1 (
     image           BLOB
 );
 
-grant select on preview1 to public; 
+grant select on preview1 to public;
 
 CREATE TABLE preview2 (
     locationname    VARCHAR(50)     NOT NULL,
-    latitude        DECIMAL(8, 6)   NOT NULL,
-    longitude       DECIMAL(9, 6)   NOT NULL,
+    latitude        Decimal(8, 6)   NOT NULL,
+    longitude       Decimal(9, 6)   NOT NULL,
     trailname       VARCHAR(50)     NOT NULL,
     previewid       INTEGER,
     PRIMARY KEY (locationname, latitude, longitude, trailname, previewid),
@@ -125,7 +125,7 @@ CREATE TABLE preview2 (
     FOREIGN KEY (previewid) REFERENCES preview1
 );
 
-grant select on preview2 to public; 
+grant select on preview2 to public;
 
 CREATE TABLE ugc (
     ugcid           INTEGER         PRIMARY KEY,
@@ -141,7 +141,7 @@ CREATE TABLE ugc (
         ON DELETE CASCADE 
 );
 
-grant select on ugc to public; 
+grant select on ugc to public;
 
 CREATE TABLE review (
     ugcid           INTEGER         PRIMARY KEY,
@@ -150,7 +150,7 @@ CREATE TABLE review (
         ON DELETE CASCADE
 );
 
-grant select on review to public; 
+grant select on review to public;
 
 CREATE TABLE photo (
     ugcid           INTEGER         PRIMARY KEY,
@@ -159,7 +159,7 @@ CREATE TABLE photo (
         ON DELETE CASCADE
 );
 
-grant select on photo to public; 
+grant select on photo to public;
 
 CREATE TABLE friends (
     userid          INTEGER,
@@ -170,7 +170,7 @@ CREATE TABLE friends (
         ON DELETE CASCADE
 );
 
-grant select on friends to public; 
+grant select on friends to public;
 
 CREATE TABLE transportationtolocation (
     transportid     INTEGER,
@@ -181,9 +181,9 @@ CREATE TABLE transportationtolocation (
     tripcost        FLOAT,
     PRIMARY KEY (transportid, locationname, latitude, longitude),
     FOREIGN KEY (transportid) REFERENCES transportation
-        ON DELETE CASCADE,
+      ON DELETE CASCADE,
     FOREIGN KEY (locationname, latitude, longitude) REFERENCES Location
-        ON DELETE CASCADE
+      ON DELETE CASCADE
 );
 
 grant select on transportationtolocation to public;
@@ -191,8 +191,8 @@ grant select on transportationtolocation to public;
 CREATE TABLE userhikestrail (
     userid          INTEGER,
     locationname    VARCHAR(50),
-    latitude        DECIMAL(8, 6)   NOT NULL,
-    longitude       DECIMAL(9, 6)   NOT NULL,
+    latitude        Decimal(8, 6)   NOT NULL,
+    longitude       Decimal(9, 6)   NOT NULL,
     trailname       VARCHAR(50),
     datehiked       DATE,
     timetocomplete  INTERVAL DAY TO SECOND,
@@ -442,7 +442,5 @@ CREATE SEQUENCE user_id_seq
     INCREMENT BY 1
     NOCACHE
     NOCYCLE;
-
-
 
 COMMIT;
