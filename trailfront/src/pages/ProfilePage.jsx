@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../components/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
+import '../components/Profile.css'
 
 const ProfilePage = () => {
     const [profile, setProfile] = useState(null);
@@ -42,13 +43,15 @@ const ProfilePage = () => {
     if (!profile) return <div>Loading...</div>;
 
     return (
-        <div>
+        <div className="profile">
             <h1>Profile</h1>
-            <p>Name: {profile["NAME"]}</p>
-            <p>Email: {profile["EMAIL"]}</p>
-            <p>Trails Hiked: {profile["TRAILSHIKED"]}</p>
-            <p>Experience Level: {profile["EXPERIENCELEVEL"]}</p>
-            <p>Number of Friends: {profile["NUMBEROFFRIENDS"]}</p>
+            <div className="profile-info">
+                <p>Name: <b>{profile["NAME"]}</b></p>
+                <p>Email: <b>{profile["EMAIL"]}</b></p>
+                <p>Trails Hiked: <b>{profile["TRAILSHIKED"]}</b></p>
+                <p>Experience Level: <b>{profile["EXPERIENCELEVEL"]}</b></p>
+                <p>Number of Friends: <b>{profile["NUMBEROFFRIENDS"]}</b></p>
+            </div>
             <button onClick={handleLogout}>Logout</button>
         </div>
     );

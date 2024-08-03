@@ -1,4 +1,4 @@
-.auth-container {
+.auth {
     display: flex;
     flex-direction: column;
     width: 20rem;
@@ -10,13 +10,13 @@
     align-items: center;
 }
 
-.auth-container h1 {
+.auth h1 {
     margin: 1.5rem 0;
     font-size: 2.5rem;
     letter-spacing: -0.1rem;
 }
 
-.auth-container form {
+.auth form {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -24,7 +24,7 @@
     align-items: center;
 }
 
-.auth-container button {
+.auth button {
     width: 85%;
     height: auto;
     padding: 0.5rem;
@@ -41,17 +41,17 @@
     transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.auth-container button:hover {
+.auth button:hover {
     border-color: var(--asset-hover);
     background-color: var(--asset-hover);
 }
 
-.auth-container button:active {
+.auth button:active {
     border-color: var(--asset-active);
     background-color: var(--asset-active);
 }
 
-.input-container {
+.auth-input {
     display: flex;
     flex-direction: column;
     position: relative;
@@ -62,7 +62,7 @@
     align-items: center;
 }
 
-.input-container input {
+.auth-input input {
     all: unset;
     width: 75%;
     height: auto;
@@ -72,7 +72,7 @@
     transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.input-container label {
+.auth-input label {
     position: absolute;
     top: 1rem;
     left: 2.5rem;
@@ -80,11 +80,11 @@
     transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.input-container input:focus {
+.auth-input input:focus {
     border-color: var(--asset-active);
 }
 
-.input-container input:is(:focus, :not(:placeholder-shown))~label {
+.auth-input input:is(:focus, :not(:placeholder-shown))~label {
     padding-inline: 0.5rem;
     background-color: var(--asset-background);
     transform: translateY(-120%) scale(0.75);

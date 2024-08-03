@@ -4,8 +4,10 @@ import TrailWidget from "../components/TrailWidget.jsx";
 function Home() {
     return (
         <div className="home-page">
-            <h2>Welcome to TrailFinder</h2>
-            <p>Find and explore amazing trails near you!</p>
+            <div className="welcome">
+                <h1>Welcome to TrailFinder</h1>
+                <p>Discover and explore amazing trails near you!</p>
+            </div>
             <div className="trailwidgets">
                 <TrailWidget trailname="Mountain Trail" difficulty="Medium" preview="./trailfinder.png" />
                 <TrailWidget trailname="Lakeside Path" difficulty="Easy" preview="./trailfinder.png" />

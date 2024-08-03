@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-
+import './Auth.css'
 
 // Define a functional component for the Navbar
 const SignUp = ({ setAuthMode }) => {
@@ -36,17 +36,17 @@ const SignUp = ({ setAuthMode }) => {
         <>
             <h1>Sign Up</h1>
             <form onSubmit={handleSignUp}>
-                <div className="input-container">
+                <div className="auth-input">
                     <input type="text" name="name" required autoComplete="off" placeholder=""
                            onChange={(e) => setName(e.target.value)}/>
                     <label htmlFor="name">Full Name</label>
                 </div>
-                <div className="input-container">
+                <div className="auth-input">
                     <input type="email" name="email" required autoComplete="off" placeholder=""
                            onChange={(e) => setEmail(e.target.value)}/>
                     <label htmlFor="email">Email</label>
                 </div>
-                <div className="input-container">
+                <div className="auth-input">
                     <input type={showPassword ? "text" : "password"} name="password" required
                            autoComplete="off" placeholder="" onChange={(e) => setPassword(e.target.value)}/>
                     <label htmlFor="password">Password</label>

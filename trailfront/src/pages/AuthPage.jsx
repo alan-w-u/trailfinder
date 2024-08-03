@@ -13,7 +13,7 @@ function LoginPage() {
 
     return (
         <>
-            <div className="auth-container">
+            <div className="auth">
                 {authMode === "Log In" && <Login/>}
                 {authMode === "Sign Up" && <SignUp setAuthMode={setAuthMode}/>}
                 <div className="auth-mode">

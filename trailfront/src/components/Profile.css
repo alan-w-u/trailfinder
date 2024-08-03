@@ -1,0 +1,51 @@
+.profile {
+    display: flex;
+    flex-direction: column;
+    width: 25rem;
+    height: 30rem;
+    padding: 1rem 0;
+    margin: auto;
+    border-radius: 1rem;
+    background-color: var(--asset-background);
+    align-items: center;
+}
+
+.profile-info {
+    width: 80%;
+    height: auto;
+}
+
+.profile-info b {
+    margin: 1rem 0;
+}
+
+.profile-info span {
+    font-weight: normal;
+}
+
+.profile button {
+    width: 85%;
+    height: auto;
+    padding: 0.5rem;
+    margin: auto 0 1rem 0;
+    border-style: solid;
+    border-radius: 0.5rem;
+    border-color: var(--inverse-asset-border);
+    background-color: var(--inverse-asset-border);
+    font-family: inherit;
+    color: var(--inverse-text);
+    font-size: 1rem;
+    font-weight: bold;
+    text-shadow: 0 0 2rem var(--text);
+    transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile button:hover {
+    border-color: var(--inverse-asset-hover);
+    background-color: var(--inverse-asset-hover);
+}
+
+.profile button:active {
+    border-color: var(--inverse-asset-active);
+    background-color: var(--inverse-asset-active);
+}

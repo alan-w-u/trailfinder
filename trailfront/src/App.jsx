@@ -1,16 +1,11 @@
 import { useState, useEffect } from 'react'
-import Auth from './components/Auth.jsx'
-import TrailWidget from './components/TrailWidget.jsx'
-import './App.css'
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './components/AuthContext.jsx';
-
-import LoginPage from './pages/LoginPage.jsx'
+import AuthPage from './pages/AuthPage.jsx'
 import ProfilePage from "./pages/ProfilePage.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import Navbar from "./components/Navbar.jsx";
-
-
+import './App.css'
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
     const { isAuthenticated, isLoading } = useAuth();
@@ -29,7 +24,7 @@ const LoginRoute = () => {
         return <div>Loading...</div>;
     }
 
-    return isAuthenticated ? <Navigate to="/profile" replace /> : <LoginPage />;
+    return isAuthenticated ? <Navigate to="/profile" replace /> : <AuthPage />;
 };
 
 function AppContent() {

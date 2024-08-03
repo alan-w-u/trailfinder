@@ -9,21 +9,18 @@ const Navbar = ({ status }) => {
         navigate('/home');
     };
 
+    const handleProfileClick = () => {
+        navigate('/profile');
+    };
+
     return (
         <header>
-            <div className="logo">
-                <img
-                    src="trailfinder.png"
-                    alt="TrailFinder"
-                    draggable="false"
-                    style={{ cursor: 'pointer' }}
-                    onClick={handleLogoClick}
-                />
-                <h1 onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
-                    TrailFinder
-                </h1>
+            <div className="logo nav-button" onClick={handleLogoClick}>
+                <img src="trailfinder.png" alt="TrailFinder" draggable="false" />
+                <h1>TrailFinder</h1>
             </div>
-            <span>{status}</span>
+            <span className="status">{status}</span>
+            <span className="profile-button nav-button" onClick={handleProfileClick}>Profile</span>
         </header>
     );
 };

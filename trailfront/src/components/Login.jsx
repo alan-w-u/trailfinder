@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {useAuth} from "./AuthContext.jsx";
 import {useGoogleLogin} from "@react-oauth/google";
 import {useNavigate} from "react-router-dom";
+import './Auth.css'
 
 // Define a functional component for the Navbar
 const Login = () => {
@@ -22,7 +23,7 @@ const Login = () => {
             const data = await response.json();
             if (response.ok) {
                 login(data.token);
-                navigate('/profile');
+                navigate('/home');
             } else {
                 alert(data.error);
             }
@@ -64,12 +65,12 @@ const Login = () => {
         <>
             <h1>Log In</h1>
             <form onSubmit={handleLogin}>
-                <div className="input-container">
+                <div className="auth-input">
                     <input type="email" name="email" required autoComplete="off" placeholder=""
                            onChange={(e) => setEmail(e.target.value)}/>
                     <label htmlFor="email">Email</label>
                 </div>
-                <div className="input-container">
+                <div className="auth-input">
                     <input type={showPassword ? "text" : "password"} name="password" required
                            autoComplete="off" placeholder="" onChange={(e) => setPassword(e.target.value)}/>
                     <label htmlFor="password">Password</label>
