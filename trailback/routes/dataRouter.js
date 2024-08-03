@@ -115,4 +115,14 @@ router.post('/signup', async (req, res) => {
     }
 });
 
+router.get('/countusers', async (req, res) => {
+    const {whereClause} = req.body;
+    const result = await dataService.selectionUserProfile(whereClause);
+    if (result) {
+        res.json({ success: true, data: result });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to count users' });
+    }
+});
+
 export default router;
