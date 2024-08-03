@@ -90,40 +90,4 @@ router.get('/count', async (req, res) => {
     }
 });
 
-// Log in
-router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    const user = await dataService.fetchDB('userprofile6', 'UserID', [`Email = '${email}'`, `Password = '${password}'`]);
-    if (user.length > 0) {
-        res.json({ success: true, userID: user[0].USERID });
-    } else {
-        res.status(401).json({ success: false, error: 'Invalid credentials' });
-    }
-});
-
-// Sign up
-router.post('/signup', async (req, res) => {
-    const { name, email, password } = req.body;
-    const result1 = await dataService.insertDB('userprofile5', [name, email, password, 0]);
-
-    const userID = Math.floor(Math.random() * 1000); // Gerate random UserID (temporary solution)
-    const result2 = await dataService.insertDB('userprofile6', [userID, name, email, password]);
-    if (result1 && result2) {
-        res.json({ success: true, userID });
-    } else {
-        res.status(500).json({ success: false, error: 'Invalid credentials' });
-    }
-});
-
-router.get('/selectEquipment', async (req, res) => {
-    const {whereClause} = req.body;
-    const result = await dataService.selectionEquipment(whereClause);
-    console.log(result);
-    if (result === -1) {
-        res.status(500).json({ success: false, error: 'whereClause Invalid or No Rows Exist' });
-    } else {
-        res.json({ success: true, data: result });
-    }
-});
-
 export default router;
