@@ -68,8 +68,8 @@ grant select on retailer2 to public;
 
 CREATE TABLE location (
     locationname    VARCHAR(50),
-    latitude        Decimal(8, 6),
-    longitude       Decimal(9, 6),
+    latitude        DECIMAL(8, 6),
+    longitude       DECIMAL(9, 6),
     weather         VARCHAR(30),
     PRIMARY KEY (locationname, latitude, longitude)
 );
@@ -78,8 +78,8 @@ grant select on location to public;
 
 CREATE TABLE trail (
     locationname    VARCHAR(50)     NOT NULL,
-    latitude        Decimal(8, 6)   NOT NULL,
-    longitude       Decimal(9, 6)   NOT NULL,
+    latitude        DECIMAL(8, 6)   NOT NULL,
+    longitude       DECIMAL(9, 6)   NOT NULL,
     trailname       VARCHAR(50),
     timetocomplete  INTERVAL DAY TO SECOND,
     description     VARCHAR(3000),
@@ -97,8 +97,8 @@ CREATE TABLE gear (
     gearname        VARCHAR(50)     PRIMARY KEY,
     geartype        VARCHAR(50),
     locationname    VARCHAR(50),
-    latitude        Decimal(8, 6)   NOT NULL,
-    longitude       Decimal(9, 6)   NOT NULL,
+    latitude        DECIMAL(8, 6)   NOT NULL,
+    longitude       DECIMAL(9, 6)   NOT NULL,
     trailname       VARCHAR(50),
     FOREIGN KEY (locationname, latitude, longitude, trailname) REFERENCES trail
       ON DELETE SET NULL
@@ -115,8 +115,8 @@ grant select on preview1 to public;
 
 CREATE TABLE preview2 (
     locationname    VARCHAR(50)     NOT NULL,
-    latitude        Decimal(8, 6)   NOT NULL,
-    longitude       Decimal(9, 6)   NOT NULL,
+    latitude        DECIMAL(8, 6)   NOT NULL,
+    longitude       DECIMAL(9, 6)   NOT NULL,
     trailname       VARCHAR(50)     NOT NULL,
     previewid       INTEGER,
     PRIMARY KEY (locationname, latitude, longitude, trailname, previewid),
@@ -175,8 +175,8 @@ grant select on friends to public;
 CREATE TABLE transportationtolocation (
     transportid     INTEGER,
     locationname    VARCHAR(50),
-    latitude        Decimal(8, 6)   NOT NULL,
-    longitude       Decimal(9, 6)   NOT NULL,
+    latitude        DECIMAL(8, 6)   NOT NULL,
+    longitude       DECIMAL(9, 6)   NOT NULL,
     duration        INTERVAL DAY TO SECOND,
     tripcost        FLOAT,
     PRIMARY KEY (transportid, locationname, latitude, longitude),
@@ -191,8 +191,8 @@ grant select on transportationtolocation to public;
 CREATE TABLE userhikestrail (
     userid          INTEGER,
     locationname    VARCHAR(50),
-    latitude        Decimal(8, 6)   NOT NULL,
-    longitude       Decimal(9, 6)   NOT NULL,
+    latitude        DECIMAL(8, 6)   NOT NULL,
+    longitude       DECIMAL(9, 6)   NOT NULL,
     trailname       VARCHAR(50),
     datehiked       DATE,
     timetocomplete  INTERVAL DAY TO SECOND,
@@ -221,15 +221,15 @@ grant select on retailerfeaturesgear to public;
 
 
 INSERT ALL
-    INTO userprofile (userid, name, email, password, profilepicture, trailsHiked, experienceLevel, numberoffriends) VALUES
+    INTO userprofile (userid, name, email, password, profilepicture, trailshiked, experienceLevel, numberoffriends) VALUES
     (1, 'John Doe', 'john.doe@email.com', '$2b$10$ymRAycGV5EegDAsSVLyrh.qa6Om2ahTPHRpVsHd7Lzmyz/XLza9MG', EMPTY_BLOB(), 15, 3, 7)
-    INTO userprofile (userid, name, email, password, profilepicture, trailsHiked, experienceLevel, numberoffriends) VALUES
+    INTO userprofile (userid, name, email, password, profilepicture, trailshiked, experienceLevel, numberoffriends) VALUES
     (2, 'Jane Smith', 'jane.smith@email.com', '$2b$10$3Ist2BK.9IdeHLcw1uiA7eabIx7j4H0W/6T3QDZHsu06cN64sijje', EMPTY_BLOB(), 8, 2, 5)
-    INTO userprofile (userid, name, email, password, profilepicture, trailsHiked, experienceLevel, numberoffriends) VALUES
+    INTO userprofile (userid, name, email, password, profilepicture, trailshiked, experienceLevel, numberoffriends) VALUES
     (3, 'Mike Johnson', 'mike.johnson@email.com', '$2b$10$/K9BkOSJB8PI4wj2IpM4HuKsXKwsSIfUeznS56Z4KvYqGi9jtKfMG', EMPTY_BLOB(), 25, 4, 12)
-    INTO userprofile (userid, name, email, password, profilepicture, trailsHiked, experienceLevel, numberoffriends) VALUES
+    INTO userprofile (userid, name, email, password, profilepicture, trailshiked, experienceLevel, numberoffriends) VALUES
     (4, 'Emily Brown', 'emily.brown@email.com', '$2b$10$.42a6Cwng0dU.XnCpQAOousfZtYrgV167Z4.BxJvwVQQx0wPVOegm', EMPTY_BLOB(), 5, 1, 3)
-    INTO userprofile (userid, name, email, password, profilepicture, trailsHiked, experienceLevel, numberoffriends) VALUES
+    INTO userprofile (userid, name, email, password, profilepicture, trailshiked, experienceLevel, numberoffriends) VALUES
     (5, 'David Lee', 'david.lee@email.com', '$2b$10$ZmHZlgWCjOTe69MHLgar/ejkZQIVaorvk2wo10MzkQhvyhPwrmLIq', EMPTY_BLOB(), 20, 3, 9)
 SELECT * FROM DUAL;
 
