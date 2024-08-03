@@ -13,14 +13,28 @@ import Navbar from "./components/Navbar.jsx";
 
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, isLoading } = useAuth();
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
     return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
-function App() {
-    const [userID, setUserID] = useState(null);
-    const [status, setStatus] = useState('');
+const LoginRoute = () => {
+    const { isAuthenticated, isLoading } = useAuth();
 
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    return isAuthenticated ? <Navigate to="/profile" replace /> : <LoginPage />;
+};
+
+function AppContent() {
+    const [status, setStatus] = useState('');
+    const { isLoading } = useAuth();
 
     useEffect(() => {
         async function checkConnection() {
@@ -47,28 +61,40 @@ function App() {
             }
         }
 
-        initializeDB(); // Use this code to initialize the DB on tunnel connection success
+        // initializeDB(); // Use this code to initialize the DB on tunnel connection success
     }, [status]);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
-            <AuthProvider>
-                <Router>
-                    <Navbar status={status} />
-                    <Routes>
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route element={<PrivateRoute />}>
-                            <Route path="/profile" element={<ProfilePage />} />
-                        </Route>
-                        <Route element={<PrivateRoute />}>
-                            <Route path="/home" element={<HomePage />} />
-                        </Route>
-                        <Route path="*" element={<Navigate to="/login" replace />} />
-                    </Routes>
-                </Router>
-            </AuthProvider>
+            <Router>
+                <Navbar status={status} />
+                <Routes>
+                    <Route path="/login" element={<LoginRoute />} />
+                    <Route element={<PrivateRoute />}>
+                        <Route path="/profile" element={<ProfilePage />} />
+                    </Route>
+                    <Route element={<PrivateRoute />}>
+                        <Route path="/home" element={<HomePage />} />
+                    </Route>
+                    <Route path="/" element={<Navigate to="/home" />} />
+                    <Route path="*" element={<Navigate to="/login" replace />} />
+                </Routes>
+            </Router>
         </>
     )
+}
+
+
+function App() {
+    return (
+        <AuthProvider>
+            <AppContent />
+        </AuthProvider>
+    );
 }
 
 export default App

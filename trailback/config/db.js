@@ -1,6 +1,7 @@
 import oracledb from 'oracledb';
 import loadEnvFile from '../utils/envUtil.js';
 import fs from 'fs';
+import {clearDB, initializeDB} from "../services/dataService.js";
 
 const envVariables = loadEnvFile('./.env');
 
@@ -19,6 +20,7 @@ const dbConfig = {
 async function initializeConnectionPool() {
     try {
         await oracledb.createPool(dbConfig);
+        // await initializeDB();
         console.log('Connection pool started');
     } catch (err) {
         console.error('Initialization error: ' + err.message);
