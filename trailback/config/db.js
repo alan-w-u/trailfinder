@@ -20,9 +20,8 @@ const dbConfig = {
 async function initializeConnectionPool() {
     try {
         await oracledb.createPool(dbConfig);
-        // await initializeDB();
         console.log('Connection pool started');
-        await initializeDB();
+        // await initializeDB();
     } catch (err) {
         console.error('Initialization error: ' + err.message);
     }
