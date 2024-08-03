@@ -28,7 +28,7 @@
     width: 85%;
     height: auto;
     padding: 0.5rem;
-    margin: 1rem 0 0 0;
+    margin: 0.75rem 0 0 0;
     border-style: solid;
     border-radius: 0.5rem;
     border-color: var(--asset-border);
@@ -93,6 +93,7 @@
 .show-password {
     display: flex;
     align-items: center;
+    margin: 0.25rem 0 0.75rem 0;
 }
 
 .show-password input[type="checkbox"] {

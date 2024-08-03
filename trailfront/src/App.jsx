@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './components/AuthContext.jsx';
-import AuthPage from './pages/AuthPage.jsx'
+import AuthPage from './pages/AuthPage.jsx';
 import ProfilePage from "./pages/ProfilePage.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import Navbar from "./components/Navbar.jsx";

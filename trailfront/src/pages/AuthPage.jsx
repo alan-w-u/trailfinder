@@ -17,7 +17,7 @@ function LoginPage() {
                 {authMode === "Log In" && <Login/>}
                 {authMode === "Sign Up" && <SignUp setAuthMode={setAuthMode}/>}
                 <div className="auth-mode">
-                    <p>New to TrailFinder?</p>
+                    <p>{authMode === "Log In" ? "New to TrailFinder?" : "Already on TrailFinder?"}</p>
                     <a onClick={toggleAuthMode}>{authMode === "Log In" ? "Sign Up" : "Log In"}</a>
                 </div>
             </div>
