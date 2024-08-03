@@ -7,8 +7,7 @@ DROP TABLE retailer2;
 DROP TABLE retailer1;
 DROP TABLE preview2;
 DROP TABLE preview1;
-DROP TABLE gear2;
-DROP TABLE gear1;
+DROP TABLE gear;
 DROP TABLE review;
 DROP TABLE photo;
 DROP TABLE friends;
@@ -17,3 +16,5 @@ DROP TABLE trail;
 DROP TABLE location;
 DROP TABLE userprofile;
 DROP SEQUENCE user_id_seq;
+
+-- select 'drop table '||table_name||' cascade constraints;' from user_tables;

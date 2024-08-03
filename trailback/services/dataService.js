@@ -34,14 +34,14 @@ async function initializeDB() {
 // Run SQL file to clear tables
 async function clearDB() {
     try {
-        const script = fs.readFileSync('./clear.sql', 'utf-8');
+        const script = fs.readFileSync('./config/clear.sql', 'utf-8');
         const statements = script.split(';').filter(statement => statement.trim());
         return await withOracleDB(async (connection) => {
             for (const statement of statements) {
                 try {
                     await connection.execute(statement);
                 } catch (err) {
-                    console.log('Failed to run statement:', statement);
+                    console.error('Failed to run statement:', statement);
                 }
             }
             return true;
