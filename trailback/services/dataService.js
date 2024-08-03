@@ -111,9 +111,9 @@ async function countDB(relation) {
 }
 
 // select something from userprofiles
-async function selectionUserProfile(whereClause) {
+async function selectionEquipment(whereClause) {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(`SELECT * FROM USERPROFILE WHERE ${whereClause}`);
+        const result = await connection.execute(`SELECT * FROM EQUIPMENT WHERE ${whereClause}`);
         return result.rows[0][0];
     }).catch(() => {
         return -1;
@@ -128,5 +128,5 @@ export {
     insertDB,
     deleteDB,
     countDB, 
-    selectionUserProfile
+    selectionEquipment
 };
