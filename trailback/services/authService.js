@@ -21,7 +21,7 @@ async function registerUser(name, email, password) {
                 const user = result.rows[0];
                 if (user.PASSWORD) {
                     // User already exists with password
-                    return { error: "User already exists" };
+                    return;
                 } else if (password) {
                     // User exists without password, update with new password
                     await connection.execute(

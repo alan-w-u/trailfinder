@@ -385,16 +385,16 @@ INSERT ALL
 SELECT * FROM DUAL;
 
 INSERT ALL
-    INTO friends (userid, friendid) VALUES
-    (1, 2)
-    INTO friends (userid, friendid) VALUES
-    (1, 3)
-    INTO friends (userid, friendid) VALUES
-    (2, 1)
-    INTO friends (userid, friendid) VALUES
-    (3, 4)
-    INTO friends (userid, friendid) VALUES
-    (4, 5)
+    INTO friends (userid, friendid, datefriended) VALUES
+    (1, 2, TO_DATE('15-FEB-2024', 'DD-MON-YYYY'))
+    INTO friends (userid, friendid, datefriended) VALUES
+    (1, 3, TO_DATE('10-MAR-2024', 'DD-MON-YYYY'))
+    INTO friends (userid, friendid, datefriended) VALUES
+    (2, 1, TO_DATE('20-APR-2024', 'DD-MON-YYYY'))
+    INTO friends (userid, friendid, datefriended) VALUES
+    (3, 4, TO_DATE('05-MAY-2024', 'DD-MON-YYYY'))
+    INTO friends (userid, friendid, datefriended) VALUES
+    (4, 5, TO_DATE('25-JUL-2024', 'DD-MON-YYYY'))
 SELECT * FROM DUAL;
 
 INSERT ALL

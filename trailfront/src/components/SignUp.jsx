@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
-import './Auth.css'
+import React, { useState } from 'react';
+import './Auth.css';
 
-// Define a functional component for the Navbar
-const SignUp = ({ setAuthMode }) => {
+const SignUp = ({ setAuthMode, setErrorMessage, setSuccessMessage }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -19,17 +18,22 @@ const SignUp = ({ setAuthMode }) => {
 
             const data = await response.json();
             if (response.ok) {
+                setSuccessMessage('Registration successful! Please log in.');
+                setErrorMessage('');
                 setAuthMode("Log In");
             } else {
-                alert(data.error);
+                setErrorMessage(data.error);
+                setSuccessMessage('');
             }
         } catch (error) {
             console.error('Error:', error);
+            setErrorMessage('An error occurred. Please try again.');
+            setSuccessMessage('');
         }
     }
 
     const toggleShowPassword = () => {
-        setShowPassword(!showPassword)
+        setShowPassword(!showPassword);
     };
 
     return (
