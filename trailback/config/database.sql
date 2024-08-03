@@ -1,21 +1,21 @@
-drop table equipment;
-drop table transportationtolocation;
-drop table retailerfeaturesgear;
-drop table userhikestrail;
-drop table transportation;
-drop table retailer2;
-drop table retailer1;
-drop table preview2;
-drop table preview1;
-drop table gear;
-drop table review;
-drop table photo;
-drop table friends;
-drop table ugc;
-drop table trail;
-drop table location;
-drop table userprofile;
-drop sequence user_id_seq;
+DROP TABLE equipment;
+DROP TABLE transportationtolocation;
+DROP TABLE retailerfeaturesgear;
+DROP TABLE userhikestrail;
+DROP TABLE transportation;
+DROP TABLE retailer2;
+DROP TABLE retailer1;
+DROP TABLE preview2;
+DROP TABLE preview1;
+DROP TABLE gear;
+DROP TABLE review;
+DROP TABLE photo;
+DROP TABLE friends;
+DROP TABLE ugc;
+DROP TABLE trail;
+DROP TABLE location;
+DROP TABLE userprofile;
+DROP SEQUENCE user_id_seq;
 
 
 
@@ -294,15 +294,15 @@ INSERT ALL
 SELECT * FROM DUAL;
 
 INSERT ALL
-    INTO trail (locationName, latitude, longitude, trailName, difficulty, timetocomplete, description, hazards) VALUES
+    INTO trail (locationname, latitude, longitude, trailname, difficulty, timetocomplete, description, hazards) VALUES
     ('Yosemite National Park', 37.865100, -119.538300, 'Half Dome Trail', 5, INTERVAL '10:00:00' HOUR TO SECOND, 'Challenging hike with stunning views of Yosemite Valley', 'Steep cliffs, wildlife')
-    INTO trail (locationName, latitude, longitude, trailName, difficulty, timetocomplete, description, hazards) VALUES
+    INTO trail (locationname, latitude, longitude, trailname, difficulty, timetocomplete, description, hazards) VALUES
     ('Rocky Mountain National Park', 40.342800, -105.683600, 'Longs Peak Trail', 5, INTERVAL '12:00:00' HOUR TO SECOND, 'Difficult ascent to one of Colorado’s famous 14ers', 'Altitude sickness, lightning')
-    INTO trail (locationName, latitude, longitude, trailName, difficulty, timetocomplete, description, hazards) VALUES
+    INTO trail (locationname, latitude, longitude, trailname, difficulty, timetocomplete, description, hazards) VALUES
     ('Grand Canyon National Park', 36.054400, -112.140100, 'Bright Angel Trail', 4, INTERVAL '08:00:00' HOUR TO SECOND, 'Popular rim-to-river trail with rest houses along the way', 'Heat exhaustion, steep drop-offs')
-    INTO trail (locationName, latitude, longitude, trailName, difficulty, timetocomplete, description, hazards) VALUES
+    INTO trail (locationname, latitude, longitude, trailname, difficulty, timetocomplete, description, hazards) VALUES
     ('Yellowstone National Park', 44.428000, -110.588500, 'Lamar Valley Trail', 2, INTERVAL '03:00:00' HOUR TO SECOND, 'Easy trail known for wildlife viewing, especially wolves and bison', 'Wildlife encounters')
-    INTO trail (locationName, latitude, longitude, trailName, difficulty, timetocomplete, description, hazards) VALUES
+    INTO trail (locationname, latitude, longitude, trailname, difficulty, timetocomplete, description, hazards) VALUES
     ('Glacier National Park', 48.759600, -113.787000, 'Highline Trail', 3, INTERVAL '06:00:00' HOUR TO SECOND, 'Scenic trail along the Continental Divide with panoramic views', 'Narrow paths, grizzly bears')
 SELECT * FROM DUAL;
 
@@ -333,15 +333,15 @@ INSERT ALL
 SELECT * FROM DUAL;
 
 INSERT ALL
-    INTO preview2 (locationName, latitude, longitude, trailname, previewid) VALUES
+    INTO preview2 (locationname, latitude, longitude, trailname, previewid) VALUES
     ('Yosemite National Park', 37.865100, -119.538300, 'Half Dome Trail', 1)
-    INTO preview2 (locationName, latitude, longitude, trailname, previewid) VALUES
+    INTO preview2 (locationname, latitude, longitude, trailname, previewid) VALUES
     ('Rocky Mountain National Park', 40.342800, -105.683600, 'Longs Peak Trail', 2)
-    INTO preview2 (locationName, latitude, longitude, trailname, previewid) VALUES
+    INTO preview2 (locationname, latitude, longitude, trailname, previewid) VALUES
     ('Grand Canyon National Park', 36.054400, -112.140100, 'Bright Angel Trail', 3)
-    INTO preview2 (locationName, latitude, longitude, trailname, previewid) VALUES
+    INTO preview2 (locationname, latitude, longitude, trailname, previewid) VALUES
     ('Yellowstone National Park', 44.428000, -110.588500, 'Lamar Valley Trail', 4)
-    INTO preview2 (locationName, latitude, longitude, trailname, previewid) VALUES
+    INTO preview2 (locationname, latitude, longitude, trailname, previewid) VALUES
     ('Glacier National Park', 48.759600, -113.787000, 'Highline Trail', 5)
 SELECT * FROM DUAL;
 
