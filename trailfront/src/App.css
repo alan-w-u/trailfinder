@@ -1,114 +1,116 @@
 :root {
-  font-family: Verdana, Arial, sans-serif;
+    font-family: Verdana, Arial, sans-serif;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 
-  /* Colour Scheme */
-  color-scheme: light dark;
+    /* Colour Scheme */
+    color-scheme: light dark;
 
-  /* Custom Colours */
-  --rich-black: #0d1b2a;
-  --oxford-blue: #1b263b;
+    /* Custom Colours */
+    --rich-black: #0d1b2a;
+    --oxford-blue: #1b263b;
 
-  --amazon: #3a8361;
-  --sea-green: #40916c;
-  --celadon: #5AAC85;
-  --mint: #74c69d;
-  --tea-green: #ccd5ae;
+    --amazon: #3a8361;
+    --sea-green: #40916c;
+    --celadon: #5AAC85;
+    --mint: #74c69d;
+    --tea-green: #ccd5ae;
 
-  --cornsilk: #fefae0;
-  --papaya-whip: #faedcd;
-  --sunset: #e7c8a0;
-  --buff: #d4a373;
+    --cornsilk: #fefae0;
+    --papaya-whip: #faedcd;
+    --sunset: #e7c8a0;
+    --buff: #d4a373;
 
-  --slate-grey: #6c757d;
-  --outer-space: #495057;
+    --slate-grey: #6c757d;
+    --outer-space: #495057;
 
-  --anti-flash-white: #f0f0f0;
-  --seasalt: #faf9f9;
+    --anti-flash-white: #f0f0f0;
+    --seasalt: #faf9f9;
 
-  /* Light/Dark Mode Colours */
-  --text: light-dark(var(--oxford-blue), var(--seasalt));
-  --inverse-text: light-dark(var(--seasalt), var(--oxford-blue));
-  --background: light-dark(var(--anti-flash-white), var(--oxford-blue));
-  --nav-background: light-dark(var(--mint), var(--sea-green));
-  --logo-background: light-dark(var(--sunset), var(--buff));
-  --grey: light-dark(var(--slate-grey), var(--outer-space));
+    /* Light/Dark Mode Colours */
+    --text: light-dark(var(--oxford-blue), var(--seasalt));
+    --inverse-text: light-dark(var(--seasalt), var(--oxford-blue));
+    --background: light-dark(var(--anti-flash-white), var(--oxford-blue));
+    --nav-background: light-dark(var(--mint), var(--sea-green));
+    --logo-background: light-dark(var(--sunset), var(--buff));
+    --grey: light-dark(var(--slate-grey), var(--outer-space));
 
-  /* Global Asset Colours */
-  --asset-background: light-dark(var(--sunset), var(--buff));
-  --asset-border: light-dark(var(--mint), var(--celadon));
-  --asset-hover: light-dark(var(--celadon), var(--sea-green));
-  --asset-active: light-dark(var(--sea-green), var(--amazon));
+    /* Global Asset Colours */
+    --asset-background: light-dark(var(--sunset), var(--buff));
+    --asset-border: light-dark(var(--mint), var(--celadon));
+    --asset-hover: light-dark(var(--celadon), var(--sea-green));
+    --asset-active: light-dark(var(--sea-green), var(--amazon));
 
-  color: var(--text);
-  background-color: var(--background);
+    color: var(--text);
+    background-color: var(--background);
 }
 
 #root {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
 }
 
-html, body {
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
+html,
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
 }
 
 header {
-  display: flex;
-  padding: 1rem;
-  background-color: var(--nav-background);
-  align-items: center;
+    display: flex;
+    padding: 1rem;
+    background-color: var(--nav-background);
+    align-items: center;
 }
 
 header img {
-  width: 2rem;
-  height: auto;
-  margin: 0 0.5rem 0 0;
+    width: 2rem;
+    height: auto;
+    margin: 0 0.5rem 0 0;
 }
 
 header h1 {
-  font-size: 1.5rem;
-  margin: 0;
+    font-size: 1.5rem;
+    margin: 0;
 }
 
 header span {
-  margin: 0 0 0 auto;
-  padding: 0.5rem;
-  background-color: var(--logo-background);
-  border-radius: 0.5rem;
+    margin: 0 0 0 auto;
+    padding: 0.5rem;
+    background-color: var(--logo-background);
+    border-radius: 0.5rem;
 }
 
 main {
-  display: flex;
-  width: 100%;
-  height: 100%;
+    display: flex;
+    width: 100%;
+    height: 100%;
 }
 
 .logo {
-  display: flex;
-  padding: 0.5rem;
-  background-color: var(--logo-background);
-  border-radius: 1rem;
-  align-items: center;
+    display: flex;
+    padding: 0.5rem;
+    background-color: var(--logo-background);
+    border-radius: 1rem;
+    align-items: center;
 }
 
 a {
-  color: inherit;
-  text-decoration: none; /* no underline */
+    color: inherit;
+    text-decoration: none;
+    /* no underline */
 }
 
 .trailwidgets {
-  display: flex;
-  margin: 5rem auto;
+    display: flex;
+    margin: 5rem auto;
 }
