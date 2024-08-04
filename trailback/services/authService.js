@@ -1,9 +1,9 @@
-import { withOracleDB } from "../config/db.js";
-import oracledb from "oracledb";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { withOracleDB } from '../config/db.js';
+import oracledb from 'oracledb';
 import loadEnvFile from '../utils/envUtil.js';
-import axios from "axios";
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import axios from 'axios';
 
 const envVariables = loadEnvFile('./.env');
 
