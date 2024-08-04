@@ -61,7 +61,7 @@ const ProfilePage = () => {
         };
 
         fetchProfile();
-        fetchFriends(); // uncomment to deal with friends
+        fetchFriends();
     }, []);
 
     const handleLogout = () => {
@@ -148,15 +148,17 @@ const ProfilePage = () => {
                         <button className="negative" type="button" onClick={handleEditToggle}>Cancel</button>
                     </form>
                 ) : (
-                    <div className="profile">
-                        <p>Name: <b>{profile.NAME}</b></p>
-                        <p>Email: <b>{profile.EMAIL}</b></p>
-                        <p>Trails Hiked: <b>{profile.TRAILSHIKED}</b></p>
-                        <p>Experience Level: <b>{profile.EXPERIENCELEVEL}</b></p>
-                        <p>Number of Friends: <b>{profile.NUMBEROFFRIENDS}</b></p>
+                    <>
+                        <div className="profile-info">
+                            <p>Name: <b>{profile.NAME}</b></p>
+                            <p>Email: <b>{profile.EMAIL}</b></p>
+                            <p>Trails Hiked: <b>{profile.TRAILSHIKED}</b></p>
+                            <p>Experience Level: <b>{profile.EXPERIENCELEVEL}</b></p>
+                            <p>Number of Friends: <b>{profile.NUMBEROFFRIENDS}</b></p>
+                        </div>
                         <button className="positive" onClick={handleEditToggle}>Edit</button>
                         <button className="negative" onClick={handleLogout}>Logout</button>
-                    </div>
+                    </>
                 )}
             </div>
 
