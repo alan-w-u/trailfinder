@@ -386,21 +386,21 @@ SELECT * FROM DUAL;
 
 INSERT ALL
     INTO friends (userid, friendid, datefriended) VALUES
-    (1, 2, TO_DATE('15-FEB-2024', 'DD-MON-YYYY'))
+    (1, 2, DATE '2024-02-15')
     INTO friends (userid, friendid, datefriended) VALUES
-    (2, 1, TO_DATE('15-FEB-2024', 'DD-MON-YYYY'))
+    (2, 1, DATE '2024-02-15')
     INTO friends (userid, friendid, datefriended) VALUES
-    (1, 3, TO_DATE('10-MAR-2024', 'DD-MON-YYYY'))
+    (1, 3, DATE '2024-03-10')
     INTO friends (userid, friendid, datefriended) VALUES
-    (3, 1, TO_DATE('10-MAR-2024', 'DD-MON-YYYY'))
+    (3, 1, DATE '2024-03-10')
     INTO friends (userid, friendid, datefriended) VALUES
-    (3, 4, TO_DATE('05-MAY-2024', 'DD-MON-YYYY'))
+    (3, 4, DATE '2024-05-05')
     INTO friends (userid, friendid, datefriended) VALUES
-    (4, 3, TO_DATE('05-MAY-2024', 'DD-MON-YYYY'))
+    (4, 3, DATE '2024-05-05')
     INTO friends (userid, friendid, datefriended) VALUES
-    (4, 5, TO_DATE('25-JUL-2024', 'DD-MON-YYYY'))
+    (4, 5, DATE '2024-07-25')
     INTO friends (userid, friendid, datefriended) VALUES
-    (5, 4, TO_DATE('25-JUL-2024', 'DD-MON-YYYY'))
+    (5, 4, DATE '2024-07-25')
 SELECT * FROM DUAL;
 
 INSERT ALL
