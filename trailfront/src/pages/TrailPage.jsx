@@ -28,9 +28,9 @@ function TrailPage() {
                 setError('Network error: ' + error.message);
             }
         };
-    
+
         fetchTrail();
-    }, []);    
+    }, []);
 
     return (
         <div className="trail-page">
@@ -38,24 +38,37 @@ function TrailPage() {
                 PREVIEWS
             </div>
             <div className="trail-info">
-                <div className="details left">
-                    <p>Time to Complete:</p>
+                <div className="left">
+                    <b>Time to Complete —</b>
+                    {/* <b>Time to Complete — {trail.TIMETOMECOMPLETE}</b> */}
                 </div>
-                <div className="details right">
-                    <p>Difficulty:</p>
+                <div className="right">
+                    <b>Difficulty —</b>
+                    {/* <b>Difficulty — {trail.DIFFICULTY}</b> */}
                 </div>
             </div>
             <div className="trail-info">
                 <div className="description left">
                     <b>Description</b>
+                    <p>&nbsp;</p> {/* spacer */}
+                    {/* <p>{trail.DESCRIPTION}</p> */}
                 </div>
                 <div className="hazards right">
                     <b>Hazards</b>
+                    <p>&nbsp;</p> {/* spacer */}
+                    {/* <p>{trail.HAZARDS}</p> */}
                 </div>
             </div>
             <div className="trail-info">
                 <div className="equipment">
-                    <b>Recommended Equipment</b>
+                    <b>Recommended Gear</b>
+                    <p>&nbsp;</p> {/* spacer */}
+                </div>
+            </div>
+            <div className="trail-info">
+                <div className="reviews">
+                    <b>Reviews</b>
+                    <p>&nbsp;</p> {/* spacer */}
                 </div>
             </div>
         </div>
