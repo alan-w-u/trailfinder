@@ -143,6 +143,7 @@ async function projectTrailAttributes(attributes) {
     })
 }
 
+<<<<<<< HEAD
 // Select to see what equipment people are bringing
 async function selectionEquipment(whereClause) {
     return await withOracleDB(async (connection) => {
@@ -167,6 +168,9 @@ async function joinUserTrailTransportation(predicates) {
         return -1;
     })
 }
+=======
+
+>>>>>>> 693288fd530d8c5c72a6c8977d51234ee9dd17c3
 
 export {
     testOracleConnection,
@@ -178,6 +182,9 @@ export {
     countDB,
     getTrail,
     projectTrailAttributes, 
+<<<<<<< HEAD
     selectionEquipment,
     joinUserTrailTransportation
+=======
+>>>>>>> 693288fd530d8c5c72a6c8977d51234ee9dd17c3
 };
