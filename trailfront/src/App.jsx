@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './components/AuthContext.jsx';
+import Navbar from './components/Navbar.jsx';
 import AuthPage from './pages/AuthPage.jsx';
-import ProfilePage from "./pages/ProfilePage.jsx";
-import HomePage from "./pages/HomePage.jsx";
-import Navbar from "./components/Navbar.jsx";
+import HomePage from './pages/HomePage.jsx';
+import ProfilePage from './pages/ProfilePage.jsx';
+import TrailPage from './pages/TrailPage.jsx';
 import './App.css'
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -68,15 +69,18 @@ function AppContent() {
             <Router>
                 <Navbar status={status} />
                 <Routes>
+                    <Route path="/" element={<Navigate to="/home" />} />
+                    <Route path="*" element={<Navigate to="/login" replace />} />
                     <Route path="/login" element={<LoginRoute />} />
+                    <Route element={<PrivateRoute />}>
+                        <Route path="/home" element={<HomePage />} />
+                    </Route>
                     <Route element={<PrivateRoute />}>
                         <Route path="/profile" element={<ProfilePage />} />
                     </Route>
                     <Route element={<PrivateRoute />}>
-                        <Route path="/home" element={<HomePage />} />
+                        <Route path="/trail" element={<TrailPage />} />
                     </Route>
-                    <Route path="/" element={<Navigate to="/home" />} />
-                    <Route path="*" element={<Navigate to="/login" replace />} />
                 </Routes>
             </Router>
         </>
