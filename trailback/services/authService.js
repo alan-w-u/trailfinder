@@ -152,7 +152,7 @@ async function updateProfile(name, trailshiked, experiencelevel, userID) {
 async function getFriends(userid) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT u.name, u.trailshiked, u.experiencelevel, f.datefriended
+            `SELECT u.name, u.trailshiked, u.experiencelevel, u.profilepicture, f.datefriended
             FROM userprofile u
             JOIN friends f ON u.userid = f.friendid
             WHERE f.userid = :userid`,

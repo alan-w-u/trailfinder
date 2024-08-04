@@ -127,9 +127,8 @@ const ProfilePage = () => {
                     alt="Profile"
                     onError={({ currentTarget }) => {
                         currentTarget.onerror = null; // prevents looping
-                        currentTarget.src="https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg";
+                        currentTarget.src = "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg";
                     }}
-                     style = {{ borderRadius: '25%' }}
                 />
                 {isEditing ? (
                     <form onSubmit={handleSubmit} className="profile-form">
@@ -165,17 +164,29 @@ const ProfilePage = () => {
                 <h1>Friends</h1>
                 <div className="friend-list">
                     {friends.map(friend => (
-                        <p key={friend.FRIENDID}>
-                            Name: <b>{friend.NAME}</b>
-                            <br />
-                            Trails Hiked: <b>{friend.TRAILSHIKED}</b>
-                            <br />
-                            Experience Level: <b>{friend.EXPERIENCELEVEL}</b>
-                            <br />
-                            Date Friended: <b>{new Date(friend.DATEFRIENDED).toLocaleDateString()}</b>
-                        </p>
+                        <div className="friend">
+                            <img className="friend-picture"
+                                src={(friend.PROFILEPICTURE) ? `data:image/jpeg;base64,${friend.PROFILEPICTURE}`
+                                    : "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"}
+                                alt="Profile"
+                                onError={({ currentTarget }) => {
+                                    currentTarget.onerror = null; // prevents looping
+                                    currentTarget.src = "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg";
+                                }}
+                            />
+                            <p key={friend.FRIENDID}>
+                                Name: <b>{friend.NAME}</b>
+                                <br />
+                                Trails Hiked: <b>{friend.TRAILSHIKED}</b>
+                                <br />
+                                Experience Level: <b>{friend.EXPERIENCELEVEL}</b>
+                                <br />
+                                Date Friended: <b>{new Date(friend.DATEFRIENDED).toLocaleDateString()}</b>
+                            </p>
+                        </div>
                     ))}
                 </div>
+                <button className="positive">Add Friend</button>
             </div>
         </div>
     );
