@@ -61,7 +61,7 @@ const ProfilePage = () => {
         };
 
         fetchProfile();
-        // fetchFriends(); // uncomment to deal with friends
+        fetchFriends(); // uncomment to deal with friends
     }, []);
 
     const handleLogout = () => {
@@ -115,7 +115,7 @@ const ProfilePage = () => {
     };
 
     if (error) return <div>Error: {error}</div>;
-    if (!profile) return <div>Loading...</div>;
+    if (!profile || !friends) return <div>Loading...</div>;
 
     return (
         <div className="profile-container">
