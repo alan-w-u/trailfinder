@@ -161,7 +161,7 @@ async function joinUserUGCReview(predicates, attributes) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `SELECT ${attributes}
-            FROM userprofile, ugc, review 
+            FROM userprofile, ugc, review, trail 
             WHERE ${predicates}`);
         return result.rows;
     }).catch(() => {
