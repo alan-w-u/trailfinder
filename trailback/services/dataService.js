@@ -111,37 +111,62 @@ async function countDB(relation) {
     });
 }
 
-// select something from equipment to see what people are bringing
+// Get trail information
+async function getTrail(locationname, latitude, longitude, trailname) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT *
+            FROM trail
+            WHERE locationname = :locationname AND latitude = :latitude AND longitude = :longitude AND trailname = :trailname`,
+            { locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "PROFILEPICTURE": { type: oracledb.BUFFER } } }
+        );
+
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            console.log("Trail not found");
+            return [];
+        }
+    });
+}
+
+// Project attributes from trail
+async function projectTrailAttributes(attributes) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT ${attributes} 
+            FROM TRAIL`);
+        return result.rows;
+    }).catch(() => {
+        return -1;
+    })
+}
+
+// Select to see what equipment people are bringing
 async function selectionEquipment(whereClause) {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(`SELECT * FROM EQUIPMENT WHERE ${whereClause}`);
+        const result = await connection.execute(
+            `SELECT * 
+            FROM EQUIPMENT 
+            WHERE ${whereClause}`);
         return result.rows;
     }).catch(() => {
         return -1;
     });
 }
 
-//project attributes from trail
-async function projectTrailAttributes(attributes) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(`SELECT ${attributes} FROM TRAIL`);
-        return result.rows;
-    }).catch(() => {
-        return -1;
-    })
-}
-
 async function joinUserTrailTransportation(predicates) {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(`
-        SELECT * FROM USERPROFILE UP, USERHIKESTRAIL UHT, TRAIL T, LOCATION L WHERE ${predicates}`);
+        const result = await connection.execute(
+            `SELECT * 
+            FROM USERPROFILE UP, USERHIKESTRAIL UHT, TRAIL T, LOCATION L 
+            WHERE ${predicates}`);
         return result.rows;
     }).catch(() => {
         return -1;
     })
 }
-
-
 
 export {
     testOracleConnection,
@@ -150,8 +175,9 @@ export {
     fetchDB,
     insertDB,
     deleteDB,
-    countDB, 
-    selectionEquipment,
+    countDB,
+    getTrail,
     projectTrailAttributes, 
+    selectionEquipment,
     joinUserTrailTransportation
 };

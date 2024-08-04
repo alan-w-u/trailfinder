@@ -89,6 +89,30 @@ router.get('/count', async (req, res) => {
     }
 });
 
+// Get trail information
+router.get('/trail', authenticateToken, async (req, res) => {
+    const { locationname, latitude, longitude, trailname } = req.user;
+    const trailResult = await dataService.getTrail(locationname, latitude, longitude, trailname);
+    if (trailResult) {
+        console.log('Trail GET success - 200');
+        res.json({ success: true, trail: trailResult });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to GET Trail' })
+    }
+});
+
+// Project trail attributes
+router.get('/projectTrailAttributes', async (req, res) => {
+    const {projectionString} = req.body; 
+    const result = await dataService.projectTrailAttributes(projectionString);
+    if(result === -1) {
+        res.status(500).json({ success: false, error: 'attributes Invalid or No Rows Exist' });
+    } else {
+        res.json({ success: true, data: result });
+    }
+});
+
+// Select to see what equipment people are bringing
 router.get('/selectEquipment', async (req, res) => {
     const {whereClause} = req.body;
     const result = await dataService.selectionEquipment(whereClause);
@@ -99,28 +123,5 @@ router.get('/selectEquipment', async (req, res) => {
         res.json({ success: true, data: result });
     }
 });
-
-//project trail aatributes
-router.get('/projectTrailAttributes', async (req, res) => {
-    const {projectionString} = req.body; 
-
-    const result = await dataService.projectTrailAttributes(projectionString);
-    if(result === -1) {
-        res.status(500).json({ success: false, error: 'attributes Invalid or No Rows Exist' });
-    } else {
-        res.json({ success: true, data: result });
-    }
-})
-
-router.get('/projectTrailAttributes', async (req, res) => {
-    const {projectionString} = req.body; 
-
-    const result = await dataService.projectTrailAttributes(projectionString);
-    if(result === -1) {
-        res.status(500).json({ success: false, error: 'attributes Invalid or No Rows Exist' });
-    } else {
-        res.json({ success: true, data: result });
-    }
-})
 
 export default router;

@@ -1,0 +1,64 @@
+.trail-page {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+}
+
+.previews {
+    width: 60%;
+    height: 25rem;
+    margin: 3rem 0;
+    background-color: var(--asset-background);
+}
+
+.left {
+    margin: 0 1rem 0 0;
+}
+
+.right {
+    margin: 0 0 0 1rem;
+}
+
+.trail-info {
+    display: flex;
+    width: 60%;
+    margin: 0.5rem 0;
+}
+
+.details {
+    width: auto;
+    height: auto;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    background-color: var(--asset-background);
+}
+
+.details p {
+    margin: 0;
+}
+
+.description {
+    width: 70%;
+    height: auto;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    background-color: var(--asset-background);
+}
+
+.hazards {
+    width: 30%;
+    height: auto;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    background-color: var(--asset-background);
+}
+
+.equipment {
+    width: 100%;
+    height: auto;
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    background-color: var(--asset-background);
+}
