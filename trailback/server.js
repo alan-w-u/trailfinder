@@ -3,6 +3,7 @@ import cors from 'cors';
 import dataRouter from './routes/dataRouter.js';
 import authRouter from './routes/authRouter.js';
 import loadEnvFile from './utils/envUtil.js';
+import userRouter from "./routes/userRouter.js";
 
 // Load environment variables from .env file
 // Ensure your .env file has the required database credentials.
@@ -29,6 +30,7 @@ app.get('/', (req, res) => {
 // mount the router
 app.use('/', dataRouter);
 app.use('/auth', authRouter);
+app.use('/user', userRouter);
 
 
 // ----------------------------------------------------------

@@ -101,7 +101,7 @@ router.get('/verify-token', authenticateToken, (req, res) => {
     res.json({ valid: true, userId: userId });
 });
 
-function authenticateToken(req, res, next) {
+export function authenticateToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
