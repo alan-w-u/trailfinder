@@ -115,7 +115,7 @@
     display: flex;
     flex-direction: column;
     width: 20rem;
-    height: 25rem;
+    height: 15rem;
     box-sizing: border-box;
     padding: 1rem;
     margin: 0 1rem;
@@ -127,12 +127,12 @@
 
 .trailwidget:hover {
     width: 23rem;
-    height: 28rem;
+    height: 16rem;
 }
 
 .trailwidget img {
     max-width: 75%;
-    max-height: 50%;
+    max-height: 60%;
     margin: 0 auto;
 }
 

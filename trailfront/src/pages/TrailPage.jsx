@@ -7,11 +7,12 @@ function TrailPage() {
     const [longitude, setLongitude] = useState(-119.538300);
     const [trailname, setTrailname] = useState('Half Dome Trail');
     const [trail, setTrail] = useState(null);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchTrail = async () => {
             try {
-                const response = await fetch(`http://localhost:65535/auth/trail?locationname=${locationname}&latitude=${latitude}&longitude=${longitude}&trailname=${trailname}`, {
+                const response = await fetch(`http://localhost:65535/trail?locationname=${locationname}&latitude=${latitude}&longitude=${longitude}&trailname=${trailname}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`

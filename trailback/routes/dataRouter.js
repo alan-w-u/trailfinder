@@ -91,7 +91,7 @@ router.get('/count', async (req, res) => {
 
 // Get trail information
 router.get('/trail', async (req, res) => {
-    const { locationname, latitude, longitude, trailname } = req.user;
+    const { locationname, latitude, longitude, trailname } = req.body;
     const trailResult = await dataService.getTrail(locationname, latitude, longitude, trailname);
     if (trailResult) {
         console.log('Trail GET success - 200');

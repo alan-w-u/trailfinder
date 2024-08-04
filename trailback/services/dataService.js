@@ -1,5 +1,6 @@
+import { withOracleDB } from '../config/db.js';
+import oracledb from 'oracledb';
 import fs from 'fs';
-import { withOracleDB, initializeConnectionPool, closePoolAndExit } from '../config/db.js';
 
 async function testOracleConnection() {
     return await withOracleDB(async (connection) => {
@@ -119,7 +120,7 @@ async function getTrail(locationname, latitude, longitude, trailname) {
             FROM trail
             WHERE locationname = :locationname AND latitude = :latitude AND longitude = :longitude AND trailname = :trailname`,
             { locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname },
-            { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "PROFILEPICTURE": { type: oracledb.BUFFER } } }
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
 
         if (result.rows.length > 0) {
