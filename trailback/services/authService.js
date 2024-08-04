@@ -51,7 +51,7 @@ async function loginUser(email, password) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `SELECT TO_CHAR(userID) AS userID, 
-            name, email, password, trailshiked, experiencelevel,profilepicture,numberoffriends 
+            name, email, password, trailshiked, experiencelevel, profilepicture, numberoffriends 
             FROM userprofile WHERE email = :email`,
             { email },
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
@@ -113,7 +113,7 @@ async function googleLogin(token) {
 async function getProfile(userID) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT userID, name, email, trailsHiked, experienceLevel, numberOfFriends
+            `SELECT userID, name, email, trailshiked, experiencelevel, numberoffriends
              FROM userprofile
              WHERE userID = :userId`,
             { userId: userID },
@@ -127,13 +127,13 @@ async function getProfile(userID) {
     });
 }
 
-async function updateProfile(name, trailsHiked, experienceLevel, userID) {
+async function updateProfile(name, trailshiked, experiencelevel, userID) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `UPDATE userprofile 
-             SET name = :name, trailsHiked = :trailsHiked, experienceLevel = :experienceLevel 
+             SET name = :name, trailshiked = :trailshiked, experiencelevel = :experiencelevel 
              WHERE userID = :userId`,
-            { name, trailsHiked, experienceLevel, userId: userID },
+            { name, trailshiked, experiencelevel, userId: userID },
             { autoCommit: true }
         );
 
