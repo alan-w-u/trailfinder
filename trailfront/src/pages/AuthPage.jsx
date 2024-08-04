@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Login from "../components/Login.jsx";
-import SignUp from "../components/SignUp.jsx";
+import Login from '../components/Login.jsx';
+import SignUp from '../components/SignUp.jsx';
 
 function LoginPage() {
     const [authMode, setAuthMode] = useState("Log In");
