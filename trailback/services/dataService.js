@@ -157,11 +157,11 @@ async function selectionEquipment(whereClause) {
     });
 }
 
-async function joinUserTrailTransportation(predicates) {
+async function joinUserUGCReview(predicates, attributes) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT * 
-            FROM USERPROFILE UP, USERHIKESTRAIL UHT, TRAIL T, LOCATION L 
+            `SELECT ${attributes}
+            FROM userprofile, ugc, review 
             WHERE ${predicates}`);
         return result.rows;
     }).catch(() => {
@@ -180,5 +180,5 @@ export {
     getTrail,
     projectTrailAttributes, 
     selectionEquipment,
-    joinUserTrailTransportation
+    joinUserUGCReview
 };

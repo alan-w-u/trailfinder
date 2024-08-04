@@ -89,30 +89,6 @@ router.get('/count', async (req, res) => {
     }
 });
 
-// Get trail information
-router.get('/trail', async (req, res) => {
-    const { locationname, latitude, longitude, trailname } = req.body;
-    const trailResult = await dataService.getTrail(locationname, latitude, longitude, trailname);
-    if (trailResult) {
-        console.log('Trail GET success - 200');
-        res.json({ success: true, trail: trailResult });
-    } else {
-        res.status(500).json({ success: false, error: 'Failed to GET Trail' })
-    }
-});
-
-// Project trail attributes
-router.get('/projectTrailAttributes', async (req, res) => {
-    const {projectionString} = req.body; 
-    const result = await dataService.projectTrailAttributes(projectionString);
-    if(result === -1) {
-        res.status(500).json({ success: false, error: 'attributes Invalid or No Rows Exist' });
-    } else {
-        res.json({ success: true, data: result });
-    }
-});
-
-// Select to see what equipment people are bringing
 router.get('/selectEquipment', async (req, res) => {
     const {whereClause} = req.body;
     const result = await dataService.selectionEquipment(whereClause);
@@ -124,7 +100,7 @@ router.get('/selectEquipment', async (req, res) => {
     }
 });
 
-// Project trail attributes
+//project trail attributes
 router.get('/projectTrailAttributes', async (req, res) => {
     const {projectionString} = req.body; 
 
@@ -135,6 +111,18 @@ router.get('/projectTrailAttributes', async (req, res) => {
         res.json({ success: true, data: result });
     }
 })
+
+//join user ugc review
+router.get("/joinUserWithUGC", async (req, res) => {
+    const {projectionString, joinString} = req.body; 
+    const result = await dataService.joinUserUGCReview(joinString, projectionString);
+    if(result === -1) {
+        res.status(500).json({ success: false, error: 'attributes Invalid or No Rows Exist' });
+    } else {
+        res.json({ success: true, data: result });
+    }
+})
+
 
 
 export default router;
