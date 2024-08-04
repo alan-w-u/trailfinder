@@ -120,7 +120,7 @@ async function updateProfile(name, email, profilePictureUrl, userID) {
 async function getFriends(userid) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT u.name, u.trailshiked, u.experiencelevel, u.profilepicture, f.datefriended
+            `SELECT u.name, u.trailshiked, u.experiencelevel, u.profilepicture, TO_CHAR(u.userid) AS userid, f.datefriended
             FROM userprofile u
             JOIN friends f ON u.userid = f.friendid
             WHERE f.userid = :userid`,
@@ -129,7 +129,12 @@ async function getFriends(userid) {
         );
 
         if (result.rows.length > 0) {
-            return result.rows;
+            return result.rows.map(friend => {
+                if (friend.PROFILEPICTURE) {
+                    friend.PROFILEPICTURE = friend.PROFILEPICTURE.toString('base64');
+                }
+                return friend;
+            });
         } else {
             console.log("User has no friends.");
             return [];
@@ -137,8 +142,113 @@ async function getFriends(userid) {
     });
 }
 
+async function addFriend(friendEmail, userId) {
+    return await withOracleDB(async (connection) => {
+        try {
+            const friendResult = await connection.execute(
+                'SELECT TO_CHAR(userid) AS userid FROM userprofile WHERE email = :email',
+                { email: friendEmail },
+                { outFormat: oracledb.OUT_FORMAT_OBJECT }
+            );
+
+            if (friendResult.rows.length === 0) {
+                throw new Error('Friend not found');
+            }
+
+            const friendId = friendResult.rows[0].USERID;
+
+            if (userId === friendId) {
+                throw new Error('Cannot add yourself as a friend');
+            }
+
+            const existingFriendship = await connection.execute(
+                'SELECT * FROM friends WHERE (userid = :userId AND friendid = :friendId) OR (userid = :friendId AND friendid = :userId)',
+                { userId, friendId },
+                { outFormat: oracledb.OUT_FORMAT_OBJECT }
+            );
+
+            if (existingFriendship.rows.length > 0) {
+                throw new Error('Friendship already exists');
+            }
+
+            const currentDate = new Date().toISOString().split('T')[0];
+            await connection.execute(
+                'INSERT INTO friends (userid, friendid, datefriended) VALUES (:userId, :friendId, TO_DATE(:currentDate, \'YYYY-MM-DD\'))',
+                { userId, friendId, currentDate }
+            );
+
+            await connection.execute(
+                'INSERT INTO friends (userid, friendid, datefriended) VALUES (:friendId, :userId, TO_DATE(:currentDate, \'YYYY-MM-DD\'))',
+                { userId, friendId, currentDate }
+            );
+
+            await connection.execute(
+                'UPDATE userprofile SET numberoffriends = numberoffriends + 1 WHERE userid IN (:userId, :friendId)',
+                { userId, friendId }
+            );
+
+            // Commit the transaction
+            await connection.execute('COMMIT');
+
+            return { message: 'Friend added successfully' };
+        } catch (error) {
+            // Rollback the transaction in case of error
+            await connection.execute('ROLLBACK');
+            throw error;
+        }
+    });
+}
+
+async function removeFriend(friendId, userId) {
+    return await withOracleDB(async (connection) => {
+        try {
+            const checkResult = await connection.execute(
+                `SELECT * FROM friends 
+                 WHERE (userid = :userId AND friendid = :friendId)
+                 OR (userid = :friendId AND friendid = :userId)`,
+                { userId, friendId },
+                { outFormat: oracledb.OUT_FORMAT_OBJECT }
+            );
+
+            if (checkResult.rows.length === 0) {
+                throw new Error("Friendship does not exist");
+            }
+
+            // Remove the friendship
+            const result = await connection.execute(
+                `DELETE FROM friends 
+                 WHERE (userid = :userId AND friendid = :friendId)
+                 OR (userid = :friendId AND friendid = :userId)`,
+                { userId, friendId },
+                { autoCommit: true }
+            );
+
+            if (result.rowsAffected === 2) {
+                // Update the numberOfFriends for both users
+                await connection.execute(
+                    `UPDATE userprofile 
+                     SET numberoffriends = numberoffriends - 1 
+                     WHERE userid IN (:userId, :friendId)`,
+                    { userId, friendId },
+                    { autoCommit: true }
+                );
+
+                return { message: "Friend removed successfully" };
+            } else {
+                throw new Error("Failed to remove friend");
+            }
+        } catch (err) {
+            console.error(err.message);
+            throw err;
+        }
+    });
+}
+
+
 export {
     getProfile,
     updateProfile,
-    getFriends
+    getFriends,
+    addFriend,
+    removeFriend
 }
