@@ -6,6 +6,7 @@ import '../components/Profile.css';
 const ProfilePage = () => {
     const [profile, setProfile] = useState(null);
     const [friends, setFriends] = useState([]);
+    const [equipment, setEquipment] = useState([]);
     const [error, setError] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const [updatedProfile, setUpdatedProfile] = useState({
@@ -60,8 +61,28 @@ const ProfilePage = () => {
             }
         };
 
+        const fetchEquipment = async () => {
+            try {
+                const response = await fetch('http://localhost:65535/auth/equipment', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    setEquipment(data.equipment);
+                } else {
+                    setError(data.error || 'Failed to fetch equipment');
+                }
+            } catch (error) {
+                setError('Network error: ' + error.message);
+            }
+        };
+
         fetchProfile();
         fetchFriends();
+        fetchEquipment();
     }, []);
 
     const handleLogout = () => {
@@ -122,7 +143,7 @@ const ProfilePage = () => {
 
     return (
         <div className="profile-page">
-            <div className="profile">
+            <div>
                 <h1>Profile</h1>
                 <img className="profile-picture"
                     src={(profile.PROFILEPICTURE) ? `data:image/jpeg;base64,${profile.PROFILEPICTURE}`
@@ -165,11 +186,11 @@ const ProfilePage = () => {
                 )}
             </div>
 
-            <div className="friends">
+            <div>
                 <h1>Friends</h1>
-                <div className="friend-list">
+                <div className="profile-list">
                     {friends.map(friend => (
-                        <div className="friend">
+                        <div>
                             <img className="friend-picture"
                                 src={(friend.PROFILEPICTURE) ? `data:image/jpeg;base64,${friend.PROFILEPICTURE}`
                                     : "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"}
@@ -192,6 +213,26 @@ const ProfilePage = () => {
                     ))}
                 </div>
                 <button className="positive">Add Friend</button>
+            </div>
+
+            <div>
+                <h1>Equipment</h1>
+                <div className="profile-list">
+                    {equipment.map(equip => (
+                        <div>
+                            <p key={equip.EQUIPMENTID}>
+                                Type: <b>{equip.TYPE}</b>
+                                <br />
+                                Brand: <b>{equip.BRAND}</b>
+                                <br />
+                                Amount: <b>{equip.AMOUNT}</b>
+                                <br />
+                                Weight: <b>{equip.WEIGHT}kg</b>
+                            </p>
+                        </div>
+                    ))}
+                </div>
+                <button className="positive">Add Equipment</button>
             </div>
         </div>
     );

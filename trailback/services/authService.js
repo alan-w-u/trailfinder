@@ -8,6 +8,7 @@ import { foreignKeyUpdates as userqueries } from "../config/db.js";
 
 const envVariables = loadEnvFile('./.env');
 
+// User registration
 async function registerUser(name, email, password) {
     const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
     return await withOracleDB(async (connection) => {
@@ -48,6 +49,7 @@ async function registerUser(name, email, password) {
     });
 }
 
+// User login
 async function loginUser(email, password) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -71,6 +73,7 @@ async function loginUser(email, password) {
     });
 }
 
+// User login with Google
 async function googleLogin(token) {
     const googleResponse = await axios.get('https://www.googleapis.com/oauth2/v3/userinfo', {
         headers: {
@@ -112,12 +115,13 @@ async function googleLogin(token) {
     });
 }
 
+// Get user profile
 async function getProfile(userID) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT userID, name, email, trailsHiked, experienceLevel, numberOfFriends, profilepicture
+            `SELECT userid, name, email, trailsHiked, experienceLevel, numberOfFriends, profilepicture
              FROM userprofile
-             WHERE userID = :userId`,
+             WHERE userid = :userId`,
             { userId: userID },
             { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "PROFILEPICTURE": { type: oracledb.BUFFER } } }
         );
@@ -133,6 +137,7 @@ async function getProfile(userID) {
     });
 }
 
+// Update user profile
 async function updateProfile(name, email, profilePictureUrl, userID) {
     return await withOracleDB(async (connection) => {
         // Check if the new email already exists
@@ -222,6 +227,7 @@ async function updateProfile(name, email, profilePictureUrl, userID) {
     });
 }
 
+// Get user friends
 async function getFriends(userid) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -236,7 +242,28 @@ async function getFriends(userid) {
         if (result.rows.length > 0) {
             return result.rows;
         } else {
-            console.log("User has no friends.");
+            console.log("Friends not found");
+            return [];
+        }
+    });
+}
+
+// Get equipment
+async function getEquipment(userid) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT e.equipmentid, e.type, e.brand, e.amount, e.weight
+            FROM userprofile u
+            JOIN equipment e ON u.userid = e.userid
+            WHERE e.userid = :userid`,
+            { userid: userid },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            console.log("Equipment not found");
             return [];
         }
     });
@@ -248,5 +275,6 @@ export {
     googleLogin,
     getProfile,
     updateProfile,
-    getFriends
+    getFriends,
+    getEquipment
 }

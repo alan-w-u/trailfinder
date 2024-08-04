@@ -32,6 +32,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// User login with Google
 router.post('/google-login', async (req, res) => {
     const { token } = req.body;
     const googleResult = await authService.googleLogin(token);
@@ -80,6 +81,18 @@ router.get('/friends', authenticateToken, async (req, res) => {
         res.json({ success: true, friends: friendsResult });
     } else {
         res.status(500).json({ success: false, error: 'Failed to GET Friends' })
+    }
+});
+
+// Get equipment
+router.get('/equipment', authenticateToken, async (req, res) => {
+    const { userId } = req.user;
+    const equipmentResult = await authService.getEquipment(userId);
+    if (equipmentResult) {
+        console.log('Equipment GET success - 200');
+        res.json({ success: true, equipment: equipmentResult });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to GET Equipment' })
     }
 });
 
