@@ -90,7 +90,7 @@ router.get('/count', async (req, res) => {
 });
 
 // Get trail information
-router.get('/trail', authenticateToken, async (req, res) => {
+router.get('/trail', async (req, res) => {
     const { locationname, latitude, longitude, trailname } = req.user;
     const trailResult = await dataService.getTrail(locationname, latitude, longitude, trailname);
     if (trailResult) {
