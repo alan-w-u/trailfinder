@@ -77,8 +77,9 @@ async function googleLogin(token) {
         }
     });
 
-    const { email, name, sub: googleId } = googleResponse.data;
+    const { email, name, sub: googleId, picture } = googleResponse.data;
 
+    const imageBuffer = (await axios.get(picture, { responseType: 'arraybuffer' })).data;
     return await withOracleDB(async (connection) => {
         let result = await connection.execute(
             `SELECT * FROM userprofile WHERE email = :email`,
@@ -89,9 +90,9 @@ async function googleLogin(token) {
         if (result.rows.length === 0) {
             // Create new user
             await connection.execute(
-                `INSERT INTO userprofile (userID, name, email)
-                 VALUES (:googleId, :name, :email)`,
-                { googleId, name, email },
+                `INSERT INTO userprofile (userID, name, email, profilepicture)
+                 VALUES (:googleId, :name, :email, :image)`,
+                { googleId, name, email, image: { val: imageBuffer, type: oracledb.BLOB } },
                 { autoCommit: true }
             );
         } else {
@@ -113,15 +114,19 @@ async function googleLogin(token) {
 async function getProfile(userID) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT userID, name, email, trailsHiked, experienceLevel, numberOfFriends
+            `SELECT userID, name, email, trailsHiked, experienceLevel, numberOfFriends, profilepicture
              FROM userprofile
              WHERE userID = :userId`,
             { userId: userID },
-            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+            { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "PROFILEPICTURE": { type: oracledb.BUFFER } } }
         );
 
         if (result.rows.length > 0) {
-            return result.rows[0];
+            const profile = result.rows[0];
+            if (profile.PROFILEPICTURE) {
+                profile.PROFILEPICTURE = profile.PROFILEPICTURE.toString('base64');
+            }
+            return profile;
         }
         console.error("User not found");
     });
@@ -156,8 +161,10 @@ async function getFriends(userid) {
 
         if (result.rows.length > 0) {
             return result.rows;
+        } else {
+            console.log("User has no friends.");
+            return [];
         }
-        console.error("Friends not found");
     });
 }
 

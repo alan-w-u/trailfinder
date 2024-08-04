@@ -121,6 +121,16 @@ const ProfilePage = () => {
         <div className="profile-container">
             <div className="profile">
                 <h1>Profile</h1>
+                <img className="profile-picture"
+                    src={(profile.PROFILEPICTURE) ? `data:image/jpeg;base64,${profile.PROFILEPICTURE}`
+                        : "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"}
+                    alt="Profile"
+                    onError={({ currentTarget }) => {
+                        currentTarget.onerror = null; // prevents looping
+                        currentTarget.src="https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg";
+                    }}
+                     style = {{ borderRadius: '25%' }}
+                />
                 {isEditing ? (
                     <form onSubmit={handleSubmit} className="profile-form">
                         <div className="profile-form-group">
