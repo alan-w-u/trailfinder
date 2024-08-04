@@ -18,6 +18,11 @@
     align-items: center;
 }
 
+.profile-picture {
+    width: 6rem;
+    height: 6rem;
+}
+
 .profile-info {
     width: 80%;
     height: auto;
