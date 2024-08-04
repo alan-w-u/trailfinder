@@ -57,14 +57,18 @@ router.get('/profile', authenticateToken, async (req, res) => {
 
 // Update user profile
 router.put('/profile', authenticateToken, async (req, res) => {
-    const { name, trailsHiked, experienceLevel } = req.body;
-    const updateResult = await authService.updateProfile(name, trailsHiked, experienceLevel, req.user["userId"]);
-    if (updateResult) {
-        console.log('User profile PUT update success - 200');
-        res.json({success: true});
-    } else {
-        res.status(500).json({ success:false, error: 'Failed to Update Profile'} )
-    }
+    const { name, email, profilepictureurl } = req.body;
+    authService.updateProfile(name, email, profilepictureurl, req.user["userId"])
+        .then((result) => {
+            console.log('User profile PUT update success - 200');
+            if (result.newToken) {
+                res.json({success: true, token: result.newToken});
+            } else {
+                res.json({success: true});
+            }
+        }).catch((e) => {
+            res.status(500).json({ success:false, error: e.message} )
+        });
 });
 
 // Get user friends

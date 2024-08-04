@@ -65,6 +65,29 @@ async function withOracleDB(action) {
     }
 }
 
+export const foreignKeyUpdates = {
+    disableConstraints: [
+        { sql: 'ALTER TABLE equipment DISABLE CONSTRAINT equipment_userid_fk' },
+        { sql: 'ALTER TABLE ugc DISABLE CONSTRAINT ugc_userid_fk' },
+        { sql: 'ALTER TABLE friends DISABLE CONSTRAINT friends_userid_fk' },
+        { sql: 'ALTER TABLE userhikestrail DISABLE CONSTRAINT userhikestrail_userid_fk' }
+    ],
+    updates: [
+        { sql: 'UPDATE userprofile SET userid = :newUserId WHERE userid = :oldUserId' },
+        { sql: 'UPDATE equipment SET userid = :newUserId WHERE userid = :oldUserId' },
+        { sql: 'UPDATE ugc SET userid = :newUserId WHERE userid = :oldUserId' },
+        { sql: 'UPDATE friends SET userid = :newUserId WHERE userid = :oldUserId' },
+        { sql: 'UPDATE friends SET friendid = :newUserId WHERE friendid = :oldUserId' },
+        { sql: 'UPDATE userhikestrail SET userid = :newUserId WHERE userid = :oldUserId' }
+    ],
+    enableConstraints: [
+        { sql: 'ALTER TABLE equipment ENABLE CONSTRAINT equipment_userid_fk' },
+        { sql: 'ALTER TABLE ugc ENABLE CONSTRAINT ugc_userid_fk' },
+        { sql: 'ALTER TABLE friends ENABLE CONSTRAINT friends_userid_fk' },
+        { sql: 'ALTER TABLE userhikestrail ENABLE CONSTRAINT userhikestrail_userid_fk' }
+    ]
+};
+
 export {
     initializeConnectionPool,
     closePoolAndExit,

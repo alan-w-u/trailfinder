@@ -37,7 +37,7 @@ CREATE TABLE equipment (
     brand           VARCHAR(50),
     amount          INTEGER,
     weight          FLOAT,
-    FOREIGN KEY (userid) REFERENCES userprofile
+    CONSTRAINT equipment_userid_fk FOREIGN KEY (userid) REFERENCES userprofile
        ON DELETE CASCADE
 );
 
@@ -135,7 +135,7 @@ CREATE TABLE ugc (
     longitude       DECIMAL(9, 6)   NOT NULL,
     trailname       VARCHAR(50)     NOT NULL,
     dateposted      DATE,
-    FOREIGN KEY (userid) REFERENCES userprofile
+    CONSTRAINT ugc_userid_fk FOREIGN KEY (userid) REFERENCES userprofile
         ON DELETE CASCADE,
     FOREIGN KEY (locationname, latitude, longitude, trailname) REFERENCES trail
         ON DELETE CASCADE 
@@ -166,7 +166,7 @@ CREATE TABLE friends (
     friendid        INTEGER,
     datefriended    DATE,
     PRIMARY KEY (userid, friendid),
-    FOREIGN KEY (userid) REFERENCES userprofile
+    CONSTRAINT friends_userid_fk FOREIGN KEY (userid) REFERENCES userprofile
         ON DELETE CASCADE
 );
 
@@ -197,7 +197,7 @@ CREATE TABLE userhikestrail (
     datehiked       DATE,
     timetocomplete  INTERVAL DAY TO SECOND,
     PRIMARY KEY (userid, locationname, latitude, longitude, trailname, datehiked),
-    FOREIGN KEY (userid) REFERENCES userprofile
+    CONSTRAINT userhikestrail_userid_fk FOREIGN KEY (userid) REFERENCES userprofile
         ON DELETE CASCADE,
     FOREIGN KEY (locationname, latitude, longitude, trailname) REFERENCES trail
         ON DELETE CASCADE
@@ -388,13 +388,19 @@ INSERT ALL
     INTO friends (userid, friendid, datefriended) VALUES
     (1, 2, TO_DATE('15-FEB-2024', 'DD-MON-YYYY'))
     INTO friends (userid, friendid, datefriended) VALUES
+    (2, 1, TO_DATE('15-FEB-2024', 'DD-MON-YYYY'))
+    INTO friends (userid, friendid, datefriended) VALUES
     (1, 3, TO_DATE('10-MAR-2024', 'DD-MON-YYYY'))
     INTO friends (userid, friendid, datefriended) VALUES
-    (2, 1, TO_DATE('20-APR-2024', 'DD-MON-YYYY'))
+    (3, 1, TO_DATE('10-MAR-2024', 'DD-MON-YYYY'))
     INTO friends (userid, friendid, datefriended) VALUES
     (3, 4, TO_DATE('05-MAY-2024', 'DD-MON-YYYY'))
     INTO friends (userid, friendid, datefriended) VALUES
+    (4, 3, TO_DATE('05-MAY-2024', 'DD-MON-YYYY'))
+    INTO friends (userid, friendid, datefriended) VALUES
     (4, 5, TO_DATE('25-JUL-2024', 'DD-MON-YYYY'))
+    INTO friends (userid, friendid, datefriended) VALUES
+    (5, 4, TO_DATE('25-JUL-2024', 'DD-MON-YYYY'))
 SELECT * FROM DUAL;
 
 INSERT ALL

@@ -10,10 +10,10 @@ const ProfilePage = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [updatedProfile, setUpdatedProfile] = useState({
         name: '',
-        trailsHiked: '',
-        experienceLevel: '',
+        email: '',
+        profilepictureurl: '',
     });
-    const { logout } = useAuth();
+    const { login, logout } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,8 +30,8 @@ const ProfilePage = () => {
                     setProfile(data.profile);
                     setUpdatedProfile({
                         name: data.profile.NAME,
-                        trailsHiked: data.profile.TRAILSHIKED,
-                        experienceLevel: data.profile.EXPERIENCELEVEL,
+                        email: data.profile.EMAIL,
+                        profilepictureurl: '',
                     });
                 } else {
                     setError(data.error || 'Failed to fetch profile');
@@ -92,18 +92,21 @@ const ProfilePage = () => {
                 },
                 body: JSON.stringify({
                     name: updatedProfile.name,
-                    trailsHiked: updatedProfile.trailsHiked,
-                    experienceLevel: updatedProfile.experienceLevel,
-                    userID: profile.USERID,
+                    email: updatedProfile.email,
+                    profilepictureurl: updatedProfile.profilepictureurl
                 })
             });
             const data = await response.json();
             if (data.success) {
+                if (data.token) {
+                    logout();
+                    login(data.token);
+                }
                 setProfile((prevProfile) => ({
                     ...prevProfile,
                     NAME: updatedProfile.name,
-                    TRAILSHIKED: updatedProfile.trailsHiked,
-                    EXPERIENCELEVEL: updatedProfile.experienceLevel,
+                    EMAIL: updatedProfile.email,
+                    PROFILEPICTURE: updatedProfile.profilepictureurl,
                 }));
                 setIsEditing(false);
             } else {
@@ -137,12 +140,12 @@ const ProfilePage = () => {
                             <input type="text" name="name" value={updatedProfile.name} onChange={handleChange} />
                         </div>
                         <div className="profile-form-group">
-                            <label>Trails Hiked:</label>
-                            <input type="number" name="trailsHiked" value={updatedProfile.trailsHiked} onChange={handleChange} />
+                            <label>Email:</label>
+                            <input type="text" name="email" value={updatedProfile.email} onChange={handleChange} />
                         </div>
                         <div className="profile-form-group">
-                            <label>Experience Level:</label>
-                            <input type="text" name="experienceLevel" value={updatedProfile.experienceLevel} onChange={handleChange} />
+                            <label>Profile Picture URL:</label>
+                            <input type="text" name="profilepictureurl" value={updatedProfile.profilepictureurl} onChange={handleChange} />
                         </div>
                         <button className="positive" type="submit">Save</button>
                         <button className="negative" type="button" onClick={handleEditToggle}>Cancel</button>

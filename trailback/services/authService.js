@@ -4,6 +4,7 @@ import loadEnvFile from '../utils/envUtil.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
+import { foreignKeyUpdates as userqueries } from "../config/db.js";
 
 const envVariables = loadEnvFile('./.env');
 
@@ -132,20 +133,92 @@ async function getProfile(userID) {
     });
 }
 
-async function updateProfile(name, trailshiked, experiencelevel, userID) {
+async function updateProfile(name, email, profilePictureUrl, userID) {
     return await withOracleDB(async (connection) => {
+        // Check if the new email already exists
+        if (email) {
+            const emailCheck = await connection.execute(
+                `SELECT * FROM userprofile WHERE email = :email AND userID != :userID`,
+                { email, userID },
+                { outFormat: oracledb.OUT_FORMAT_OBJECT }
+            );
+
+            if (emailCheck.rows.length > 0) {
+                throw new Error("Email already in use");
+            }
+        }
+
+        const sameEmail = await connection.execute(
+            `SELECT * FROM userprofile WHERE email = :email AND userID = :userID`,
+            { email, userID },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+        let newUserID = userID;
+        let newToken = null;
+
+        // Fetch profile picture if URL is provided
+        let imageBuffer = null;
+        if (profilePictureUrl) {
+            try {
+                const response = await axios.get(profilePictureUrl, { responseType: 'arraybuffer' });
+                imageBuffer = response.data;
+            } catch (error) {
+                console.error("Error fetching profile picture:", error);
+                throw new Error("Failed to fetch profile picture");
+            }
+        }
+
+        // Prepare the update query
+        let updateQuery = `UPDATE userprofile SET name = :name`;
+        let params = { name, userID };
+
+        if (imageBuffer) {
+            updateQuery += `, profilepicture = :profilepicture`;
+            params.profilepicture = { val: imageBuffer, type: oracledb.BLOB };
+        }
+
+        if (email && sameEmail.rows.length === 0) {
+            // Generate new userID if email is being updated
+            newUserID = await connection.execute(
+                `SELECT user_id_seq.NEXTVAL FROM DUAL`
+            );
+            newUserID = newUserID.rows[0][0];
+
+            for (let stmt of userqueries.disableConstraints) {
+                await connection.execute(stmt.sql, {}, { autoCommit: true });
+            }
+
+            for (let stmt of userqueries.updates) {
+                await connection.execute(stmt.sql, { newUserId: newUserID, oldUserId: userID }, { autoCommit: true });
+            }
+
+            for (let stmt of userqueries.enableConstraints) {
+                await connection.execute(stmt.sql, {}, { autoCommit: true });
+            }
+
+            updateQuery += `, email = :email`;
+            params.userID = newUserID;
+            params.email = email;
+            // Generate new JWT token
+            newToken = jwt.sign({ userId: newUserID }, envVariables["JWT_SECRET"], { expiresIn: '1h' });
+        }
+
+        updateQuery += ` WHERE userID = :userID`;
+        // Execute the update
         const result = await connection.execute(
-            `UPDATE userprofile 
-             SET name = :name, trailshiked = :trailshiked, experiencelevel = :experiencelevel 
-             WHERE userID = :userId`,
-            { name, trailshiked, experiencelevel, userId: userID },
+            updateQuery,
+            params,
             { autoCommit: true }
         );
 
         if (result.rowsAffected > 0) {
-            return { message: "Profile updated successfully" };
+            return {
+                message: "Profile updated successfully",
+                ...(newToken && { newToken })
+            };
         }
-        console.error("Failed to update profile");
+        throw new Error("Failed to update profile");
     });
 }
 
@@ -157,7 +230,7 @@ async function getFriends(userid) {
             JOIN friends f ON u.userid = f.friendid
             WHERE f.userid = :userid`,
             { userid: userid },
-            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+            { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "PROFILEPICTURE": { type: oracledb.BUFFER } } }
         );
 
         if (result.rows.length > 0) {
