@@ -112,15 +112,5 @@ router.get('/projectTrailAttributes', async (req, res) => {
     }
 })
 
-router.get('/projectTrailAttributes', async (req, res) => {
-    const {projectionString} = req.body; 
-
-    const result = await dataService.projectTrailAttributes(projectionString);
-    if(result === -1) {
-        res.status(500).json({ success: false, error: 'attributes Invalid or No Rows Exist' });
-    } else {
-        res.json({ success: true, data: result });
-    }
-})
 
 export default router;

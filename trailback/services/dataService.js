@@ -131,15 +131,7 @@ async function projectTrailAttributes(attributes) {
     })
 }
 
-async function joinUserTrailTransportation(predicates) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(`
-        SELECT * FROM USERPROFILE UP, USERHIKESTRAIL UHT, TRAIL T, LOCATION L WHERE ${predicates}`);
-        return result.rows;
-    }).catch(() => {
-        return -1;
-    })
-}
+
 
 
 
@@ -153,5 +145,4 @@ export {
     countDB, 
     selectionEquipment,
     projectTrailAttributes, 
-    joinUserTrailTransportation
 };
