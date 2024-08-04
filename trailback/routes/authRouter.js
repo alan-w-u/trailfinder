@@ -10,7 +10,7 @@ const router = express.Router();
 // User registration
 router.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
-    const registerResult = await authService.registerUser(name, email, password);
+    const registerResult = await authService.registerUser(name, email.toLowerCase(), password);
     if (registerResult) {
         console.log(`User ${name} successfully registered - 200`);
         res.json({ success: true });
@@ -22,7 +22,7 @@ router.post('/register', async (req, res) => {
 // User login
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    const loginResult = await authService.loginUser(email, password);
+    const loginResult = await authService.loginUser(email.toLowerCase(), password);
     if (loginResult) {
         console.log('User successfully logged in via password - 200');
         res.json({ success: true, token: loginResult });

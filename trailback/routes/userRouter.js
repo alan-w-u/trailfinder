@@ -20,7 +20,7 @@ router.get('/profile', authenticateToken, async (req, res) => {
 // Update user profile
 router.put('/profile', authenticateToken, async (req, res) => {
     const { name, email, profilepictureurl } = req.body;
-    userService.updateProfile(name, email, profilepictureurl, req.user["userId"])
+    userService.updateProfile(name, email.toLowerCase(), profilepictureurl, req.user["userId"])
         .then((result) => {
             console.log('User profile PUT update success - 200');
             if (result.newToken) {
@@ -48,7 +48,7 @@ router.get('/friends', authenticateToken, async (req, res) => {
 // Add friend
 router.put('/friends', authenticateToken, async (req, res) => {
     const { friendEmail } = req.body;
-    userService.addFriend(friendEmail, req.user["userId"])
+    userService.addFriend(friendEmail.toLowerCase(), req.user["userId"])
         .then((result) => {
             console.log('Friends ADD success - 200');
             res.json({ success: true })
