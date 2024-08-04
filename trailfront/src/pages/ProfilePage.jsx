@@ -166,8 +166,12 @@ const ProfilePage = () => {
                 <div className="friend-list">
                     {friends.map(friend => (
                         <p key={friend.FRIENDID}>
-                            Friend ID: <b>{friend.FRIENDID}</b>
-                            <br></br>
+                            Name: <b>{friend.NAME}</b>
+                            <br />
+                            Trails Hiked: <b>{friend.TRAILSHIKED}</b>
+                            <br />
+                            Experience Level: <b>{friend.EXPERIENCELEVEL}</b>
+                            <br />
                             Date Friended: <b>{new Date(friend.DATEFRIENDED).toLocaleDateString()}</b>
                         </p>
                     ))}
