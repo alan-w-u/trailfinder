@@ -107,7 +107,10 @@
 
 .trailwidgets {
     display: flex;
-    margin: 5rem auto;
+    flex-wrap: wrap;
+    width: 75%;
+    height: auto;
+    margin: 3rem auto;
     justify-content: center;
 }
 
@@ -115,10 +118,10 @@
     display: flex;
     flex-direction: column;
     width: 20rem;
-    height: 15rem;
+    height: 18rem;
     box-sizing: border-box;
     padding: 1rem;
-    margin: 0 1rem;
+    margin: 1rem;
     border-radius: 1rem;
     background-color: var(--asset-background);
     align-items: center;
@@ -126,8 +129,8 @@
 }
 
 .trailwidget:hover {
-    width: 23rem;
-    height: 16rem;
+    width: 22rem;
+    height: 19rem;
 }
 
 .trailwidget img {
@@ -137,6 +140,10 @@
 }
 
 .trailwidget h1 {
-    margin: 1rem 0 0 0;
+    margin: 1rem 0 0.5rem 0;
     font-size: 1.5rem;
+}
+
+.trailwidget p {
+    margin: 0.25rem 0 0 0;
 }

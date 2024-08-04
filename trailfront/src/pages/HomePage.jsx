@@ -1,7 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import TrailWidget from '../components/TrailWidget.jsx';
 
 function Home() {
+    const [trails, setTrails] = useState([]);
+    const [error, setError] = useState('');
+
+    const fetchTrails = async () => {
+        try {
+            const response = await fetch('http://localhost:65535/trails', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                setTrails(data.trails);
+            } else {
+                setError(data.error || 'Failed to fetch trails');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
+
+    useEffect(() => {
+        fetchTrails();
+    }, []);
+
     return (
         <div className="home-page">
             <div className="welcome">
@@ -21,9 +47,9 @@ function Home() {
                 <button className="search-button">Search</button>
             </div>
             <div className="trailwidgets">
-                <TrailWidget trailname="Mountain Trail" difficulty="Medium" preview="./trailfinder.png" />
-                <TrailWidget trailname="Lakeside Path" difficulty="Easy" preview="./trailfinder.png" />
-                <TrailWidget trailname="Forest Adventure" difficulty="Hard" preview="./trailfinder.png" />
+                {trails.map(trail => (
+                    <TrailWidget trail={trail} />
+                ))}
             </div>
         </div>
     );

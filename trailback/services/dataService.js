@@ -112,11 +112,44 @@ async function countDB(relation) {
     });
 }
 
-// Get trail information
+// Get all trail information
+async function getTrails() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT locationname, 
+                    latitude, 
+                    longitude, 
+                    trailname, 
+                    TO_CHAR(timetocomplete, 'DD HH24:MI:SS') AS timetocomplete, 
+                    description, 
+                    hazards, 
+                    difficulty
+            FROM trail`,
+            {},
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            console.log("Trails not found");
+            return [];
+        }
+    });
+}
+
+// Get specific trail information
 async function getTrail(locationname, latitude, longitude, trailname) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT *
+            `SELECT locationname, 
+                    latitude, 
+                    longitude, 
+                    trailname, 
+                    TO_CHAR(timetocomplete, 'DD HH24:MI:SS') AS timetocomplete, 
+                    description, 
+                    hazards, 
+                    difficulty
             FROM trail
             WHERE locationname = :locationname AND latitude = :latitude AND longitude = :longitude AND trailname = :trailname`,
             { locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname },
@@ -177,6 +210,7 @@ export {
     insertDB,
     deleteDB,
     countDB,
+    getTrails,
     getTrail,
     projectTrailAttributes, 
     selectionEquipment,

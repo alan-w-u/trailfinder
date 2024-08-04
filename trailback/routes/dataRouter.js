@@ -89,6 +89,28 @@ router.get('/count', async (req, res) => {
     }
 });
 
+// Get all trail information
+router.get('/trails', async (req, res) => {
+    const trailsResult = await dataService.getTrails();
+    if (trailsResult) {
+        console.log('Trails GET success - 200');
+        res.json({ success: true, trails: trailsResult });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to GET Trails' })
+    }
+});
+
+// Get specific trail information
+router.get('/trail', async (req, res) => {
+    const trailsResult = await dataService.getTrail();
+    if (trailsResult) {
+        console.log('Trails GET success - 200');
+        res.json({ success: true, trails: trailsResult });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to GET Trails' })
+    }
+});
+
 router.get('/selectEquipment', async (req, res) => {
     const {whereClause} = req.body;
     const result = await dataService.selectionEquipment(whereClause);
@@ -122,7 +144,5 @@ router.get("/joinUserWithUGC", async (req, res) => {
         res.json({ success: true, data: result });
     }
 })
-
-
 
 export default router;
