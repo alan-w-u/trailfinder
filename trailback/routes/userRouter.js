@@ -1,9 +1,7 @@
 import express from 'express';
 import * as userService from '../services/userService.js';
-import {authenticateToken} from "./authRouter.js";
-import {removeFriend} from "../services/userService.js";
-
-
+import { authenticateToken } from "./authRouter.js";
+import { removeFriend } from "../services/userService.js";
 
 const router = express.Router();
 
@@ -15,7 +13,7 @@ router.get('/profile', authenticateToken, async (req, res) => {
         console.log('User profile GET success - 200');
         res.json({ success: true, profile: profileResult });
     } else {
-        res.status(500).json({ success:false, error: 'Failed to GET Profile'} )
+        res.status(500).json({ success: false, error: 'Failed to GET Profile' })
     }
 });
 
@@ -26,13 +24,13 @@ router.put('/profile', authenticateToken, async (req, res) => {
         .then((result) => {
             console.log('User profile PUT update success - 200');
             if (result.newToken) {
-                res.json({success: true, token: result.newToken});
+                res.json({ success: true, token: result.newToken });
             } else {
-                res.json({success: true});
+                res.json({ success: true });
             }
         }).catch((e) => {
-        res.status(500).json({ success:false, error: e.message} )
-    });
+            res.status(500).json({ success: false, error: e.message })
+        });
 });
 
 // Get user friends
@@ -47,26 +45,40 @@ router.get('/friends', authenticateToken, async (req, res) => {
     }
 });
 
+// Add friend
 router.put('/friends', authenticateToken, async (req, res) => {
     const { friendEmail } = req.body;
-    userService.addFriend( friendEmail, req.user["userId"] )
+    userService.addFriend(friendEmail, req.user["userId"])
         .then((result) => {
             console.log('Friends ADD success - 200');
             res.json({ success: true })
-        }).catch((e)=>{
-           res.status(500).json({ success:false, error: e.message });
+        }).catch((e) => {
+            res.status(500).json({ success: false, error: e.message });
         });
-    });
+});
 
+// Delete friend
 router.delete('/friend', authenticateToken, async (req, res) => {
     const { friendId } = req.body;
-    await removeFriend( friendId, req.user["userId"] )
-        .then((result)=>{
+    await removeFriend(friendId, req.user["userId"])
+        .then((result) => {
             console.log('Friends DELETE success - 200');
-            res.json({ success: true} );
-        }).catch((e)=>{
-            res.status(500).json({ success:false, error: e.message });
+            res.json({ success: true });
+        }).catch((e) => {
+            res.status(500).json({ success: false, error: e.message });
         })
-    });
+});
+
+// Get equipment
+router.get('/equipment', authenticateToken, async (req, res) => {
+    const { userId } = req.user;
+    const equipmentResult = await userService.getEquipment(userId);
+    if (equipmentResult) {
+        console.log('Equipment GET success - 200');
+        res.json({ success: true, equipment: equipmentResult });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to GET Equipment' })
+    }
+});
 
 export default router;

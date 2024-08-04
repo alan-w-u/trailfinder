@@ -3,26 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext.jsx';
 import ProfileSection from '../components/ProfileSection';
 import FriendsSection from '../components/FriendsSection';
+import EquipmentSection from '../components/EquipmentSection';
 import '../components/Profile.css';
 
 const ProfilePage = () => {
-    const [profile, setProfile] = useState(null);
-    const [friends, setFriends] = useState([]);
-    const [equipment, setEquipment] = useState([]);
-    const [error, setError] = useState('');
-    const [isEditing, setIsEditing] = useState(false);
-    const [updatedProfile, setUpdatedProfile] = useState({
-        name: '',
-        email: '',
-        profilepictureurl: '',
-    });
     const { logout } = useAuth();
     const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate('/login');
+    };
 
     return (
         <div className="profile-page">
             <ProfileSection handleLogout={handleLogout} />
             <FriendsSection />
+            <EquipmentSection />
         </div>
     );
 }

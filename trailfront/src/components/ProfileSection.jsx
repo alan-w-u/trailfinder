@@ -72,7 +72,7 @@ const ProfileSection = ({ handleLogout }) => {
     if (!profile) return <div>Loading...</div>;
 
     return (
-        <div className="profile">
+        <div>
             <h1>Profile</h1>
             {isEditing ? (
                 <ProfileForm

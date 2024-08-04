@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../components/Trail.css'; // Make sure the path to your CSS file is correct
+import '../components/Trail.css';
 
 function TrailPage() {
     const [locationname, setLocationname] = useState('Yosemite National Park');

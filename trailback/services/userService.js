@@ -1,11 +1,10 @@
-import {foreignKeyUpdates as userqueries, withOracleDB} from "../config/db.js";
+import { foreignKeyUpdates as userqueries, withOracleDB } from "../config/db.js";
 import oracledb from "oracledb";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import loadEnvFile from "../utils/envUtil.js";
 
 const envVariables = loadEnvFile('./.env');
-
 
 async function getProfile(userID) {
     return await withOracleDB(async (connection) => {
@@ -244,11 +243,31 @@ async function removeFriend(friendId, userId) {
     });
 }
 
+async function getEquipment(userid) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT e.equipmentid, e.type, e.brand, e.amount, e.weight
+            FROM userprofile u
+            JOIN equipment e ON u.userid = e.userid
+            WHERE e.userid = :userid`,
+            { userid: userid },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            console.log("Equipment not found");
+            return [];
+        }
+    });
+}
 
 export {
     getProfile,
     updateProfile,
     getFriends,
     addFriend,
-    removeFriend
+    removeFriend,
+    getEquipment
 }

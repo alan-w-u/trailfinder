@@ -34,8 +34,10 @@ const ProfileForm = ({ profile, onSubmit, onCancel }) => {
                 <label>Profile Picture URL:</label>
                 <input type="text" name="profilepictureurl" value={updatedProfile.profilepictureurl} onChange={handleChange} />
             </div>
-            <button className="positive" type="submit">Save</button>
-            <button className="negative" type="button" onClick={onCancel}>Cancel</button>
+            <div className="profile-inputs">
+                <button className="positive" type="submit">Save</button>
+                <button className="negative" type="button" onClick={onCancel}>Cancel</button>
+            </div>
         </form>
     );
 };

@@ -124,7 +124,7 @@ router.get('/selectEquipment', async (req, res) => {
     }
 });
 
-//project trail aatributes
+// Project trail attributes
 router.get('/projectTrailAttributes', async (req, res) => {
     const {projectionString} = req.body; 
 

@@ -56,7 +56,7 @@ const FriendsSection = () => {
             } else {
                 setError(data.error);
             }
-        } catch(e) {
+        } catch (e) {
             setError(e.message);
         } finally {
             setIsLoading(false);
@@ -81,7 +81,7 @@ const FriendsSection = () => {
             } else {
                 setError(data.error);
             }
-        } catch(e) {
+        } catch (e) {
             setError(e.message);
         } finally {
             setIsLoading(false);
@@ -91,19 +91,21 @@ const FriendsSection = () => {
     if (isLoading) return <div>Loading...</div>;
 
     return (
-        <div className="friends">
+        <div>
             <h1>Friends</h1>
-            <FriendList friends={friends} deleteFriend={deleteFriend}/>
-            <input
-                className="friend-input"
-                type="email"
-                placeholder="Enter friend's email"
-                value={friendEmail}
-                onChange={(e) => setFriendEmail(e.target.value)}
-            />
-            <button className="positive" onClick={addFriend} disabled={isLoading}>
-                {isLoading ? 'Adding...' : 'Add Friend'}
-            </button>
+            <FriendList friends={friends} deleteFriend={deleteFriend} />
+            <div className="profile-inputs">
+                <input
+                    className="friend-input"
+                    type="email"
+                    placeholder="Enter friend's email"
+                    value={friendEmail}
+                    onChange={(e) => setFriendEmail(e.target.value)}
+                />
+                <button className="positive" onClick={addFriend} disabled={isLoading}>
+                    {isLoading ? 'Adding...' : 'Add Friend'}
+                </button>
+            </div>
             {error && <div className="error-message">{error}</div>}
         </div>
     );
