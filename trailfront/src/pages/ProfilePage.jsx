@@ -118,7 +118,7 @@ const ProfilePage = () => {
     if (!profile || !friends) return <div>Loading...</div>;
 
     return (
-        <div className="profile-container">
+        <div className="profile-page">
             <div className="profile">
                 <h1>Profile</h1>
                 <img className="profile-picture"
