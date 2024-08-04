@@ -12,7 +12,6 @@ function LoginPage() {
         setAuthMode(authMode === "Log In" ? "Sign Up" : "Log In");
         setErrorMessage('');
         setSuccessMessage('');
-        // setShowPassword(false);
     };
 
     return (
