@@ -297,24 +297,49 @@ async function selectionEquipment(whereClause) {
     });
 }
 
-//join
-async function joinUserUGCReview(predicates, attributes) {
+// join
+// async function joinUserUGCReview(rating) {
+//     return await withOracleDB(async (connection) => {
+//         const result = await connection.execute(
+//             `SELECT *
+//             FROM userprofile u
+//             JOIN ugc ON u.userid = ugc.userid
+//             JOIN review r ON ugc.ugcid = r.ugcid
+//             JOIN trail t ON ugc.locationname = t.locationname AND ugc.latitude = t.latitude AND ugc.longitude = t.longitude AND ugc.trailname = t.trailname
+//             WHERE r.rating >= :rating`,
+//             { rating: rating },
+//             { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "PROFILEPICTURE": { type: oracledb.BUFFER } } }
+//         );
+//         return result.rows;
+//     }).catch(() => {
+//         return -1;
+//     })
+// }
+async function joinUserUGC(locationname, latitude, longitude, trailname, rating) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT ${attributes}
-            FROM userprofile, ugc, review, trail 
-            WHERE ${predicates}`);
+            `SELECT *
+            FROM ugc
+            JOIN review r ON ugc.ugcid = r.ugcid
+            JOIN userprofile u ON ugc.userid = u.userid
+            WHERE ugc.locationname = :locationname AND ugc.latitude = :latitude AND ugc.longitude = :longitude AND ugc.trailname = :trailname AND rating = :rating`,
+            { locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname, rating: rating },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "PROFILEPICTURE": { type: oracledb.BUFFER } } }
+        );
         return result.rows;
     }).catch(() => {
         return -1;
     })
 }
 
-//find heaviest equipment for each type // group by
+// Find heaviest equipment for each type // group by
 async function findHeaviestEquipmentType() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(`SELECT max(weight), type FROM equipment WHERE weight > 1 GROUP BY type`);
-        console.log(result);
+        const result = await connection.execute(
+            `SELECT type, max(weight)
+            FROM equipment 
+            WHERE weight > 1 GROUP BY type`
+        );
         return result.rows;
     }).catch(() => {
         return -1; 
@@ -338,6 +363,6 @@ export {
     getUGC,
     projectTrailAttributes,
     selectionEquipment,
-    joinUserUGCReview, 
+    joinUserUGC, 
     findHeaviestEquipmentType
 };

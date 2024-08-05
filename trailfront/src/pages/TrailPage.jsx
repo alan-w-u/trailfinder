@@ -9,6 +9,8 @@ function TrailPage() {
     const [transportation, setTransportation] = useState([]);
     const [retailerGear, setRetailerGear] = useState([]);
     const [ugc, setUGC] = useState([]);
+    const [ugcReview, setUGCReview] = useState([]);
+    const [rating, setRating] = useState(0);
 
     const fetchPreviews = async () => {
         try {
@@ -86,12 +88,39 @@ function TrailPage() {
         }
     };
 
+    const fetchJoinUserUGC = async () => {
+        try {
+            const response = await fetch(`http://localhost:65535/join-user-ugc?locationname=${locationname}&latitude=${latitude}&longitude=${longitude}&trailname=${trailname}&rating=${rating}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                setUGCReview(data.ugc);
+            } else {
+                setError(data.error || 'Failed to fetch UGC');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
+
+    const handleRatingChange = (event) => {
+        setRating(Number(event.target.value));
+    };
+
     useEffect(() => {
         fetchPreviews();
         fetchTransportation();
         fetchRetailerGear();
         fetchUGC();
     }, []);
+
+    // useEffect(() => {
+    //     fetchJoinUserUGC();
+    // }, [rating]);
 
     return (
         <div className="trail-page">
@@ -176,6 +205,56 @@ function TrailPage() {
                     <b>Reviews</b>
                     <p>&nbsp;</p>
                     {ugc.map((item, index) => (
+                        <li key={index}>
+                            <b>{item.NAME}</b>
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            {item.RATING &&
+                                <>
+                                    <b>{item.RATING} ★</b>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                </>
+                            }
+                            <b>{new Date(item.DATEPOSTED.split('T')[0]).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</b>
+                            {item.IMAGE &&
+                                <>
+                                    <p>&nbsp;</p>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    {item.IMAGE}
+                                </>
+                            }
+                            {item.DESCRIPTION &&
+                                <>
+                                    <p>&nbsp;</p>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    {item.DESCRIPTION}
+                                </>
+                            }
+                        </li>
+                    ))}
+                </div>
+            </div>
+            <div className="trail-info">
+                <div className="full">
+                    <b>Reviews by Rating</b>
+                    <p>&nbsp;</p>
+                    <div className="rating-selection">
+                        <b>Select a rating:</b>
+                        <div className="rating-selection">
+                            {[1, 2, 3, 4, 5].map((num) => (
+                                <label key={num}>
+                                    <input
+                                        type="radio"
+                                        name="rating"
+                                        value={num}
+                                        checked={rating === num}
+                                        onChange={handleRatingChange}
+                                    />
+                                    {num}
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                    {ugcReview.map((item, index) => (
                         <li key={index}>
                             <b>{item.NAME}</b>
                             <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
