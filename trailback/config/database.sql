@@ -169,6 +169,8 @@ CREATE TABLE friends (
     datefriended    DATE,
     PRIMARY KEY (userid, friendid),
     CONSTRAINT friends_userid_fk FOREIGN KEY (userid) REFERENCES userprofile
+        ON DELETE CASCADE,
+    CONSTRAINT friends_friendid_fk FOREIGN KEY (friendid) REFERENCES userprofile
         ON DELETE CASCADE
 );
 

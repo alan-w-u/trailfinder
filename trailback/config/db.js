@@ -70,6 +70,7 @@ export const foreignKeyUpdates = {
         { sql: 'ALTER TABLE equipment DISABLE CONSTRAINT equipment_userid_fk' },
         { sql: 'ALTER TABLE ugc DISABLE CONSTRAINT ugc_userid_fk' },
         { sql: 'ALTER TABLE friends DISABLE CONSTRAINT friends_userid_fk' },
+        { sql: 'ALTER TABLE friends DISABLE CONSTRAINT friends_friendid_fk'},
         { sql: 'ALTER TABLE userhikestrail DISABLE CONSTRAINT userhikestrail_userid_fk' }
     ],
     updates: [
@@ -84,6 +85,7 @@ export const foreignKeyUpdates = {
         { sql: 'ALTER TABLE equipment ENABLE CONSTRAINT equipment_userid_fk' },
         { sql: 'ALTER TABLE ugc ENABLE CONSTRAINT ugc_userid_fk' },
         { sql: 'ALTER TABLE friends ENABLE CONSTRAINT friends_userid_fk' },
+        { sql: 'ALTER TABLE friends ENABLE CONSTRAINT friends_friendid_fk'},
         { sql: 'ALTER TABLE userhikestrail ENABLE CONSTRAINT userhikestrail_userid_fk' }
     ]
 };
