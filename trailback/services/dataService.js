@@ -297,6 +297,7 @@ async function selectionEquipment(whereClause) {
     });
 }
 
+//join
 async function joinUserUGCReview(predicates, attributes) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -306,6 +307,16 @@ async function joinUserUGCReview(predicates, attributes) {
         return result.rows;
     }).catch(() => {
         return -1;
+    })
+}
+
+//find heaviest equipment for each type // group by
+async function findHeaviestEquipmentType() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`SELECT max(weight), type FROM equipment WHERE weight > 1 GROUP BY type`);
+        return result.rows;
+    }).catch(() => {
+        return -1; 
     })
 }
 
@@ -326,5 +337,6 @@ export {
     getUGC,
     projectTrailAttributes,
     selectionEquipment,
-    joinUserUGCReview
+    joinUserUGCReview, 
+    findHeaviestEquipmentType
 };

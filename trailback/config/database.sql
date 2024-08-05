@@ -261,9 +261,9 @@ INSERT ALL
     INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
     (11, 3, 'Backpack', 'REI', 1, 3.2)
     INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
-    (5, 4, 'Hiking Boots', 'The North Face', 1, 1.5)
+    (12, 4, 'Hiking Boots', 'The North Face', 1, 1.5)
     INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
-    (5, 4, 'Backpack', 'The North Face', 1, 1.9)
+    (13, 4, 'Backpack', 'The North Face', 1, 1.9)
 
 SELECT * FROM DUAL;
 

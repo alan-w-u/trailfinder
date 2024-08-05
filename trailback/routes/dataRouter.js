@@ -204,4 +204,14 @@ router.get("/joinUserWithUGC", async (req, res) => {
     }
 })
 
+//find heaviest equipment by type
+router.get("/findHeaviestEquipmentByType", async (req, res) => {
+    const result = await dataService.findHeaviestEquipmentType(); 
+    if (result === -1) {
+        res.status(500).json({ success: false, error: 'Error or No Rows Exist' });
+    } else {
+        res.json({ success: true, data: result });
+    }
+})
+
 export default router;
