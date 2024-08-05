@@ -5,6 +5,7 @@ function HomePage() {
     const [trails, setTrails] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [error, setError] = useState('');
+    const [debounce, setdebounce] = useState(searchText);
 
     const fetchTrails = async () => {
         try {
@@ -25,10 +26,7 @@ function HomePage() {
         }
     };
 
-    const fetchSelectionTrails = async (searchText) => {
-        if (searchText = '') {
-            return;
-        }
+    const fetchSelectionTrails = async () => {
         try {
             const response = await fetch(`http://localhost:65535/selection-trails?search=${searchText}`, {
                 method: 'GET',
@@ -56,8 +54,24 @@ function HomePage() {
     }, []);
 
     useEffect(() => {
-        // fetchSelectionTrails(searchText);
+        // fetchSelectionTrails();
     }, [searchText]);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setdebounce(searchText);
+        }, 500);
+
+        return () => {
+            clearTimeout(handler);
+        };
+    }, [searchText]);
+
+    useEffect(() => {
+        if (debounce) {
+            fetchSelectionTrails();
+        }
+    }, [debounce]);
 
     return (
         <div className="home-page">
@@ -66,7 +80,7 @@ function HomePage() {
                 <p>Discover and explore amazing trails near you!</p>
             </div>
             <div className="search">
-                <input type="text" className="searchbar" placeholder="Search" value={searchText} onChange={handleSearch} />
+                <input type="text" className="searchbar" placeholder="Search" onChange={handleSearch} />
                 <div class="filter">
                     <button class="filter-button">Filter</button>
                     <div class="filter-content">

@@ -111,9 +111,9 @@ router.get('/trail', async (req, res) => {
     }
 });
 
-// Select tuples from trail with specific difficulty
+// Select tuples from trail with specific name
 router.get('/selection-trails', async (req, res) => {
-    const { search } = req.body;
+    const { search } = req.query;
     const trailsResult = await dataService.selectionTrails(search);
     if (trailsResult) {
         console.log('Trails GET success - 200');
