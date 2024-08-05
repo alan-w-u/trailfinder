@@ -333,6 +333,10 @@ INSERT ALL
     ('Tent', 'Wilderness Shelter', 'Yellowstone National Park', 44.428000, -110.588500, 'Lamar Valley Trail')
     INTO gear (geartype, gearname, locationname, latitude, longitude, trailname) VALUES
     ('Sleeping Bag', 'Apine Dreamer', 'Glacier National Park', 48.759600, -113.787000, 'Highline Trail')
+    INTO gear (geartype, gearname, locationname, latitude, longitude, trailname) VALUES
+    ('Snow Shoes', 'Atlas Helium', 'Glacier National Park', 48.6806, -113.819230, 'Avalanche Lake Trail')
+    INTO gear (geartype, gearname, locationname, latitude, longitude, trailname) VALUES
+    ('Snow Shoes', 'Atlas Helium V2', 'Glacier National Park', 48.719600, -113.682000, 'Grinnell Glacier Trail')
 SELECT * FROM DUAL;
 
 INSERT ALL
