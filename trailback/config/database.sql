@@ -471,6 +471,10 @@ INSERT ALL
     (4, 'Yellowstone National Park', 44.428000, -110.588500, 'Lamar Valley Trail', DATE '2023-09-10', INTERVAL '02:50:00' HOUR TO SECOND)
     INTO userhikestrail (userid, locationname, latitude, longitude, trailname, datehiked, timetocomplete) VALUES
     (5, 'Glacier National Park', 48.759600, -113.787000, 'Highline Trail', DATE '2023-07-30', INTERVAL '06:20:00' HOUR TO SECOND)
+    INTO userhikestrail (userid, locationname, latitude, longitude, trailname, datehiked, timetocomplete) VALUES
+    (5, 'Glacier National Park', 48.6806, -113.819230, 'Avalanche Lake Trail', DATE '2023-08-15', INTERVAL '06:20:00' HOUR TO SECOND)
+    INTO userhikestrail (userid, locationname, latitude, longitude, trailname, datehiked, timetocomplete) VALUES
+    (5, 'Glacier National Park', 48.719600, -113.682000, 'Grinnell Glacier Trail', DATE '2023-08-30', INTERVAL '06:20:00' HOUR TO SECOND)
 SELECT * FROM DUAL;
 
 INSERT ALL
