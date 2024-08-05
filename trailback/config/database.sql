@@ -30,6 +30,8 @@ CREATE TABLE userprofile (
     numberoffriends INTEGER         DEFAULT 0
 );
 
+grant select on userprofile to public;
+
 CREATE TABLE equipment (
     equipmentid     INTEGER         PRIMARY KEY,
     userid          INTEGER,
