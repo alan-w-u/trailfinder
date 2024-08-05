@@ -384,6 +384,10 @@ INSERT ALL
     (4, 4, 'Yellowstone National Park', 44.428000, -110.588500, 'Lamar Valley Trail', DATE '2023-09-10')
     INTO ugc (ugcid, userid, locationname, latitude, longitude, trailname, dateposted) VALUES
     (5, 5, 'Glacier National Park', 48.759600, -113.787000, 'Highline Trail', DATE '2023-07-30')
+    INTO ugc (ugcid, userid, locationname, latitude, longitude, trailname, dateposted) VALUES
+    (6, 5, 'Glacier National Park', 48.6806, -113.819230, 'Avalanche Lake Trail', DATE '2023-08-15')
+    INTO ugc (ugcid, userid, locationname, latitude, longitude, trailname, dateposted) VALUES
+    (7, 5, 'Glacier National Park', 48.719600, -113.682000, 'Grinnell Glacier Trail', DATE '2023-8-30')
 select * FROM DUAL;
 
 INSERT ALL
