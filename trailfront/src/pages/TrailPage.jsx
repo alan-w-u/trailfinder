@@ -22,10 +22,10 @@ function TrailPage() {
             </div>
             <div className="trail-info">
                 <div className="left">
-                    <b>Time to Complete — {timetocomplete}</b>
+                    <b>Time to Complete <span>—</span> {timetocomplete} <span>(hrs:mins)</span></b>
                 </div>
                 <div className="right">
-                    <b>Difficulty — {difficulty}</b>
+                    <b>Difficulty <span>—</span> {difficulty}</b>
                 </div>
             </div>
             <div className="trail-info">
@@ -37,7 +37,11 @@ function TrailPage() {
                 <div className="hazards right">
                     <b>Hazards</b>
                     <p>&nbsp;</p>
-                    <p>{hazards}</p>
+                    <ul>
+                        {hazards.split(',').map((hazard, index) => (
+                            <li key={index}>{hazard.trim()}</li>
+                        ))}
+                    </ul>
                 </div>
             </div>
             <div className="trail-info">

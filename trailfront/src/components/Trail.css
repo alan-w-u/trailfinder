@@ -25,6 +25,10 @@
     margin: 0;
 }
 
+.trail-info span {
+    font-weight: normal;
+}
+
 .trail-info div {
     display: flex;
     flex-direction: column;
@@ -70,6 +74,15 @@
 .hazards {
     width: 30%;
     height: auto;
+}
+
+.hazards ul {
+    padding: 0 0 0 1.5rem;
+    margin: 0;
+}
+
+.hazards li::marker {
+    content: '— ';
 }
 
 .equipment {
