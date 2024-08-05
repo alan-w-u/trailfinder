@@ -454,6 +454,10 @@ INSERT ALL
     (4, 'Yellowstone National Park', 44.428000, -110.588500, INTERVAL '02:00:00' HOUR TO SECOND, 0.00)
     INTO transportationtolocation (transportid, locationname, latitude, longitude, duration, tripcost) VALUES
     (5, 'Glacier National Park', 48.759600, -113.787000, INTERVAL '00:45:00' HOUR TO SECOND, 20.00)
+    INTO transportationtolocation (transportid, locationname, latitude, longitude, duration, tripcost) VALUES
+    (6, 'Glacier National Park', 48.6806, -113.819230, INTERVAL '00:45:00' HOUR TO SECOND, 20.00)
+    INTO transportationtolocation (transportid, locationname, latitude, longitude, duration, tripcost) VALUES
+    (7, 'Glacier National Park', 48.719600, -113.682000, INTERVAL '00:45:00' HOUR TO SECOND, 20.00)
 SELECT * FROM DUAL;
 
 INSERT ALL
