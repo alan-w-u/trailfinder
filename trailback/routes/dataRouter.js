@@ -114,13 +114,12 @@ router.get('/trail', async (req, res) => {
 // Select tuples from trail with specific name
 router.get('/selection-trails', async (req, res) => {
     const { search } = req.query;
-    const trailsResult = await dataService.selectionTrails(search);
-    if (trailsResult) {
-        console.log('Trails GET success - 200');
-        res.json({ success: true, trail: trailsResult });
-    } else {
-        res.status(500).json({ success: false, error: 'Failed to GET Trails' })
-    }
+    return await dataService.selectionTrails(JSON.parse(decodeURIComponent(search))).then((trailsResult)=> {
+        console.log('Select Trails Success - 200')
+        res.json({ success: true, trails: trailsResult });
+    }).catch ((e)=> {
+        res.status(500).json({ success: false, error: e.message });
+    });
 });
 
 // Get trail preview information
