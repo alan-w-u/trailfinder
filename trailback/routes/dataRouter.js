@@ -234,4 +234,14 @@ router.get("/findUsersWithoutEquipment", async (req, res) => {
     }
 })
 
+router.get("/projectAttributesAndTables", async (req, res) => {
+    const {attributes, tables} = req.body; 
+    const result = await dataService.projectAttributesAndTables(attributes, tables); 
+    if (result === -1) {
+        res.status(500).json({ success: false, error: 'Invalid Attributes/Tables or No Rows Exist' });
+    } else {
+        res.json({ success: true, data: result });
+    }
+})
+
 export default router;

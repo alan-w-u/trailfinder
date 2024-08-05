@@ -386,6 +386,16 @@ async function findUsersWithoutEquipment() {
     })
 }
 
+//project arbitrary tables and attributes 
+async function projectAttributesAndTables(attributes, tableNames) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`SELECT ${attributes} FROM ${tableNames}`);
+        return result.rows;
+    }).catch(() => {
+        return -1; 
+    })
+}
+
 export {
     testOracleConnection,
     initializeDB,
@@ -406,5 +416,6 @@ export {
     joinUserUGC, 
     findHeaviestEquipmentType,
     findCheapestTransportPerType,
-    findUsersWithoutEquipment
+    findUsersWithoutEquipment,
+    projectAttributesAndTables
 };
