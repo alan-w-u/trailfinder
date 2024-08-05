@@ -2,9 +2,14 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100%;
-    padding: 2rem 0 0 0;
+    height: auto;
+    padding: 2rem 0 5rem 0;
     align-items: center;
+}
+
+.full {
+    width: 100%;
+    height: auto;
 }
 
 .left {
@@ -70,7 +75,7 @@
 
 .previews {
     width: 60%;
-    height: 20rem;
+    min-height: 20rem;
     margin: 2rem 0;
     border-radius: 0.5rem;
     background-color: var(--asset-background);
@@ -92,14 +97,4 @@
 .hazards ul {
     padding: 0 0 0 1.5rem;
     margin: 0;
-}
-
-.equipment {
-    width: 100%;
-    height: auto;
-}
-
-.reviews {
-    width: 100%;
-    height: auto; 
 }

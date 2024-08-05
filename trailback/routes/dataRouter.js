@@ -123,6 +123,18 @@ router.get('/selection-trails', async (req, res) => {
     }
 });
 
+// Get transportation information
+router.get('/transportation', async (req, res) => {
+    const { locationname, latitude, longitude } = req.query;
+    const transportationResult = await dataService.getTransportation(locationname, latitude, longitude);
+    if (transportationResult) {
+        console.log('Transportation GET success - 200');
+        res.json({ success: true, transportation: transportationResult });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to GET Transportation' })
+    }
+});
+
 // Get retailer and gear information
 router.get('/retailer-gear', async (req, res) => {
     const { locationname, latitude, longitude, trailname } = req.query;

@@ -177,7 +177,7 @@ async function selectionTrails(predicates) {
                     difficulty
             FROM trail
             WHERE locationname LIKE :predicates OR trailname LIKE :predicates`,
-            {predicates: `%${predicates}%`},
+            { predicates: `%${predicates}%` },
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
 
@@ -190,6 +190,30 @@ async function selectionTrails(predicates) {
     })
 }
 
+// Get transportation information
+async function getTransportation(locationname, latitude, longitude) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT t.transportid, t.type, t.transportcost,
+                    l.locationname, l.latitude, l.longitude, l.weather,
+                    TO_CHAR(ttl.duration, 'DD HH24:MI:SS') AS duration, ttl.tripcost
+            FROM transportation t
+            JOIN transportationtolocation ttl ON t.transportid = ttl.transportid
+            JOIN location l ON l.locationname = ttl.locationname
+            WHERE l.locationname = :locationname AND l.latitude = :latitude AND l.longitude = :longitude`,
+            { locationname: locationname, latitude: latitude, longitude: longitude },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            console.log("Transportation not found");
+            return [];
+        }
+    });
+}
+
 // Get gear information
 async function getRetailerGear(locationname, latitude, longitude, trailname) {
     return await withOracleDB(async (connection) => {
@@ -200,14 +224,14 @@ async function getRetailerGear(locationname, latitude, longitude, trailname) {
             JOIN retailer2 rb ON rb.retailerid = rfg.retailerid
             JOIN retailer1 ra ON ra.retailername = rb.retailername
             WHERE g.locationname = :locationname AND g.latitude = :latitude AND g.longitude = :longitude AND g.trailname = :trailname`,
-            {locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname},
+            { locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname },
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
 
         if (result.rows.length > 0) {
             return result.rows;
         } else {
-            console.log("Gear not found");
+            console.log("Retailer or Gear not found");
             return [];
         }
     });
@@ -223,7 +247,7 @@ async function getUGC(locationname, latitude, longitude, trailname) {
             JOIN photo p ON ugc.ugcid = p.ugcid
             JOIN userprofile u ON ugc.userid = u.userid
             WHERE ugc.locationname = :locationname AND ugc.latitude = :latitude AND ugc.longitude = :longitude AND ugc.trailname = :trailname`,
-            {locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname},
+            { locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname },
             { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "IMAGE": { type: oracledb.BUFFER }, "PROFILEPICTURE": { type: oracledb.BUFFER } } }
         );
 
@@ -284,9 +308,10 @@ export {
     getTrails,
     getTrail,
     selectionTrails,
+    getTransportation,
     getRetailerGear,
     getUGC,
-    projectTrailAttributes, 
+    projectTrailAttributes,
     selectionEquipment,
     joinUserUGCReview
 };
