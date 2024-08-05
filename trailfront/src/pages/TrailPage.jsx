@@ -5,11 +5,11 @@ import '../components/Trail.css';
 function TrailPage() {
     const location = useLocation();
     const { locationname, latitude, longitude, trailname, timetocomplete, description, hazards, difficulty } = location.state || {};
-    const [gear, setGear] = useState([]);
+    const [retailerGear, setRetailerGear] = useState([]);
 
-    const fetchGear = async () => {
+    const fetchRetailerGear = async () => {
         try {
-            const response = await fetch(`http://localhost:65535/gear?locationname=${locationname}&latitude=${latitude}&longitude=${longitude}&trailname=${trailname}`, {
+            const response = await fetch(`http://localhost:65535/retailer-gear?locationname=${locationname}&latitude=${latitude}&longitude=${longitude}&trailname=${trailname}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -17,9 +17,9 @@ function TrailPage() {
             });
             const data = await response.json();
             if (data.success) {
-                setGear(data.gear);
+                setRetailerGear(data.retailerGear);
             } else {
-                setError(data.error || 'Failed to fetch trails');
+                setError(data.error || 'Failed to fetch retailers and gear');
             }
         } catch (error) {
             setError('Network error: ' + error.message);
@@ -27,7 +27,7 @@ function TrailPage() {
     };
 
     useEffect(() => {
-        fetchGear();
+        fetchRetailerGear();
     }, []);
 
     return (
@@ -73,9 +73,11 @@ function TrailPage() {
                     <b>Recommended Gear</b>
                     <p>&nbsp;</p>
                     <ul>
-                        {gear.map((item, index) => (
+                        {retailerGear.map((item, index) => (
                             <li key={index}>
-                                <b>{item.GEARNAME} <span>({item.GEARTYPE})</span></b>
+                                <b>{item.GEARNAME}</b> ({item.GEARTYPE})
+                                <p>&nbsp;</p>
+                                <b><a href={item.PRODUCTWEBSITE}>{item.PRODUCTNAME}</a></b> — {item.RETAILERNAME}
                             </li>
                         ))}
                     </ul>
@@ -84,7 +86,7 @@ function TrailPage() {
             <div className="trail-info">
                 <div className="reviews">
                     <b>Reviews</b>
-                    <p>&nbsp;</p> {/* spacer */}
+                    <p>&nbsp;</p>
                 </div>
             </div>
         </div>
