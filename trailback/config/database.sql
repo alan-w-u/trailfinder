@@ -350,6 +350,10 @@ INSERT ALL
     (4, EMPTY_BLOB())
     INTO preview1 (previewid, image) VALUES
     (5, EMPTY_BLOB())
+    INTO preview1 (previewid, image) VALUES
+    (6, EMPTY_BLOB())
+    INTO preview1 (previewid, image) VALUES
+    (7, EMPTY_BLOB())
 SELECT * FROM DUAL;
 
 INSERT ALL
