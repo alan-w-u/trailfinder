@@ -193,15 +193,6 @@ router.get('/projectTrailAttributes', async (req, res) => {
 })
 
 // Join user ugc review
-// router.get("/join-user-ugc", async (req, res) => {
-//     const { rating } = req.body;
-//     const result = await dataService.joinUserUGCReview(rating);
-//     if (result === -1) {
-//         res.status(500).json({ success: false, error: 'attributes Invalid or No Rows Exist' });
-//     } else {
-//         res.json({ success: true, data: result });
-//     }
-// })
 router.get("/join-user-ugc", async (req, res) => {
     const { locationname, latitude, longitude, trailname, rating } = req.query;
     const result = await dataService.joinUserUGC(locationname, latitude, longitude, trailname, rating);

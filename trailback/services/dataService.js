@@ -334,23 +334,6 @@ async function selectionEquipment(whereClause) {
 }
 
 // join
-// async function joinUserUGCReview(rating) {
-//     return await withOracleDB(async (connection) => {
-//         const result = await connection.execute(
-//             `SELECT *
-//             FROM userprofile u
-//             JOIN ugc ON u.userid = ugc.userid
-//             JOIN review r ON ugc.ugcid = r.ugcid
-//             JOIN trail t ON ugc.locationname = t.locationname AND ugc.latitude = t.latitude AND ugc.longitude = t.longitude AND ugc.trailname = t.trailname
-//             WHERE r.rating >= :rating`,
-//             { rating: rating },
-//             { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "PROFILEPICTURE": { type: oracledb.BUFFER } } }
-//         );
-//         return result.rows;
-//     }).catch(() => {
-//         return -1;
-//     })
-// }
 async function joinUserUGC(locationname, latitude, longitude, trailname, rating) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
