@@ -15,10 +15,6 @@
     margin: 0 0 0 1rem;
 }
 
-li::marker {
-    content: '— ';
-}
-
 .trail-info {
     display: flex;
     width: 60%;
@@ -31,6 +27,19 @@ li::marker {
 
 .trail-info span {
     font-weight: normal;
+}
+
+.trail-info a {
+    color: var(--asset-hover);
+}
+
+.trail-info a:hover {
+    color: var(--asset-active);
+    text-decoration: underline;
+}
+
+.trail-info li::marker {
+    content: '— ';
 }
 
 .trail-info div {
