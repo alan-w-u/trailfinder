@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import './Home.css'
 
-const TrailWidget = ({ trail }) => {
+const TrailWidget = ({ trail, preview }) => {
     const navigate = useNavigate();
 
     const handleTrailWidgetClick = () => {
@@ -15,7 +15,7 @@ const TrailWidget = ({ trail }) => {
 
     return (
         <div className="trailwidget" onClick={handleTrailWidgetClick}>
-            <img src="./trailfinder.png" alt="trail image" />
+            {preview && <img src={preview} alt="" />}
             <h1>{trail.TRAILNAME}</h1>
             <em>{trail.LOCATIONNAME}</em>
             <p>&nbsp;</p>

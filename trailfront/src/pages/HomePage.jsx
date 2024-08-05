@@ -3,6 +3,7 @@ import TrailWidget from '../components/TrailWidget.jsx';
 
 function HomePage() {
     const [trails, setTrails] = useState([]);
+    const [previews, setPreviews] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [error, setError] = useState('');
     const [debounce, setDebounce] = useState(searchText);
@@ -45,12 +46,32 @@ function HomePage() {
         }
     };
 
+    const fetchPreviews = async () => {
+        try {
+            const response = await fetch(`http://localhost:65535/previews?locationname=${locationname}&latitude=${latitude}&longitude=${longitude}&trailname=${trailname}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                setPreviews(data.previews);
+            } else {
+                setError(data.error || 'Failed to fetch Previews');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
+
     const handleSearch = (event) => {
         setSearchText(event.target.value);
     };
 
     useEffect(() => {
         fetchTrails();
+        fetchPreviews();
     }, []);
 
     useEffect(() => {
@@ -91,7 +112,7 @@ function HomePage() {
             </div>
             <div className="trailwidgets">
                 {trails.map(trail => (
-                    <TrailWidget trail={trail} />
+                    <TrailWidget trail={trail} preview={previews[0]} />
                 ))}
             </div>
         </div>
