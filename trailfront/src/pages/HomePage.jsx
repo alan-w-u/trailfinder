@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import TrailWidget from '../components/TrailWidget.jsx';
 
-function Home() {
+function HomePage() {
     const [trails, setTrails] = useState([]);
+    const [searchText, setSearchText] = useState('');
     const [error, setError] = useState('');
 
     const fetchTrails = async () => {
@@ -24,9 +25,39 @@ function Home() {
         }
     };
 
+    const fetchSelectionTrails = async (searchText) => {
+        if (searchText = '') {
+            return;
+        }
+        try {
+            const response = await fetch(`http://localhost:65535/selection-trails?search=${searchText}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                setTrails(data.trails);
+            } else {
+                setError(data.error || 'Failed to fetch trails');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
+
+    const handleSearch = (event) => {
+        setSearchText(event.target.value);
+    };
+
     useEffect(() => {
         fetchTrails();
     }, []);
+
+    useEffect(() => {
+        // fetchSelectionTrails(searchText);
+    }, [searchText]);
 
     return (
         <div className="home-page">
@@ -35,7 +66,7 @@ function Home() {
                 <p>Discover and explore amazing trails near you!</p>
             </div>
             <div className="search">
-                <input type="text" className="searchbar" placeholder="Search" />
+                <input type="text" className="searchbar" placeholder="Search" value={searchText} onChange={handleSearch} />
                 <div class="filter">
                     <button class="filter-button">Filter</button>
                     <div class="filter-content">
@@ -55,4 +86,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default HomePage;
