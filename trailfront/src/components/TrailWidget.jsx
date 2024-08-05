@@ -8,7 +8,7 @@ const TrailWidget = ({ trail, preview }) => {
         navigate('/trail', {
             state: {
                 locationname: trail.LOCATIONNAME, latitude: trail.LATITUDE, longitude: trail.LONGITUDE, trailname: trail.TRAILNAME,
-                timetocomplete: trail.TIMETOCOMPLETE.match(/\d{2}:\d{2}/), description: trail.DESCRIPTION, hazards: trail.HAZARDS, difficulty: trail.DIFFICULTY
+                timetocomplete: `${String(trail.HOURS).padStart(2, '0')}:${String(trail.MINUTES).padStart(2, '0')}`, description: trail.DESCRIPTION, hazards: trail.HAZARDS, difficulty: trail.DIFFICULTY
             }
         });
     };
@@ -19,7 +19,7 @@ const TrailWidget = ({ trail, preview }) => {
             <h1>{trail.TRAILNAME}</h1>
             <em>{trail.LOCATIONNAME}</em>
             <p>&nbsp;</p>
-            <p>Time to Complete : <b>{trail.TIMETOCOMPLETE.match(/\d{2}:\d{2}/)}</b></p>
+            <p>Time to Complete : <b>{`${String(trail.HOURS).padStart(2, '0')}:${String(trail.MINUTES).padStart(2, '0')}`}</b></p>
             <p>Difficulty : <b>{trail.DIFFICULTY}</b></p>
         </div>
     );

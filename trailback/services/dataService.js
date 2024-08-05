@@ -116,8 +116,9 @@ async function countDB(relation) {
 async function getTrails() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT locationname, latitude, longitude, trailname, 
-                    TO_CHAR(timetocomplete, 'DD HH24:MI:SS') AS timetocomplete, 
+            `SELECT locationname, latitude, longitude, trailname,
+                    EXTRACT(HOUR FROM timetocomplete) AS hours,
+                    EXTRACT(MINUTE FROM timetocomplete) AS minutes,
                     description, hazards, difficulty
             FROM trail`,
             {},
@@ -137,8 +138,9 @@ async function getTrails() {
 async function getTrail(locationname, latitude, longitude, trailname) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT locationname, latitude, longitude, trailname, 
-                    TO_CHAR(timetocomplete, 'DD HH24:MI:SS') AS timetocomplete, 
+            `SELECT locationname, latitude, longitude, trailname,
+                    EXTRACT(HOUR FROM timetocomplete) AS hours,
+                    EXTRACT(MINUTE FROM timetocomplete) AS minutes,
                     description, hazards, difficulty
             FROM trail
             WHERE locationname = :locationname AND latitude = :latitude AND longitude = :longitude AND trailname = :trailname`,
@@ -155,24 +157,57 @@ async function getTrail(locationname, latitude, longitude, trailname) {
     });
 }
 
+function buildWhereClause(conditions) {
+    let whereClause = '';
+    let params = {};
+    let paramIndex = 1;
+
+    conditions.forEach((condition, index) => {
+        if (condition === '&&' || condition === '||') {
+            whereClause += ` ${(condition === '&&') ? "AND" : "OR"} `;
+        } else {
+            let { field, operator, value } = condition;
+            let dbField = field;
+
+            if (field === 'hours') {
+                dbField = 'EXTRACT(HOUR FROM timetocomplete)';
+            } else if (field === 'minutes') {
+                dbField = 'EXTRACT(MINUTE FROM timetocomplete)';
+            }
+
+            if (operator === 'LIKE') {
+                whereClause += `${dbField} LIKE :p${paramIndex}`;
+                params[`p${paramIndex}`] = `%${value}%`;
+            } else {
+                whereClause += `${dbField} ${operator} :p${paramIndex}`;
+                params[`p${paramIndex}`] = value;
+            }
+            paramIndex++;
+        }
+    });
+
+    return { whereClause, params };
+}
+
 // Select tuples from trail with specific name
 async function selectionTrails(predicates) {
     return await withOracleDB(async (connection) => {
+        const {whereClause, params} = buildWhereClause(predicates);
         const result = await connection.execute(
-            `SELECT locationname, latitude, longitude, trailname, 
-                    TO_CHAR(timetocomplete, 'DD HH24:MI:SS') AS timetocomplete, 
-                    description, hazards, difficulty
-            FROM trail
-            WHERE locationname LIKE :predicates OR trailname LIKE :predicates`,
-            { predicates: `%${predicates}%` },
+            `SELECT locationname, latitude, longitude, trailname, difficulty,
+                 EXTRACT(HOUR FROM timetocomplete) AS hours,
+                 EXTRACT(MINUTE FROM timetocomplete) AS minutes,
+                 description, hazards
+             FROM trail
+             WHERE ${whereClause}`,
+            params,
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
 
-        if (result.rows.length > 0) {
+        if (result.rows && result.rows.length > 0) {
             return result.rows;
         } else {
-            console.log("Trails not found");
-            return [];
+            throw new Error("Trails not found");
         }
     })
 }
@@ -181,8 +216,9 @@ async function selectionTrails(predicates) {
 async function getPreviews(locationname, latitude, longitude, trailname) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT t.locationname, t.latitude, t.longitude, t.trailname, 
-                    TO_CHAR(t.timetocomplete, 'DD HH24:MI:SS') AS timetocomplete, 
+            `SELECT t.locationname, t.latitude, t.longitude, t.trailname,
+                    EXTRACT(HOUR FROM t.timetocomplete) AS hours,
+                    EXTRACT(MINUTE FROM t.timetocomplete) AS minutes,
                     t.description, t.hazards, t.difficulty,
                     pa.previewid, pa.image
             FROM trail t

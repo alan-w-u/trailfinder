@@ -27,9 +27,21 @@ function HomePage() {
         }
     };
 
+    const parseSearchQuery = (query) => {
+        const conditions = query.split(/\s*(&&|\|\|)\s*/);
+        return conditions.map(condition => {
+            if (condition === '&&' || condition === '||') return condition;
+            const [field, operator, value] = condition.split(/\s*([=<>!]+)\s*/);
+            return { field: field.trim(), operator: operator.trim(), value: value.replace(/['"]/g, '').trim() };
+        });
+    };
+
     const fetchSelectionTrails = async () => {
+        if (!searchText) return await fetchTrails();
         try {
-            const response = await fetch(`http://localhost:65535/selection-trails?search=${searchText}`, {
+            const parsedQuery = parseSearchQuery(searchText);
+            const queryString = encodeURIComponent(JSON.stringify(parsedQuery));
+            const response = await fetch(`http://localhost:65535/selection-trails?search=${queryString}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -42,7 +54,7 @@ function HomePage() {
                 setError(data.error || 'Failed to fetch Trails');
             }
         } catch (error) {
-            setError('Network error: ' + error.message);
+            setError('Query Error: ' + error.message);
         }
     };
 
@@ -61,7 +73,7 @@ function HomePage() {
                 setError(data.error || 'Failed to fetch Previews');
             }
         } catch (error) {
-            setError('Network error: ' + error.message);
+            // setError('Network error: ' + error.message);
         }
     };
 
@@ -74,22 +86,7 @@ function HomePage() {
         fetchPreviews();
     }, []);
 
-    useEffect(() => {
-        const handler = setTimeout(() => {
-            setDebounce(searchText);
-        }, 500);
-
-        return () => {
-            clearTimeout(handler);
-        };
-    }, [searchText]);
-
-    useEffect(() => {
-        if (debounce) {
-            fetchSelectionTrails();
-        }
-    }, [debounce]);
-
+    if (!trails) return <div> No Trails Found (Or Loading)... </div>;
     return (
         <div className="home-page">
             <div className="welcome">
@@ -97,10 +94,16 @@ function HomePage() {
                 <p>Discover and explore amazing trails near you!</p>
             </div>
             <div className="search">
-                <input type="text" className="searchbar" placeholder="Search" onChange={handleSearch} />
-                {/* <div class="filter">
-                    <button class="filter-button">Difficulty</button>
-                    <div class="filter-content">
+                <input
+                    type="text"
+                    className="searchbar"
+                    placeholder="Enter search query (e.g., difficulty == 3 && hours < 6)"
+                    value={searchText}
+                    onChange={handleSearch}
+                />
+                {/* <div className="filter">
+                    <button className="filter-button">Difficulty</button>
+                    <div className="filter-content">
                         <label><input type="checkbox" value="1" /> 1</label>
                         <label><input type="checkbox" value="2" /> 2</label>
                         <label><input type="checkbox" value="3" /> 3</label>
@@ -108,11 +111,23 @@ function HomePage() {
                         <label><input type="checkbox" value="5" /> 5</label>
                     </div>
                 </div> */}
-                {/* <button className="search-button">Search</button> */}
+                <button className="search-button" onClick={fetchSelectionTrails}>Search</button>
             </div>
+            {/*<div>*/}
+            {/*    <p>*/}
+            {/*        Search using conditions based on trail attributes:*/}
+            {/*        <ul>*/}
+            {/*            <li>locationname: e.g., locationname = "Yosemite National Park"</li>*/}
+            {/*            <li>description: e.g., description LIKE "%scenic%"</li>*/}
+            {/*            <li>hazards: e.g., hazards LIKE "%bears%"</li>*/}
+            {/*        </ul>*/}
+            {/*        Use && for AND, || for OR, and less/greater than operators for numeric inequality search.*/}
+            {/*    </p>*/}
+            {/*</div>*/}
+            {error && <div>{error}</div>}
             <div className="trailwidgets">
-                {trails.map(trail => (
-                    <TrailWidget trail={trail} preview={previews[0]} />
+                {trails && trails.map(trail => (
+                    <TrailWidget key={trail.TRAILNAME} trail={trail} preview={previews[0]}/>
                 ))}
             </div>
         </div>
