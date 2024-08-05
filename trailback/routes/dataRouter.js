@@ -208,7 +208,8 @@ router.get("/join-user-ugc", async (req, res) => {
     if (result === -1) {
         res.status(500).json({ success: false, error: 'attributes Invalid or No Rows Exist' });
     } else {
-        res.json({ success: true, data: result });
+        console.log("Join UGC Review Success - 200");
+        res.json({ success: true, ugc: result });
     }
 })
 

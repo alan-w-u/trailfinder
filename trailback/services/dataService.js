@@ -362,6 +362,7 @@ async function joinUserUGC(locationname, latitude, longitude, trailname, rating)
             { locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname, rating: rating },
             { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "PROFILEPICTURE": { type: oracledb.BUFFER } } }
         );
+
         return result.rows;
     }).catch(() => {
         return -1;

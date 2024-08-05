@@ -9,7 +9,7 @@ function TrailPage() {
     const [transportation, setTransportation] = useState([]);
     const [retailerGear, setRetailerGear] = useState([]);
     const [ugc, setUGC] = useState([]);
-    const [ugcReview, setUGCReview] = useState([]);
+    const [error, setError] = useState();
     const [rating, setRating] = useState(0);
 
     const fetchPreviews = async () => {
@@ -98,7 +98,11 @@ function TrailPage() {
             });
             const data = await response.json();
             if (data.success) {
-                setUGCReview(data.ugc);
+                if(data.ugc.length === 0) {
+                    setUGC(null);
+                } else {
+                    setUGC(data.ugc);
+                }
             } else {
                 setError(data.error || 'Failed to fetch UGC');
             }
@@ -118,9 +122,9 @@ function TrailPage() {
         fetchUGC();
     }, []);
 
-    // useEffect(() => {
-    //     fetchJoinUserUGC();
-    // }, [rating]);
+    useEffect(() => {
+        fetchJoinUserUGC();
+    }, [rating]);
 
     return (
         <div className="trail-page">
@@ -136,7 +140,7 @@ function TrailPage() {
             <div className="previews">
                 <ul>
                     {previews.map((item, index) => (
-                        <>{item.IMAGE}</>
+                        <div key={index}> {item.IMAGE}</div>
                     ))}
                 </ul>
             </div>
@@ -204,7 +208,7 @@ function TrailPage() {
                 <div className="full">
                     <b>Reviews</b>
                     <p>&nbsp;</p>
-                    {ugc.map((item, index) => (
+                    {(ugc) ? ugc.map((item, index) => (
                         <li key={index}>
                             <b>{item.NAME}</b>
                             <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -230,7 +234,7 @@ function TrailPage() {
                                 </>
                             }
                         </li>
-                    ))}
+                    )) : <div>No Reviews Found</div>}
                 </div>
             </div>
             <div className="trail-info">
@@ -254,33 +258,7 @@ function TrailPage() {
                             ))}
                         </div>
                     </div>
-                    {ugcReview.map((item, index) => (
-                        <li key={index}>
-                            <b>{item.NAME}</b>
-                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                            {item.RATING &&
-                                <>
-                                    <b>{item.RATING} ★</b>
-                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                </>
-                            }
-                            <b>{new Date(item.DATEPOSTED.split('T')[0]).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</b>
-                            {item.IMAGE &&
-                                <>
-                                    <p>&nbsp;</p>
-                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                    {item.IMAGE}
-                                </>
-                            }
-                            {item.DESCRIPTION &&
-                                <>
-                                    <p>&nbsp;</p>
-                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                    {item.DESCRIPTION}
-                                </>
-                            }
-                        </li>
-                    ))}
+
                 </div>
             </div>
         </div>

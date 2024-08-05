@@ -36,6 +36,7 @@ function HomePage() {
     };
 
     const fetchSelectionTrails = async () => {
+        setError('');
         if (!searchText) return await fetchTrails();
         try {
             const parsedQuery = parseSearchQuery(searchText);
@@ -97,7 +98,7 @@ function HomePage() {
                 <input
                     type="text"
                     className="searchbar"
-                    placeholder="Enter search query (e.g. difficulty = 3 && hours < 6)"
+                    placeholder="Enter search query (e.g., hours <= 6 && difficulty = 4)"
                     value={searchText}
                     onChange={handleSearch}
                 />
@@ -124,7 +125,7 @@ function HomePage() {
             {/*        Use && for AND, || for OR, and less/greater than operators for numeric inequality search.*/}
             {/*    </p>*/}
             {/*</div>*/}
-            {error && <div>{error}</div>}
+            {error && <div>{(error.startsWith("ORA"))?"Invalid Query":error}</div>}
             <div className="trailwidgets">
                 {trails && trails.map(trail => (
                     <TrailWidget key={trail.TRAILNAME} trail={trail} preview={previews[0]}/>
