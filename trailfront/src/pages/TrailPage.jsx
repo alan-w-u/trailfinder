@@ -123,7 +123,9 @@ function TrailPage() {
     }, []);
 
     useEffect(() => {
-        fetchJoinUserUGC();
+        if (rating !== 0) {
+            fetchJoinUserUGC();
+        }
     }, [rating]);
 
     return (
