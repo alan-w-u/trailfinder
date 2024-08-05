@@ -210,9 +210,9 @@ function TrailPage() {
                 <div className="full">
                     <b>Reviews</b>
                     <p>&nbsp;</p>
-                    <button className="review-button positive">Add Review</button>
+                    <button className="positive">Add Review</button>
                     <p>&nbsp;</p>
-                    <b>Select a rating:</b>
+                    <b>Show by Rating</b>
                     <div className="rating-selection">
                         {[1, 2, 3, 4, 5].map((num) => (
                             <label key={num}>
@@ -223,10 +223,11 @@ function TrailPage() {
                                     checked={rating === num}
                                     onChange={handleRatingChange}
                                 />
-                                {num}
+                                {num} ★
                             </label>
                         ))}
                     </div>
+                    <p>&nbsp;</p>
                     {(ugc) ? ugc.map((item, index) => (
                         <li key={index}>
                             <b>{item.NAME}</b>
@@ -252,6 +253,8 @@ function TrailPage() {
                                     {item.DESCRIPTION}
                                 </>
                             }
+                            <p>&nbsp;</p>
+                            <button className="delete-review-button negative">x</button>
                         </li>
                     )) : <div>No Reviews Found</div>}
                 </div>
