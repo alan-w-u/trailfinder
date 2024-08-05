@@ -248,6 +248,23 @@ INSERT ALL
     (4, 3, 'Tent', 'REI', 1, 3.2)
     INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
     (5, 4, 'Sleeping Bag', 'The North Face', 1, 1.5)
+    INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
+    (6, 1, 'Snow Shoes', 'Atlas Helium', 1, 3.5)
+    INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
+    (7, 1, 'Backpack', 'Sportscheck', 1, 2.8)
+    INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
+    (8, 2, 'Backpack', 'Black Diamond', 1, 2.5)
+    INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
+    (9, 2, 'Hiking Boots', 'Black Diamond', 1, 2.5)
+    INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
+    (10, 3, 'Hiking Boots', 'REI', 1, 2.2)
+    INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
+    (11, 3, 'Backpack', 'REI', 1, 3.2)
+    INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
+    (5, 4, 'Hiking Boots', 'The North Face', 1, 1.5)
+    INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
+    (5, 4, 'Backpack', 'The North Face', 1, 1.9)
+
 SELECT * FROM DUAL;
 
 INSERT ALL
