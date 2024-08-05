@@ -3,8 +3,7 @@ import { useAuth } from './AuthContext.jsx';
 import ProfileForm from './ProfileForm.jsx';
 import ProfileInfo from './ProfileInfo';
 
-const ProfileSection = ({ handleLogout }) => {
-    const [profile, setProfile] = useState(null);
+const ProfileSection = ({ handleLogout, profile, updateProfile }) => {
     const [error, setError] = useState('');
     const [isEditing, setIsEditing] = useState(false);
     const { login } = useAuth();
@@ -20,7 +19,7 @@ const ProfileSection = ({ handleLogout }) => {
                 });
                 const data = await response.json();
                 if (data.success) {
-                    setProfile(data.profile);
+                    updateProfile(data.profile);
                 } else {
                     setError(data.error || 'Failed to fetch profile');
                 }
@@ -29,8 +28,10 @@ const ProfileSection = ({ handleLogout }) => {
             }
         };
 
-        fetchProfile();
-    }, []);
+        if (!profile) {
+            fetchProfile();
+        }
+    }, [profile, updateProfile]);
 
     const handleEditToggle = () => {
         setError(null);
@@ -52,12 +53,12 @@ const ProfileSection = ({ handleLogout }) => {
                 if (data.token) {
                     login(data.token);
                 }
-                setProfile((prevProfile) => ({
-                    ...prevProfile,
+                updateProfile({
+                    ...profile,
                     NAME: updatedProfile.name,
                     EMAIL: updatedProfile.email,
-                    PROFILEPICTURE: (updatedProfile.profilepictureurl) ? updatedProfile.profilepictureurl : prevProfile.PROFILEPICTURE,
-                }));
+                    PROFILEPICTURE: (updatedProfile.profilepictureurl) ? updatedProfile.profilepictureurl : profile.PROFILEPICTURE,
+                });
                 setIsEditing(false);
             } else {
                 setIsEditing(false);
@@ -68,7 +69,6 @@ const ProfileSection = ({ handleLogout }) => {
         }
     };
 
-    // if (error) return <div>Error: {error}</div>;
     if (!profile) return <div>Loading...</div>;
 
     return (

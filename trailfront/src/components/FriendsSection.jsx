@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FriendList from './FriendList';
 
-const FriendsSection = () => {
+const FriendsSection = ({ updateFriendCount }) => {
     const [friends, setFriends] = useState([]);
     const [error, setError] = useState('');
     const [friendEmail, setFriendEmail] = useState('');
@@ -53,6 +53,7 @@ const FriendsSection = () => {
             if (data.success) {
                 await fetchFriends(); // Refetch the friends list
                 setFriendEmail(''); // Clear the input field
+                updateFriendCount(1); // Increment friend count
             } else {
                 setError(data.error);
             }
@@ -78,6 +79,7 @@ const FriendsSection = () => {
             const data = await response.json();
             if (data.success) {
                 await fetchFriends();
+                updateFriendCount(-1); // Decrement friend count
             } else {
                 setError(data.error);
             }

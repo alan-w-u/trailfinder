@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../components/AuthContext.jsx';
 import ProfileSection from '../components/ProfileSection';
@@ -9,16 +9,28 @@ import '../components/Profile.css';
 const ProfilePage = () => {
     const { logout } = useAuth();
     const navigate = useNavigate();
+    const [profile, setProfile] = useState(null);
 
     const handleLogout = () => {
         logout();
         navigate('/login');
     };
 
+    const updateProfile = (updatedProfile) => {
+        setProfile(updatedProfile);
+    };
+
+    const updateFriendCount = (increment) => {
+        setProfile(prevProfile => ({
+            ...prevProfile,
+            NUMBEROFFRIENDS: prevProfile.NUMBEROFFRIENDS + increment
+        }));
+    };
+
     return (
         <div className="profile-page">
-            <ProfileSection handleLogout={handleLogout} />
-            <FriendsSection />
+            <ProfileSection handleLogout={handleLogout} profile={profile} updateProfile={updateProfile} />
+            <FriendsSection updateFriendCount={updateFriendCount} />
             <EquipmentSection />
         </div>
     );
