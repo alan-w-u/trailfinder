@@ -5,7 +5,7 @@ function HomePage() {
     const [trails, setTrails] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [error, setError] = useState('');
-    const [debounce, setdebounce] = useState(searchText);
+    const [debounce, setDebounce] = useState(searchText);
 
     const fetchTrails = async () => {
         try {
@@ -54,12 +54,8 @@ function HomePage() {
     }, []);
 
     useEffect(() => {
-        // fetchSelectionTrails();
-    }, [searchText]);
-
-    useEffect(() => {
         const handler = setTimeout(() => {
-            setdebounce(searchText);
+            setDebounce(searchText);
         }, 500);
 
         return () => {
