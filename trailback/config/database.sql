@@ -316,6 +316,10 @@ INSERT ALL
     ('Yellowstone National Park', 44.428000, -110.588500, 'Lamar Valley Trail', 2, INTERVAL '03:00:00' HOUR TO SECOND, 'Easy trail known for wildlife viewing, especially wolves and bison', 'Wildlife encounters')
     INTO trail (locationname, latitude, longitude, trailname, difficulty, timetocomplete, description, hazards) VALUES
     ('Glacier National Park', 48.759600, -113.787000, 'Highline Trail', 3, INTERVAL '06:00:00' HOUR TO SECOND, 'Scenic trail along the Continental Divide with panoramic views', 'Narrow paths, grizzly bears')
+    INTO trail (locationname, latitude, longitude, trailname, difficulty, timetocomplete, description, hazards) VALUES
+    ('Glacier National Park', 48.6806, -113.819230, 'Avalanche Lake Trail', 4, INTERVAL '02:30:00' HOUR TO SECOND, 'Incredible Blue Waters', 'Narrow paths, grizzly bears')
+    INTO trail (locationname, latitude, longitude, trailname, difficulty, timetocomplete, description, hazards) VALUES
+    ('Glacier National Park', 48.719600, -113.682000, 'Grinnell Glacier Trail', 5, INTERVAL '05:00:00' HOUR TO SECOND, 'Glaciers, Waterfalls, Nature, Fresh air', 'Narrow paths, grizzly bears')
 SELECT * FROM DUAL;
 
 INSERT ALL
