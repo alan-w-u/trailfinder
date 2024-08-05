@@ -6,7 +6,6 @@ function HomePage() {
     const [previews, setPreviews] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [error, setError] = useState('');
-    const [debounce, setDebounce] = useState(searchText);
 
     const fetchTrails = async () => {
         try {
@@ -87,6 +86,7 @@ function HomePage() {
     }, []);
 
     if (!trails) return <div> No Trails Found (Or Loading)... </div>;
+
     return (
         <div className="home-page">
             <div className="welcome">
@@ -97,7 +97,7 @@ function HomePage() {
                 <input
                     type="text"
                     className="searchbar"
-                    placeholder="Enter search query (e.g., difficulty == 3 && hours < 6)"
+                    placeholder="Enter search query (e.g. difficulty = 3 && hours < 6)"
                     value={searchText}
                     onChange={handleSearch}
                 />
