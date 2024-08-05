@@ -261,6 +261,10 @@ INSERT ALL
     (4, 'Bicycle', 0.00)
     INTO transportation (transportid, type, transportcost) VALUES
     (5, 'Shuttle', 10.00)
+    INTO transportation (transportid, type, transportcost) VALUES
+    (6, 'Shuttle', 10.00)
+    INTO transportation (transportid, type, transportcost) VALUES
+    (7, 'Shuttle', 10.00)
 SELECT * FROM DUAL;
 
 INSERT ALL
