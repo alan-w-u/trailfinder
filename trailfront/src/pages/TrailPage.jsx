@@ -262,7 +262,7 @@ function TrailPage() {
             </div>
             <div className="trail-info">
                 <div className="full">
-                    <b>Reviews {userID}</b>
+                    <b>Reviews</b>
                     <p>&nbsp;</p>
                     <div className="new-review">
                         <input
@@ -322,7 +322,7 @@ function TrailPage() {
                                 </>
                             }
                             <p>&nbsp;</p>
-                            {item.USERID === 1 && <button className="delete-review-button negative">x</button>}
+                            {item.USERID == {userID} && <button className="delete-review-button negative">x</button>}
                         </li>
                     )) : <div>No Reviews Found</div>}
                 </div>
