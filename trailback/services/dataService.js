@@ -190,6 +190,26 @@ async function selectionTrails(predicates) {
     })
 }
 
+// Get gear information
+async function getGear(locationname, latitude, longitude, trailname) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT *
+            FROM gear
+            WHERE locationname = :locationname AND latitude = :latitude AND longitude = :longitude AND trailname = :trailname`,
+            {locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname},
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            console.log("Gear not found");
+            return [];
+        }
+    });
+}
+
 // Project attributes from trail
 async function projectTrailAttributes(attributes) {
     return await withOracleDB(async (connection) => {
@@ -238,6 +258,7 @@ export {
     getTrails,
     getTrail,
     selectionTrails,
+    getGear,
     projectTrailAttributes, 
     selectionEquipment,
     joinUserUGCReview
