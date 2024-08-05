@@ -1,62 +1,43 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import '../components/Trail.css';
 
 function TrailPage() {
-    const [locationname, setLocationname] = useState('Yosemite National Park');
-    const [latitude, setLatitude] = useState(37.865100);
-    const [longitude, setLongitude] = useState(-119.538300);
-    const [trailname, setTrailname] = useState('Half Dome Trail');
-    const [trail, setTrail] = useState(null);
-    const [error, setError] = useState('');
-
-    useEffect(() => {
-        const fetchTrail = async () => {
-            try {
-                const response = await fetch(`http://localhost:65535/trail?locationname=${locationname}&latitude=${latitude}&longitude=${longitude}&trailname=${trailname}`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
-                });
-                const data = await response.json();
-                if (data.success) {
-                    setTrail(data.trail);
-                } else {
-                    setError(data.error || 'Failed to fetch trail');
-                }
-            } catch (error) {
-                setError('Network error: ' + error.message);
-            }
-        };
-
-        fetchTrail();
-    }, []);
+    const location = useLocation();
+    const { locationname, latitude, longitude, trailname, timetocomplete, description, hazards, difficulty } = location.state || {};
 
     return (
         <div className="trail-page">
+            <div className="trail-info trail-title">
+                <div className="left">
+                    <h1>{trailname}</h1>
+                </div>
+                <div className="right">
+                    <h2>{locationname}</h2>
+                    <b>{latitude}° {latitude >= 0 ? 'N' : 'S'} {longitude}° {longitude >= 0 ? 'E' : 'W'}</b>
+                </div>
+            </div>
             <div className="previews">
                 PREVIEWS
             </div>
             <div className="trail-info">
                 <div className="left">
-                    <b>Time to Complete —</b>
-                    {/* <b>Time to Complete — {trail.TIMETOMECOMPLETE}</b> */}
+                    <b>Time to Complete — {timetocomplete}</b>
                 </div>
                 <div className="right">
-                    <b>Difficulty —</b>
-                    {/* <b>Difficulty — {trail.DIFFICULTY}</b> */}
+                    <b>Difficulty — {difficulty}</b>
                 </div>
             </div>
             <div className="trail-info">
                 <div className="description left">
                     <b>Description</b>
-                    <p>&nbsp;</p> {/* spacer */}
-                    {/* <p>{trail.DESCRIPTION}</p> */}
+                    <p>&nbsp;</p>
+                    <p>{description}</p>
                 </div>
                 <div className="hazards right">
                     <b>Hazards</b>
-                    <p>&nbsp;</p> {/* spacer */}
-                    {/* <p>{trail.HAZARDS}</p> */}
+                    <p>&nbsp;</p>
+                    <p>{hazards}</p>
                 </div>
             </div>
             <div className="trail-info">

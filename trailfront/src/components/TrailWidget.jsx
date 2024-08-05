@@ -5,7 +5,12 @@ const TrailWidget = ({ trail }) => {
     const navigate = useNavigate();
 
     const handleTrailWidgetClick = () => {
-        navigate('/trail', { state: { locationname: trail.LOCATIONNAME, latitude: trail.LATITUDE, longitude: trail.LONGITUDE, trailname: trail.TRAILNAME } });
+        navigate('/trail', {
+            state: {
+                locationname: trail.LOCATIONNAME, latitude: trail.LATITUDE, longitude: trail.LONGITUDE, trailname: trail.TRAILNAME,
+                timetocomplete: trail.TIMETOCOMPLETE.match(/\d{2}:\d{2}/), description: trail.DESCRIPTION, hazards: trail.HAZARDS, difficulty: trail.DIFFICULTY
+            }
+        });
     };
 
     return (

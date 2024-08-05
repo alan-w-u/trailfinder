@@ -139,6 +139,31 @@ async function getTrails() {
 }
 
 // Get specific trail information
+// async function getTrail(locationname, latitude, longitude, trailname) {
+//     return await withOracleDB(async (connection) => {
+//         const result = await connection.execute(
+//             `SELECT locationname, 
+//                     latitude, 
+//                     longitude, 
+//                     trailname, 
+//                     TO_CHAR(timetocomplete, 'DD HH24:MI:SS') AS timetocomplete, 
+//                     description, 
+//                     hazards, 
+//                     difficulty
+//             FROM trail
+//             WHERE locationname = :locationname AND latitude = :latitude AND longitude = :longitude AND trailname = :trailname`,
+//             { locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname },
+//             { outFormat: oracledb.OUT_FORMAT_OBJECT }
+//         );
+
+//         if (result.rows.length > 0) {
+//             return result.rows;
+//         } else {
+//             console.log("Trail not found");
+//             return [];
+//         }
+//     });
+// }
 async function getTrail(locationname, latitude, longitude, trailname) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
@@ -151,9 +176,7 @@ async function getTrail(locationname, latitude, longitude, trailname) {
                     hazards, 
                     difficulty
             FROM trail
-            WHERE locationname = :locationname AND latitude = :latitude AND longitude = :longitude AND trailname = :trailname`,
-            { locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname },
-            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+            WHERE locationname = ${locationname} AND latitude = ${latitude} AND longitude = ${longitude} AND trailname = ${trailname}`
         );
 
         if (result.rows.length > 0) {

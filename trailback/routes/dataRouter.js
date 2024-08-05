@@ -102,12 +102,12 @@ router.get('/trails', async (req, res) => {
 
 // Get specific trail information
 router.get('/trail', async (req, res) => {
-    const trailsResult = await dataService.getTrail();
-    if (trailsResult) {
-        console.log('Trails GET success - 200');
-        res.json({ success: true, trails: trailsResult });
+    const trailResult = await dataService.getTrail();
+    if (trailResult) {
+        console.log('Trail GET success - 200');
+        res.json({ success: true, trail: trailResult });
     } else {
-        res.status(500).json({ success: false, error: 'Failed to GET Trails' })
+        res.status(500).json({ success: false, error: 'Failed to GET Trail' })
     }
 });
 
