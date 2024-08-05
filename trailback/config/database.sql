@@ -488,6 +488,10 @@ INSERT ALL
     (4, 'Wilderness Shelter','4 person tent with rain cover', 'https://www.campsiteessentials.com/4-person-tent?color=red')
     INTO retailerfeaturesgear (retailerid, gearname, productname, productwebsite) VALUES
     (5, 'Apine Dreamer', 'Cotten lined 40C certified sleeping bag', 'www.wildernesscomfort.com/cotten-40c-sleeping-bag')
+    INTO retailerfeaturesgear (retailerid, gearname, productname, productwebsite) VALUES
+    (5, 'Atlas Helium', 'Atlas Helium Trail Snow Shoes', 'https://atlassnowshoe.com/en-ca/c/snowshoes/helium-collection/')
+    INTO retailerfeaturesgear (retailerid, gearname, productname, productwebsite) VALUES
+    (5, 'Atlas Helium V2', 'Atlas Helium Trail Snow Shoes', 'https://atlassnowshoe.com/en-ca/c/snowshoes/helium-collection/')
 SELECT * FROM DUAL;
 
 
