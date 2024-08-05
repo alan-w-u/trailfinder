@@ -97,7 +97,7 @@ function HomePage() {
                 <input
                     type="text"
                     className="searchbar"
-                    placeholder="Enter search query (e.g., difficulty == 3 && hours < 6)"
+                    placeholder="Enter search query (e.g., difficulty = 3 && hours < 6)"
                     value={searchText}
                     onChange={handleSearch}
                 />
