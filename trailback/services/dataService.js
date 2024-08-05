@@ -382,6 +382,16 @@ async function findHeaviestEquipmentType() {
     })
 }
 
+//find cheapest transport cost that costs money // group by 
+async function findCheapestTransportPerType() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`SELECT type, min(transportcost) FROM transportation WHERE transportcost > 0 GROUP BY type`);
+        return result.rows;
+    }).catch(() => {
+        return -1; 
+    })
+}
+
 export {
     testOracleConnection,
     initializeDB,
@@ -400,5 +410,6 @@ export {
     projectTrailAttributes,
     selectionEquipment,
     joinUserUGC, 
-    findHeaviestEquipmentType
+    findHeaviestEquipmentType,
+    findCheapestTransportPerType
 };
