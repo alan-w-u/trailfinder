@@ -56,7 +56,7 @@
 .filter-content {
     display: none;
     position: absolute;
-    width: 10rem;
+    width: 4rem;
     height: auto;
     border-radius: 0.5rem;
     background-color: var(--background);
@@ -118,7 +118,7 @@
     display: flex;
     flex-direction: column;
     width: 20rem;
-    height: 18rem;
+    height: 20rem;
     box-sizing: border-box;
     padding: 1rem;
     margin: 1rem;
@@ -130,12 +130,12 @@
 
 .trailwidget:hover {
     width: 22rem;
-    height: 19rem;
+    height: 22rem;
 }
 
 .trailwidget img {
     max-width: 75%;
-    max-height: 60%;
+    max-height: 50%;
     margin: 0 auto;
 }
 

@@ -77,15 +77,17 @@ function HomePage() {
             </div>
             <div className="search">
                 <input type="text" className="searchbar" placeholder="Search" onChange={handleSearch} />
-                <div class="filter">
-                    <button class="filter-button">Filter</button>
+                {/* <div class="filter">
+                    <button class="filter-button">Difficulty</button>
                     <div class="filter-content">
-                        <label><input type="checkbox" value="easy" />Easy</label>
-                        <label><input type="checkbox" value="medium" />Medium</label>
-                        <label><input type="checkbox" value="hard" />Hard</label>
+                        <label><input type="checkbox" value="1" /> 1</label>
+                        <label><input type="checkbox" value="2" /> 2</label>
+                        <label><input type="checkbox" value="3" /> 3</label>
+                        <label><input type="checkbox" value="4" /> 4</label>
+                        <label><input type="checkbox" value="5" /> 5</label>
                     </div>
-                </div>
-                <button className="search-button">Search</button>
+                </div> */}
+                {/* <button className="search-button">Search</button> */}
             </div>
             <div className="trailwidgets">
                 {trails.map(trail => (
