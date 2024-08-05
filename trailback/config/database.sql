@@ -401,6 +401,10 @@ INSERT ALL
     (4, 5, 'Amazing wildlife viewing! Saw several bison and even a wolf pack.')
     INTO review (ugcid, rating, description) VALUES
     (5, 4, 'Stunning vistas, but some parts of the trail were a bit nerve-wracking.')
+    INTO review (ugcid, rating, description) VALUES
+    (6, 5, 'nerve-wracking, but worth the beautiful blue lake views.')
+    INTO review (ugcid, rating, description) VALUES
+    (7, 5, 'Thrilling. Amazing views of glaciers, waterfalls, nature, and lakes.')
 SELECT * FROM DUAL;
 
 INSERT ALL
