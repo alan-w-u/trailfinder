@@ -314,6 +314,7 @@ async function joinUserUGCReview(predicates, attributes) {
 async function findHeaviestEquipmentType() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(`SELECT max(weight), type FROM equipment WHERE weight > 1 GROUP BY type`);
+        console.log(result);
         return result.rows;
     }).catch(() => {
         return -1; 
