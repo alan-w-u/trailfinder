@@ -299,6 +299,10 @@ INSERT ALL
     ('Yellowstone National Park', 44.428000, -110.588500, 'Rainy')
     INTO location (locationname, latitude, longitude, weather) VALUES
     ('Glacier National Park', 48.759600, -113.787000, 'Snowy')
+    INTO location (locationname, latitude, longitude, weather) VALUES
+    ('Glacier National Park', 48.6806, -113.819230, 'Snowy')
+    INTO location (locationname, latitude, longitude, weather) VALUES
+    ('Glacier National Park', 48.719600, -113.682000, 'Snowy')
 SELECT * FROM DUAL;
 
 INSERT ALL
