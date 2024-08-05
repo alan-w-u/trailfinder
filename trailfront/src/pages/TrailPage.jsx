@@ -9,10 +9,28 @@ function TrailPage() {
     const [transportation, setTransportation] = useState([]);
     const [retailerGear, setRetailerGear] = useState([]);
     const [ugc, setUGC] = useState([]);
+    const [userID, setUserID] = useState(null);
     const [error, setError] = useState();
     const [rating, setRating] = useState(0);
-    const [newDescription, setNewDescription] = useState('');
-    const [newRating, setNewRating] = useState(null);
+
+    const fetchUserID = async () => {
+        try {
+            const response = await fetch(`http://localhost:65535/auth/verify-token`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.valid) {
+                setUserID(data.userId);
+            } else {
+                setError(data.error || 'Failed to fetch Previews');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
 
     const fetchPreviews = async () => {
         try {
@@ -113,6 +131,29 @@ function TrailPage() {
         }
     };
 
+    const handleAddReview = async () => {
+        try {
+            const response = await fetch(`http://localhost:65535/addreview`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                if (data.ugc.length === 0) {
+                    setUGC(null);
+                } else {
+                    setUGC(data.ugc);
+                }
+            } else {
+                setError(data.error || 'Failed to fetch UGC');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    }
+
     const handleRatingChange = (event) => {
         setRating(Number(event.target.value));
     };
@@ -126,6 +167,7 @@ function TrailPage() {
     };
 
     useEffect(() => {
+        fetchUserID();
         fetchPreviews();
         fetchTransportation();
         fetchRetailerGear();
@@ -218,25 +260,9 @@ function TrailPage() {
             </div>
             <div className="trail-info">
                 <div className="full">
-                    <b>Reviews</b>
+                    <b>Reviews {userID}</b>
                     <p>&nbsp;</p>
-                    <div className="new-review">
-                        <input
-                            className="new-description-input"
-                            type="text"
-                            placeholder="Enter review description"
-                            value={newDescription}
-                            onChange={handleNewDescriptionChange}
-                        />
-                        <input
-                            className="new-rating-input"
-                            type="number"
-                            placeholder="Rating 1-5 ★"
-                            value={newRating}
-                            onChange={handleNewRatingChange}
-                        />
-                    </div>
-                    <button className="positive">Add Review</button>
+                    <button className="positive" onClick={handleAddReview}>Add Review</button>
                     <p>&nbsp;</p>
                     <b>Show by Rating</b>
                     <div className="rating-selection">
