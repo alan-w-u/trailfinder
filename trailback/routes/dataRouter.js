@@ -123,6 +123,18 @@ router.get('/selection-trails', async (req, res) => {
     }
 });
 
+// Get trail preview information
+router.get('/previews', async (req, res) => {
+    const { locationname, latitude, longitude, trailname } = req.query;
+    const previewsResult = await dataService.getPreviews(locationname, latitude, longitude, trailname);
+    if (previewsResult) {
+        console.log('Previews GET success - 200');
+        res.json({ success: true, previews: previewsResult });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to GET Previews' })
+    }
+});
+
 // Get transportation information
 router.get('/transportation', async (req, res) => {
     const { locationname, latitude, longitude } = req.query;

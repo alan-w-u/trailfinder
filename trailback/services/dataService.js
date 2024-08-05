@@ -116,14 +116,9 @@ async function countDB(relation) {
 async function getTrails() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT locationname, 
-                    latitude, 
-                    longitude, 
-                    trailname, 
+            `SELECT locationname, latitude, longitude, trailname, 
                     TO_CHAR(timetocomplete, 'DD HH24:MI:SS') AS timetocomplete, 
-                    description, 
-                    hazards, 
-                    difficulty
+                    description, hazards, difficulty
             FROM trail`,
             {},
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
@@ -142,16 +137,13 @@ async function getTrails() {
 async function getTrail(locationname, latitude, longitude, trailname) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT locationname, 
-                    latitude, 
-                    longitude, 
-                    trailname, 
+            `SELECT locationname, latitude, longitude, trailname, 
                     TO_CHAR(timetocomplete, 'DD HH24:MI:SS') AS timetocomplete, 
-                    description, 
-                    hazards, 
-                    difficulty
+                    description, hazards, difficulty
             FROM trail
-            WHERE locationname = ${locationname} AND latitude = ${latitude} AND longitude = ${longitude} AND trailname = ${trailname}`
+            WHERE locationname = :locationname AND latitude = :latitude AND longitude = :longitude AND trailname = :trailname`,
+            { locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
 
         if (result.rows.length > 0) {
@@ -167,14 +159,9 @@ async function getTrail(locationname, latitude, longitude, trailname) {
 async function selectionTrails(predicates) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT locationname, 
-                    latitude, 
-                    longitude, 
-                    trailname, 
+            `SELECT locationname, latitude, longitude, trailname, 
                     TO_CHAR(timetocomplete, 'DD HH24:MI:SS') AS timetocomplete, 
-                    description, 
-                    hazards, 
-                    difficulty
+                    description, hazards, difficulty
             FROM trail
             WHERE locationname LIKE :predicates OR trailname LIKE :predicates`,
             { predicates: `%${predicates}%` },
@@ -188,6 +175,31 @@ async function selectionTrails(predicates) {
             return [];
         }
     })
+}
+
+// Get trail preview information
+async function getPreviews(locationname, latitude, longitude, trailname) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT t.locationname, t.latitude, t.longitude, t.trailname, 
+                    TO_CHAR(t.timetocomplete, 'DD HH24:MI:SS') AS timetocomplete, 
+                    t.description, t.hazards, t.difficulty,
+                    pa.previewid, pa.image
+            FROM trail t
+            JOIN preview2 pb ON t.locationname = pb.locationname AND t.latitude = pb.latitude AND t.longitude = pb.longitude AND t.trailname = pb.trailname
+            JOIN preview1 pa ON pa.previewid = pb.previewid
+            WHERE t.locationname = :locationname AND t.latitude = :latitude AND t.longitude = :longitude AND t.trailname = :trailname`,
+            { locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "IMAGE": { type: oracledb.BUFFER } } }
+        );
+
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            console.log("Previews not found");
+            return [];
+        }
+    });
 }
 
 // Get transportation information
@@ -308,6 +320,7 @@ export {
     getTrails,
     getTrail,
     selectionTrails,
+    getPreviews,
     getTransportation,
     getRetailerGear,
     getUGC,

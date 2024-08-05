@@ -19,7 +19,7 @@ function HomePage() {
             if (data.success) {
                 setTrails(data.trails);
             } else {
-                setError(data.error || 'Failed to fetch trails');
+                setError(data.error || 'Failed to fetch Trails');
             }
         } catch (error) {
             setError('Network error: ' + error.message);
@@ -38,7 +38,7 @@ function HomePage() {
             if (data.success) {
                 setTrails(data.trails);
             } else {
-                setError(data.error || 'Failed to fetch trails');
+                setError(data.error || 'Failed to fetch Trails');
             }
         } catch (error) {
             setError('Network error: ' + error.message);

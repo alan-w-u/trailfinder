@@ -5,9 +5,29 @@ import '../components/Trail.css';
 function TrailPage() {
     const location = useLocation();
     const { locationname, latitude, longitude, trailname, timetocomplete, description, hazards, difficulty } = location.state || {};
+    const [previews, setPreviews] = useState([]);
     const [transportation, setTransportation] = useState([]);
     const [retailerGear, setRetailerGear] = useState([]);
     const [ugc, setUGC] = useState([]);
+
+    const fetchPreviews = async () => {
+        try {
+            const response = await fetch(`http://localhost:65535/previews?locationname=${locationname}&latitude=${latitude}&longitude=${longitude}&trailname=${trailname}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                setPreviews(data.previews);
+            } else {
+                setError(data.error || 'Failed to fetch Previews');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
 
     const fetchTransportation = async () => {
         try {
@@ -21,7 +41,7 @@ function TrailPage() {
             if (data.success) {
                 setTransportation(data.transportation);
             } else {
-                setError(data.error || 'Failed to fetch transportation');
+                setError(data.error || 'Failed to fetch Transportation');
             }
         } catch (error) {
             setError('Network error: ' + error.message);
@@ -40,7 +60,7 @@ function TrailPage() {
             if (data.success) {
                 setRetailerGear(data.retailerGear);
             } else {
-                setError(data.error || 'Failed to fetch retailers and gear');
+                setError(data.error || 'Failed to fetch Retailers and Gear');
             }
         } catch (error) {
             setError('Network error: ' + error.message);
@@ -59,7 +79,7 @@ function TrailPage() {
             if (data.success) {
                 setUGC(data.ugc);
             } else {
-                setError(data.error || 'Failed to fetch ugc');
+                setError(data.error || 'Failed to fetch UGC');
             }
         } catch (error) {
             setError('Network error: ' + error.message);
@@ -67,6 +87,7 @@ function TrailPage() {
     };
 
     useEffect(() => {
+        fetchPreviews();
         fetchTransportation();
         fetchRetailerGear();
         fetchUGC();
@@ -84,7 +105,11 @@ function TrailPage() {
                 </div>
             </div>
             <div className="previews">
-                PREVIEWS
+                <ul>
+                    {previews.map((item, index) => (
+                        <>{item.IMAGE}</>
+                    ))}
+                </ul>
             </div>
             <div className="trail-info">
                 <div className="left">
