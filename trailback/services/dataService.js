@@ -392,6 +392,16 @@ async function findCheapestTransportPerType() {
     })
 }
 
+//find users without equipment
+async function findUsersWithoutEquipment() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`SELECT userprofile.name, userprofile.email FROM userprofile MINUS (SELECT DISTINCT userprofile.name, userprofile.email FROM userprofile, equipment WHERE userprofile.userid = equipment.userid)`);
+        return result.rows;
+    }).catch(() => {
+        return -1; 
+    })
+}
+
 export {
     testOracleConnection,
     initializeDB,
@@ -411,5 +421,6 @@ export {
     selectionEquipment,
     joinUserUGC, 
     findHeaviestEquipmentType,
-    findCheapestTransportPerType
+    findCheapestTransportPerType,
+    findUsersWithoutEquipment
 };

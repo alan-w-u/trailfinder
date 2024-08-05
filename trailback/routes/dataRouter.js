@@ -232,4 +232,14 @@ router.get("/findCheapestTransportByType", async (req, res) => {
     }
 })
 
+//find users no equipment
+router.get("/findUsersWithoutEquipment", async (req, res) => {
+    const result = await dataService.findUsersWithoutEquipment(); 
+    if (result === -1) {
+        res.status(500).json({ success: false, error: 'Error or No Rows Exist' });
+    } else {
+        res.json({ success: true, data: result });
+    }
+})
+
 export default router;
