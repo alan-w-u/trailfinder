@@ -12,6 +12,8 @@ function TrailPage() {
     const [userID, setUserID] = useState(null);
     const [error, setError] = useState();
     const [rating, setRating] = useState(0);
+    const [newDescription, setNewDescription] = useState('');
+    const [newRating, setNewRating] = useState(null);
 
     const fetchUserID = async () => {
         try {
@@ -262,6 +264,20 @@ function TrailPage() {
                 <div className="full">
                     <b>Reviews {userID}</b>
                     <p>&nbsp;</p>
+                    <div className="new-review">
+                        <input
+                            type="text"
+                            placeholder="Enter review description"
+                            value={newDescription}
+                            onChange={handleNewDescriptionChange}
+                        />
+                        <input
+                            type="number"
+                            placeholder="Rating 1-5 ★"
+                            value={newRating}
+                            onChange={handleNewRatingChange}
+                        />
+                    </div>
                     <button className="positive" onClick={handleAddReview}>Add Review</button>
                     <p>&nbsp;</p>
                     <b>Show by Rating</b>
