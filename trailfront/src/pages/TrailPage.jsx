@@ -98,7 +98,7 @@ function TrailPage() {
             });
             const data = await response.json();
             if (data.success) {
-                if(data.ugc.length === 0) {
+                if (data.ugc.length === 0) {
                     setUGC(null);
                 } else {
                     setUGC(data.ugc);
@@ -210,6 +210,23 @@ function TrailPage() {
                 <div className="full">
                     <b>Reviews</b>
                     <p>&nbsp;</p>
+                    <button className="review-button positive">Add Review</button>
+                    <p>&nbsp;</p>
+                    <b>Select a rating:</b>
+                    <div className="rating-selection">
+                        {[1, 2, 3, 4, 5].map((num) => (
+                            <label key={num}>
+                                <input
+                                    type="radio"
+                                    name="rating"
+                                    value={num}
+                                    checked={rating === num}
+                                    onChange={handleRatingChange}
+                                />
+                                {num}
+                            </label>
+                        ))}
+                    </div>
                     {(ugc) ? ugc.map((item, index) => (
                         <li key={index}>
                             <b>{item.NAME}</b>
@@ -237,30 +254,6 @@ function TrailPage() {
                             }
                         </li>
                     )) : <div>No Reviews Found</div>}
-                </div>
-            </div>
-            <div className="trail-info">
-                <div className="full">
-                    <b>Reviews by Rating</b>
-                    <p>&nbsp;</p>
-                    <div className="rating-selection">
-                        <b>Select a rating:</b>
-                        <div className="rating-selection">
-                            {[1, 2, 3, 4, 5].map((num) => (
-                                <label key={num}>
-                                    <input
-                                        type="radio"
-                                        name="rating"
-                                        value={num}
-                                        checked={rating === num}
-                                        onChange={handleRatingChange}
-                                    />
-                                    {num}
-                                </label>
-                            ))}
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
