@@ -6,6 +6,7 @@ function TrailPage() {
     const location = useLocation();
     const { locationname, latitude, longitude, trailname, timetocomplete, description, hazards, difficulty } = location.state || {};
     const [retailerGear, setRetailerGear] = useState([]);
+    const [ugc, setUGC] = useState([]);
 
     const fetchRetailerGear = async () => {
         try {
@@ -26,8 +27,28 @@ function TrailPage() {
         }
     };
 
+    const fetchUGC = async () => {
+        try {
+            const response = await fetch(`http://localhost:65535/ugc?locationname=${locationname}&latitude=${latitude}&longitude=${longitude}&trailname=${trailname}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                setUGC(data.ugc);
+            } else {
+                setError(data.error || 'Failed to fetch ugc');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
+
     useEffect(() => {
         fetchRetailerGear();
+        fetchUGC();
     }, []);
 
     return (
@@ -46,10 +67,10 @@ function TrailPage() {
             </div>
             <div className="trail-info">
                 <div className="left">
-                    <b>Time to Complete <span>—</span> {timetocomplete} <span>(hrs:mins)</span></b>
+                    <b>Time to Complete<span> : {timetocomplete} (hrs:mins)</span></b>
                 </div>
                 <div className="right">
-                    <b>Difficulty <span>—</span> {difficulty}</b>
+                    <b>Difficulty<span> : {difficulty}</span></b>
                 </div>
             </div>
             <div className="trail-info">
@@ -63,7 +84,9 @@ function TrailPage() {
                     <p>&nbsp;</p>
                     <ul>
                         {hazards.split(',').map((hazard, index) => (
-                            <li key={index}>{hazard.trim()}</li>
+                            <li key={index}>
+                                {hazard.trim()}
+                            </li>
                         ))}
                     </ul>
                 </div>
@@ -87,6 +110,33 @@ function TrailPage() {
                 <div className="reviews">
                     <b>Reviews</b>
                     <p>&nbsp;</p>
+                    {ugc.map((item, index) => (
+                        <li key={index}>
+                            <b>{item.NAME}</b>
+                            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            {item.RATING &&
+                                <>
+                                    <b>{item.RATING} ★</b>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                </>
+                            }
+                            <b>{new Date(item.DATEPOSTED.split('T')[0]).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</b>
+                            {item.IMAGE &&
+                                <>
+                                    <p>&nbsp;</p>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    {item.IMAGE}
+                                </>
+                            }
+                            {item.DESCRIPTION &&
+                                <>
+                                    <p>&nbsp;</p>
+                                    <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                    {item.DESCRIPTION}
+                                </>
+                            }
+                        </li>
+                    ))}
                 </div>
             </div>
         </div>

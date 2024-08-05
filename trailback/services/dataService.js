@@ -213,6 +213,29 @@ async function getRetailerGear(locationname, latitude, longitude, trailname) {
     });
 }
 
+// Get user-generated content information
+async function getUGC(locationname, latitude, longitude, trailname) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT *
+            FROM ugc
+            JOIN review r ON ugc.ugcid = r.ugcid
+            JOIN photo p ON ugc.ugcid = p.ugcid
+            JOIN userprofile u ON ugc.userid = u.userid
+            WHERE ugc.locationname = :locationname AND ugc.latitude = :latitude AND ugc.longitude = :longitude AND ugc.trailname = :trailname`,
+            {locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname},
+            { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "IMAGE": { type: oracledb.BUFFER }, "PROFILEPICTURE": { type: oracledb.BUFFER } } }
+        );
+
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            console.log("UGC not found");
+            return [];
+        }
+    });
+}
+
 // Project attributes from trail
 async function projectTrailAttributes(attributes) {
     return await withOracleDB(async (connection) => {
@@ -262,6 +285,7 @@ export {
     getTrail,
     selectionTrails,
     getRetailerGear,
+    getUGC,
     projectTrailAttributes, 
     selectionEquipment,
     joinUserUGCReview

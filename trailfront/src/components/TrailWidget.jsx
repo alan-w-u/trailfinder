@@ -19,8 +19,8 @@ const TrailWidget = ({ trail }) => {
             <h1>{trail.TRAILNAME}</h1>
             <em>{trail.LOCATIONNAME}</em>
             <p>&nbsp;</p>
-            <p>Time to Complete: <b>{trail.TIMETOCOMPLETE.match(/\d{2}:\d{2}/)}</b></p>
-            <p>Difficulty: <b>{trail.DIFFICULTY}</b></p>
+            <p>Time to Complete : <b>{trail.TIMETOCOMPLETE.match(/\d{2}:\d{2}/)}</b></p>
+            <p>Difficulty : <b>{trail.DIFFICULTY}</b></p>
         </div>
     );
 }

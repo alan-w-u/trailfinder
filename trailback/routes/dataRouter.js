@@ -135,6 +135,18 @@ router.get('/retailer-gear', async (req, res) => {
     }
 });
 
+// Get user-generated content information
+router.get('/ugc', async (req, res) => {
+    const { locationname, latitude, longitude, trailname } = req.query;
+    const ugcResult = await dataService.getUGC(locationname, latitude, longitude, trailname);
+    if (ugcResult) {
+        console.log('UGC GET success - 200');
+        res.json({ success: true, ugc: ugcResult });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to GET UGC' })
+    }
+});
+
 router.get('/selectEquipment', async (req, res) => {
     const { whereClause } = req.body;
     const result = await dataService.selectionEquipment(whereClause);
