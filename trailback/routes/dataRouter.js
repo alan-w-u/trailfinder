@@ -222,4 +222,24 @@ router.get("/findHeaviestEquipmentByType", async (req, res) => {
     }
 })
 
+//find cheapest transport by type
+router.get("/findCheapestTransportByType", async (req, res) => {
+    const result = await dataService.findCheapestTransportPerType(); 
+    if (result === -1) {
+        res.status(500).json({ success: false, error: 'Error or No Rows Exist' });
+    } else {
+        res.json({ success: true, data: result });
+    }
+})
+
+//find users no equipment
+router.get("/findUsersWithoutEquipment", async (req, res) => {
+    const result = await dataService.findUsersWithoutEquipment(); 
+    if (result === -1) {
+        res.status(500).json({ success: false, error: 'Error or No Rows Exist' });
+    } else {
+        res.json({ success: true, data: result });
+    }
+})
+
 export default router;
