@@ -367,6 +367,10 @@ INSERT ALL
     ('Yellowstone National Park', 44.428000, -110.588500, 'Lamar Valley Trail', 4)
     INTO preview2 (locationname, latitude, longitude, trailname, previewid) VALUES
     ('Glacier National Park', 48.759600, -113.787000, 'Highline Trail', 5)
+    INTO preview2 (locationname, latitude, longitude, trailname, previewid) VALUES
+    ('Glacier National Park', 48.6806, -113.819230, 'Avalanche Lake Trail', 6)
+    INTO preview2 (locationname, latitude, longitude, trailname, previewid) VALUES
+    ('Glacier National Park', 48.719600, -113.682000, 'Grinnell Glacier Trail', 7)
 SELECT * FROM DUAL;
 
 INSERT ALL
