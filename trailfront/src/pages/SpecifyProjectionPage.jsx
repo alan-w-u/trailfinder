@@ -1,127 +1,149 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import '../components/ProjectionPage.css';
 
-
 const SpecifyProjection = () => {
+    const [tables, setTables] = useState([]);
+    const [selectedTable, setSelectedTable] = useState('');
+    const [tableAttributes, setTableAttributes] = useState([]);
+    const [selectedAttributes, setSelectedAttributes] = useState([]);
+    const [projectionResult, setProjectionResult] = useState(null);
+    const [message, setMessage] = useState('');
 
-    const [tableName, setTableName] = useState("");
-    const [tableAttributes, setTableAttributes] = useState("");
+    useEffect(() => {
+        fetchTables();
+    }, []);
 
-    async function submitForm(e) {
+    useEffect(() => {
+        if (selectedTable) {
+            fetchTableAttributes(selectedTable);
+        }
+    }, [selectedTable]);
+
+    const fetchTables = async () => {
+        setMessage('');
+        try {
+            const response = await fetch('http://localhost:65535/getTables');
+            const data = await response.json();
+            if (data.success) {
+                setTables(data.tables);
+            }
+        } catch (error) {
+            console.error('Error fetching tables:', error);
+        }
+    };
+
+    const fetchTableAttributes = async (tableName) => {
+        setMessage('');
+        try {
+            const response = await fetch(`http://localhost:65535/getTableAttributes?table=${tableName}`);
+            const data = await response.json();
+            if (data.success) {
+                setTableAttributes(data.attributes);
+            }
+        } catch (error) {
+            console.error('Error fetching table attributes:', error);
+        }
+    };
+
+    const handleTableChange = (e) => {
+        setMessage('');
+        setSelectedTable(e.target.value);
+        setSelectedAttributes([]);
+    };
+
+    const handleAttributeChange = (e) => {
+        setMessage('');
+        const attribute = e.target.value;
+        setSelectedAttributes(prev =>
+            prev.includes(attribute)
+                ? prev.filter(a => a !== attribute)
+                : [...prev, attribute]
+        );
+    };
+
+    const submitProjection = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:65535/projectAttributesAndTables', {
+            const response = await fetch('http://localhost:65535/projectTrailAttributes', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, email, password }),
+                body: JSON.stringify({
+                    table: selectedTable,
+                    attributes: selectedAttributes
+                }),
             });
 
             const data = await response.json();
-            console.log(data);
+            if (data.success) {
+                setMessage("Projection Success!");
+                setProjectionResult(data.data);
+            } else {
+                setMessage("Projection Failed!");
+                console.error('Projection failed:', data.error);
+            }
         } catch (error) {
-
+            setMessage("Projection Failed!");
+            console.error('Error submitting projection:', error);
         }
-    }
-
+    };
 
     return (
         <div className='projection-page'>
-            <p>Welcome to our internal data! Please select a table of your choice, and the list of attributes you would like to see from that table.</p>
-            <form>
-                <label>
-                    <input
-                        type="text"
-                        placeholder="Table Name"
-                        onChange={(e) => setTableName(e.target.value)}
-                    />
-                </label>
-                <label>
-                    <input
-                        type="text"
-                        placeholder="Table Attributes"
-                        onChange={(e) => setTableAttributes(e.target.value)}
-                    />
-                </label>
-                <button className="positive" onSubmit={submitForm}>Submit</button>
+            <h1>Data Projection</h1>
+            <p>Select a table and choose the attributes you want to view.</p>
+            <form onSubmit={submitProjection}>
+                <select value={selectedTable} onChange={handleTableChange}>
+                    <option value="">Select a table</option>
+                    {tables.map(table => (
+                        <option key={table} value={table}>{table}</option>
+                    ))}
+                </select>
+                {selectedTable && (
+                    <div>
+                        <h3>Select Attributes:</h3>
+                        {tableAttributes.map(attr => (
+                            <label key={attr}>
+                                <input
+                                    type="checkbox"
+                                    value={attr}
+                                    checked={selectedAttributes.includes(attr)}
+                                    onChange={handleAttributeChange}
+                                />
+                                {attr}
+                            </label>
+                        ))}
+                    </div>
+                )}
+                <button type="submit" disabled={!selectedTable || selectedAttributes.length === 0}>
+                    Project Data
+                </button>
             </form>
-            <table>
-                <tr>
-                    <th>TableName</th>
-                    <th>Attributes</th>
-                </tr>
-                <tr>
-                    <td>USERPROFILE</td>
-                    <td>userid, name, email, password, profilepicture, trailshiked, experienceLevel, numberoffriends</td>
-                </tr>
-                <tr>
-                    <td>EQUIPMENT</td>
-                    <td>equipmentid, userid, type, brand, amount, weight</td>
-                </tr>
-                <tr>
-                    <td>TRANSPORTATION</td>
-                    <td>transportid, type, transportcost</td>
-                </tr>
-                <tr>
-                    <td>RETAILER1</td>
-                    <td>retailername, retailerwebsite</td>
-                </tr>
-                <tr>
-                    <td>RETAILER2</td>
-                    <td>retailerid, retailername</td>
-                </tr>
-                <tr>
-                    <td>LOCATION</td>
-                    <td>locationname, latitude, longitude, weather</td>
-                </tr>
-                <tr>
-                    <td>TRAIL</td>
-                    <td>locationname, latitude, longitude, trailname, difficulty, timetocomplete, description, hazards</td>
-                </tr>
-                <tr>
-                    <td>GEAR</td>
-                    <td>geartype, gearname, locationname, latitude, longitude, trailname</td>
-                </tr>
-                <tr>
-                    <td>PREVIEW1</td>
-                    <td>previewid, image</td>
-                </tr>
-                <tr>
-                    <td>PREVIEW2</td>
-                    <td>locationname, latitude, longitude, trailname, previewid</td>
-                </tr>
-                <tr>
-                    <td>UGC</td>
-                    <td>ugcid, userid, locationname, latitude, longitude, trailname, dateposted</td>
-                </tr>
-                <tr>
-                    <td>REVIEW</td>
-                    <td>ugcid, rating, description</td>
-                </tr>
-                <tr>
-                    <td>PHOTO</td>
-                    <td>ugcid, image</td>
-                </tr>
-                <tr>
-                    <td>FRIENDS</td>
-                    <td>userid, friendid, datefriended</td>
-                </tr>
-                <tr>
-                    <td>TRANSPORTATIONTOLOCATION</td>
-                    <td>transportid, locationname, latitude, longitude, duration, tripcost</td>
-                </tr>
-                <tr>
-                    <td>USERHIKESTRAIL</td>
-                    <td>userid, locationname, latitude, longitude, trailname, datehiked, timetocomplete</td>
-                </tr>
-                <tr>
-                    <td>RETAILERFEATURESGEAR</td>
-                    <td>retailerid, gearname, productname, productwebsite</td>
-                </tr>
-            </table>
+            {message && <div>{message}</div>}
+            {projectionResult && (
+                <div>
+                    <h2>Projection Result:</h2>
+                    <table>
+                        <thead>
+                        <tr>
+                            {selectedAttributes.map(attr => (
+                                <th key={attr}>{attr}</th>
+                            ))}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {projectionResult.map((row, index) => (
+                            <tr key={index}>
+                                {selectedAttributes.map(attr => (
+                                    <td key={attr}>{row[attr]}</td>
+                                ))}
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
-    )
-}
+    );
+};
 
-export default SpecifyProjection
+export default SpecifyProjection;

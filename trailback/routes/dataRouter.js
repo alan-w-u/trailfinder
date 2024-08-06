@@ -1,5 +1,6 @@
 import express from 'express';
 import * as dataService from '../services/dataService.js';
+import {projectAttributesAndTables} from "../services/dataService.js";
 
 const router = express.Router();
 
@@ -181,16 +182,40 @@ router.get('/selectEquipment', async (req, res) => {
     }
 });
 
+//Get All Trails
+router.get('/getTables', async (req, res) => {
+    const result = await dataService.getAllTables();
+    if (result === -1) {
+        res.status(500).json({ success: false, error: 'Failed to fetch tables' });
+    } else {
+        console.log("Tables GET success - 200");
+        res.json({ success: true, tables: result });
+    }
+});
+
+//Get all attributes
+router.get('/getTableAttributes', async (req, res) => {
+    const { table } = req.query;
+    const result = await dataService.getTableAttributes(table);
+    if (result === -1) {
+        console.log("Attributes GET success - 200");
+        res.status(500).json({ success: false, error: 'Failed to fetch table attributes' });
+    } else {
+        res.json({ success: true, attributes: result });
+    }
+});
+
 // Project attributes from trail
-router.get('/projectTrailAttributes', async (req, res) => {
-    const { projectionString } = req.body;
-    const result = await dataService.projectTrailAttributes(projectionString);
+router.post('/projectTrailAttributes', async (req, res) => {
+    const { table, attributes } = req.body;
+    const result = await dataService.projectAttributesAndTables(table, attributes);
     if (result === -1) {
         res.status(500).json({ success: false, error: 'attributes Invalid or No Rows Exist' });
     } else {
+        console.log("Projection POST success - 200")
         res.json({ success: true, data: result });
     }
-})
+});
 
 // Get transportation information
 router.get('/transportation', async (req, res) => {
