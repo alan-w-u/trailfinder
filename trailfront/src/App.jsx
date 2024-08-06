@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 import TrailPage from './pages/TrailPage.jsx';
 import './App.css'
+import SpecifyProjectionPage from './pages/SpecifyProjectionPage.jsx';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
     const { isAuthenticated, isLoading } = useAuth();
@@ -80,6 +81,9 @@ function AppContent() {
                     </Route>
                     <Route element={<PrivateRoute />}>
                         <Route path="/trail" element={<TrailPage />} />
+                    </Route>
+                    <Route element={<PrivateRoute />}>
+                        <Route path="/projectionpage" element={<SpecifyProjectionPage />} />
                     </Route>
                 </Routes>
             </Router>

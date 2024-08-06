@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TrailWidget from '../components/TrailWidget.jsx';
+import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
     const [trails, setTrails] = useState([]);
@@ -78,86 +79,14 @@ function HomePage() {
             // setError('Network error: ' + error.message);
         }
     };
-
-    const fetchTransportation = async () => {
-        try {
-            const response = await fetch(`http://localhost:65535/transportation`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            const data = await response.json();
-            if (data.success) {
-                setTransportation(data.transportation);
-            } else {
-                setError(data.error || 'Failed to fetch Transportation');
-            }
-        } catch (error) {
-            setError('Network error: ' + error.message);
-        }
-    };
-
-    const fetchFindCheapestTransportByType = async () => {
-        try {
-            const response = await fetch(`http://localhost:65535/find-cheapest-transport-by-type`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            const data = await response.json();
-            if (data.success) {
-                setTransportation(data.transportation);
-            } else {
-                setError(data.error || 'Failed to fetch Transportation');
-            }
-        } catch (error) {
-            setError('Network error: ' + error.message);
-        }
-    };
-
-    const fetchEquipment = async () => {
-        try {
-            const response = await fetch(`http://localhost:65535/equipment`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            const data = await response.json();
-            if (data.success) {
-                setEquipment(data.equipment);
-            } else {
-                setError(data.error || 'Failed to fetch Equipment');
-            }
-        } catch (error) {
-            setError('Network error: ' + error.message);
-        }
-    };
-
-    const fetchFindHeaviestEquipmentType = async () => {
-        try {
-            const response = await fetch(`http://localhost:65535/find-heaviest-equipment-by-type`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            const data = await response.json();
-            if (data.success) {
-                setEquipment(data.equipment);
-            } else {
-                setError(data.error || 'Failed to fetch Transportation');
-            }
-        } catch (error) {
-            setError('Network error: ' + error.message);
-        }
-    };
-
     const handleSearch = (event) => {
         setSearchText(event.target.value);
     };
+
+    const navigate = useNavigate();
+    const handleProjection = (event) => {
+        navigate('/projectionpage');
+    }
 
     useEffect(() => {
         fetchTrails();
@@ -193,6 +122,7 @@ function HomePage() {
                     </div>
                 </div> */}
                 <button className="search-button" onClick={fetchSelectionTrails}>Search</button>
+                <button className="search-button" onClick={handleProjection}>Projection</button>
             </div>
             {/*<div>*/}
             {/*    <p>*/}
