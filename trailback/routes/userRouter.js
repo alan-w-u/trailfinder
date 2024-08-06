@@ -82,8 +82,8 @@ router.get('/equipment', authenticateToken, async (req, res) => {
 
 // Get specific userhikestrail information
 router.get('/userhikestrail', async (req, res) => {
-    const {userid, locationname, latitude, longitude, trailname, datehiked} = req.query; 
-    const userHikesTrailResult = await userService.getUserHikesTrail(userid, locationname, latitude, longitude, trailname, datehiked);
+    const {userid} = req.query; 
+    const userHikesTrailResult = await userService.getUserHikesTrail(userid);
     if (userHikesTrailResult) {
         console.log('UserHikesTrail GET success - 200');
         res.json({ success: true, trail: userHikesTrailResult });

@@ -264,15 +264,15 @@ async function getEquipment(userid) {
 }
 
 // Get specific trail information
-async function getUserHikesTrail(userid, locationname, latitude, longitude, trailname, datehiked) {
+async function getUserHikesTrail(userid) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `SELECT userid, locationname, latitude, longitude, trailname, datehiked,
                     EXTRACT(HOUR FROM timetocomplete) AS hours,
                     EXTRACT(MINUTE FROM timetocomplete) AS minutes
             FROM userhikestrail
-            WHERE userid = :userid AND locationname = :locationname AND latitude = :latitude AND longitude = :longitude AND trailname = :trailname AND datehiked = :datehiked`,
-            { userid: userid, locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname, datehiked: datehiked },
+            WHERE userid = :userid`,
+            { userid: userid },
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
 
