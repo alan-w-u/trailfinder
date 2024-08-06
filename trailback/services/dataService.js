@@ -443,10 +443,14 @@ async function getTableAttributes(tableName) {
 async function projectAttributesAndTables(table, attributes) {
     return await withOracleDB(async (connection) => {
         const attributeString = attributes.join(', ');
+        const modifiedAttributeString = attributeString
+            .replace("TIMETOCOMPLETE", "TO_CHAR(TIMETOCOMPLETE, 'DD HH24:MI:SS') AS TIMETOCOMPLETE")
+            .replace("DURATION", "TO_CHAR(DURATION, 'DD HH24:MI:SS') AS DURATION");
         const result = await connection.execute(
-            `SELECT ${attributeString} FROM ${table}`,
+            `SELECT ${modifiedAttributeString} FROM ${table}`,
             [],
-            { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "IMAGE": { type: oracledb.BUFFER }, "PROFILEPICTURE": { type: oracledb.BUFFER } } }
+            { outFormat: oracledb.OUT_FORMAT_OBJECT,
+                fetchInfo: { "IMAGE": { type: oracledb.BUFFER }, "PROFILEPICTURE": { type: oracledb.BUFFER } } }
         );
         return result.rows;
     }).catch(() => {
