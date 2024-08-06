@@ -322,7 +322,7 @@ function TrailPage() {
                                 </>
                             }
                             <p>&nbsp;</p>
-                            {item.USERID == {userID} && <button className="delete-review-button negative">x</button>}
+                            {item.USERID == userID && <button className="delete-review-button negative">x</button>}
                         </li>
                     )) : <div>No Reviews Found</div>}
                 </div>
