@@ -221,7 +221,7 @@ function HomePage() {
                 ))}
             </div>
             <div className="home-info">
-                <h1>Tranportation Methods</h1>
+                <h1>Transportation Methods</h1>
                 <button className="positive" onClick={fetchFindCheapestTransportByType}>Find Cheapest Tranportation Method</button>
                 <ul>
                     {transportation && transportation.map((item, index) => (

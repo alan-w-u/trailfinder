@@ -218,10 +218,11 @@ router.get('/transportation', async (req, res) => {
 // Find cheapest transport by type
 router.get("/find-cheapest-transport-by-type", async (req, res) => {
     const transportationResult = await dataService.findCheapestTransportPerType(); 
-    if (transportationResult === -1) {
-        res.status(500).json({ success: false, error: 'Error or No Rows Exist' });
-    } else {
+    if (transportationResult) {
+        console.log('Transportation GET success - 200');
         res.json({ success: true, transportation: transportationResult });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to GET Transportation' })
     }
 })
 
@@ -239,10 +240,11 @@ router.get('/equipment', async (req, res) => {
 // Find heaviest equipment by type
 router.get("/find-heaviest-equipment-by-type", async (req, res) => {
     const equipmentResult = await dataService.findHeaviestEquipmentType(); 
-    if (equipmentResult === -1) {
-        res.status(500).json({ success: false, error: 'Error or No Rows Exist' });
-    } else {
+    if (equipmentResult) {
+        console.log('Transportation GET success - 200');
         res.json({ success: true, equipment: equipmentResult });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to GET Equipment' })
     }
 });
 
