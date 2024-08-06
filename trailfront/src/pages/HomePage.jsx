@@ -117,6 +117,25 @@ function HomePage() {
         }
     };
 
+    const fetchEquipment = async () => {
+        try {
+            const response = await fetch(`http://localhost:65535/equipment`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                setEquipment(data.equipment);
+            } else {
+                setError(data.error || 'Failed to fetch Equipment');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
+
     const fetchFindHeaviestEquipmentType = async () => {
         try {
             const response = await fetch(`http://localhost:65535/find-heaviest-equipment-by-type`, {
@@ -127,7 +146,7 @@ function HomePage() {
             });
             const data = await response.json();
             if (data.success) {
-                setTransportation(data.equipment);
+                setEquipment(data.equipment);
             } else {
                 setError(data.error || 'Failed to fetch Transportation');
             }
@@ -144,6 +163,7 @@ function HomePage() {
         fetchTrails();
         fetchPreviews();
         fetchTransportation();
+        fetchEquipment();
     }, []);
 
     if (!trails) return <div> No Trails Found (Or Loading)... </div>;

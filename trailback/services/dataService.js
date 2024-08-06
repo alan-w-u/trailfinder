@@ -384,6 +384,25 @@ async function findCheapestTransportPerType() {
     })
 }
 
+// Get equipment information
+async function getEquipment() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT *
+            FROM equipment`,
+            {},
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            console.log("Equipment not found");
+            return [];
+        }
+    });
+}
+
 // Find heaviest equipment for each type // group by
 async function findHeaviestEquipmentType() {
     return await withOracleDB(async (connection) => {
@@ -450,6 +469,7 @@ export {
     joinUserUGC, 
     getTransportation,
     findCheapestTransportPerType,
+    getEquipment,
     findHeaviestEquipmentType,
     findUsersWithoutEquipment,
     projectAttributesAndTables,

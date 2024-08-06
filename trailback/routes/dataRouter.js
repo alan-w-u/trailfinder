@@ -225,6 +225,17 @@ router.get("/find-cheapest-transport-by-type", async (req, res) => {
     }
 })
 
+// Get equipment information
+router.get('/equipment', async (req, res) => {
+    const equipmentResult = await dataService.getEquipment();
+    if (equipmentResult) {
+        console.log('Transportation GET success - 200');
+        res.json({ success: true, equipment: equipmentResult });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to GET Equipment' })
+    }
+});
+
 // Find heaviest equipment by type
 router.get("/find-heaviest-equipment-by-type", async (req, res) => {
     const equipmentResult = await dataService.findHeaviestEquipmentType(); 
