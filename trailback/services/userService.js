@@ -267,12 +267,12 @@ async function getEquipment(userid) {
 async function getUserHikesTrail(userid, locationname, latitude, longitude, trailname, datehiked) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT userid, locationname, latitude, longitude, trailname, datehiked
+            `SELECT userid, locationname, latitude, longitude, trailname, datehiked,
                     EXTRACT(HOUR FROM timetocomplete) AS hours,
                     EXTRACT(MINUTE FROM timetocomplete) AS minutes
-            FROM trail
-            WHERE userid = :userid AND locationname = :locationname AND latitude = :latitude AND longitude = :longitude AND trailname = :trailname AND datedhiked = :datedhiked`,
-            { userid: userid, locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname, datehiked: datehiked, },
+            FROM userhikestrail
+            WHERE userid = :userid AND locationname = :locationname AND latitude = :latitude AND longitude = :longitude AND trailname = :trailname AND datehiked = :datehiked`,
+            { userid: userid, locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname, datehiked: datehiked },
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
 
