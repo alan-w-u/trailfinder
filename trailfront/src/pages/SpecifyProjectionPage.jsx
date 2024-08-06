@@ -89,7 +89,7 @@ const SpecifyProjection = () => {
 
     return (
         <div className='projection-page'>
-            <h1>Data Projection</h1>
+            <h1>See Your Data!</h1>
             <p>Select a table and choose the attributes you want to view.</p>
             <form onSubmit={submitProjection}>
                 <select value={selectedTable} onChange={handleTableChange}>
