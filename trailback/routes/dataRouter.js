@@ -290,4 +290,13 @@ router.get("/find-max-transport-cost-above-average", async (req, res) => {
     }
 })
 
+router.get("/divideToFindUsersAtAllLocations", async (req, res) => {
+    const result = await dataService.divideForUserAtEveryLocation(); 
+    if (result === -1) {
+        res.status(500).json({ success: false, error: 'Error or No Rows Exist' });
+    } else {
+        res.json({ success: true, dividedUsers: result });
+    }
+})
+
 export default router;

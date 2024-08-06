@@ -478,6 +478,19 @@ async function findMaxTransportCostBelowAverageCost() {
     })
 }
 
+async function divideForUserAtEveryLocation() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT DISTINCT ua.userid FROM userhikestrail ua WHERE NOT EXISTS (SELECT t.locationname FROM trail t WHERE NOT EXISTS (SELECT ub.locationname FROM userhikestrail ub WHERE ub.userid = ua.userid AND ub.locationname = t.locationname))`,
+            {},
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+        return result.rows;
+    }).catch(() => {
+        return -1; 
+    })
+}
+
 export {
     testOracleConnection,
     initializeDB,
@@ -502,5 +515,6 @@ export {
     getAllTables,
     getTableAttributes,
     projectAttributesAndTables,
-    findMaxTransportCostBelowAverageCost
+    findMaxTransportCostBelowAverageCost, 
+    divideForUserAtEveryLocation
 };
