@@ -39,7 +39,7 @@ const ProfileSection = () => {
         <div>
             <h1>Hiked At</h1>
             <div className="profile-list">
-                 {(trails && trails.length > 0) ? trails.map(trail => (
+                {(trails && trails.length > 0) ? trails.map(trail => (
                     <div key={trail.TRAILNAME}>
                         <p>
                             Trail Name: <b>{trail.NAME}</b>
@@ -52,8 +52,11 @@ const ProfileSection = () => {
                             <br />
                         </p>
                     </div>
-                 )) : <div>Nothing to see here!</div>
-                 }
+                )) : <div>Nothing to see here!</div>
+                }
+            </div>
+            <div className="profile-inputs">
+                <button className="positive">Complete All Locations?</button>
             </div>
         </div>
     );
