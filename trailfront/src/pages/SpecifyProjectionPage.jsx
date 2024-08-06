@@ -6,6 +6,25 @@ import '../components/ProjectionPage.css';
 
 const SpecifyProjection = () => {
 
+  const [tableName, setTableName] = useState(""); 
+  const [tableAttributes, setTableAttributes] = useState("");
+
+  async function submitForm(e) {
+    e.preventDefault();
+    try {
+        const response = await fetch('http://localhost:65535/projectAttributesAndTables', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+
+    }
+}
+
 
   return (
     <div className='projection-table'>
@@ -83,6 +102,26 @@ const SpecifyProjection = () => {
             <td>retailerid, gearname, productname, productwebsite</td>
         </tr>
     </table>
+    <section>
+      <p>Welcome to our internal data! Please select a table of your choice, and the list of attributes you would like to see from that table.</p>
+    </section>
+    <form>
+      <label>
+        <input 
+          type = "text"
+          placeholder="Table Name"
+          onChange={(e) => setTableName(e.target.value)}
+          />
+      </label>
+      <label>
+        <input 
+          type = "text"
+          placeholder="Table Attributes"
+          onChange={(e) => setTableAttributes(e.target.value)}
+          />
+      </label>
+      <button onSubmit={submitForm}>Submit</button>
+    </form>
     </div>
   )
 }
