@@ -88,7 +88,6 @@ function HomePage() {
                 }
             });
             const data = await response.json();
-            console.log(data);
             if (data.success) {
                 setTransportation(data.transportation);
             } else {
@@ -108,7 +107,6 @@ function HomePage() {
                 }
             });
             const data = await response.json();
-            console.log(data);
             if (data.success) {
                 setTransportation(data.transportation);
             } else {
@@ -128,6 +126,7 @@ function HomePage() {
                 }
             });
             const data = await response.json();
+            console.log(data);
             if (data.success) {
                 setEquipment(data.equipment);
             } else {
@@ -147,6 +146,7 @@ function HomePage() {
                 }
             });
             const data = await response.json();
+            console.log(data);
             if (data.success) {
                 setEquipment(data.equipment);
             } else {

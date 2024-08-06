@@ -379,7 +379,8 @@ async function findCheapestTransportPerType() {
             FROM transportation 
             WHERE transportcost > 0 GROUP BY type`,
             {},
-            { outFormat: oracledb.OUT_FORMAT_OBJECT });
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
         return result.rows;
     }).catch(() => {
         return -1; 
@@ -409,11 +410,13 @@ async function getEquipment() {
 async function findHeaviestEquipmentType() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT type, MAX(weight)
+            `SELECT type, MAX(weight) AS weight
             FROM equipment 
             WHERE weight > 1 
             GROUP BY type
-            HAVING COUNT(*) > 1`
+            HAVING COUNT(*) > 1`,
+            {},
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
         return result.rows;
     }).catch(() => {
