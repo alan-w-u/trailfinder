@@ -1,6 +1,6 @@
 import express from 'express';
 import * as dataService from '../services/dataService.js';
-import {projectAttributesAndTables} from "../services/dataService.js";
+import { authenticateToken } from "./authRouter.js";
 
 const router = express.Router();
 
@@ -290,13 +290,15 @@ router.get("/find-max-transport-cost-above-average", async (req, res) => {
     }
 })
 
-router.get("/divide-to-find-users-at-all-locations", async (req, res) => {
-    const result = await dataService.divideForUserAtEveryLocation(); 
+router.get("/divide-to-find-users-at-all-locations", authenticateToken, async (req, res) => {
+    const result = await dataService.divideForUserAtEveryLocation();
+    const { userId } = req.user;
     if (result === -1) {
         res.status(500).json({ success: false, error: 'Error or No Rows Exist' });
     } else {
-        res.json({ success: true, dividedUsers: result });
+        console.log("Divide GET success - 200");
+        res.json({ success: true, completed: (userId == result) });
     }
-})
+});
 
 export default router;

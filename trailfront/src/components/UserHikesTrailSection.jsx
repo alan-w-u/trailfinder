@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './AuthContext.jsx';
 
-const ProfileSection = () => {
+const UserHikesTrailSection = () => {
     const [error, setError] = useState('');
     const { login } = useAuth();
     const [trails, setTrails] = useState([]);
@@ -19,6 +19,33 @@ const ProfileSection = () => {
             const data = await response.json();
             if (data.success) {
                 setTrails(data.userhikestrail);
+            } else {
+                setError(data.error || 'Failed to fetch userhikestrails');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleCompleted = async () => {
+        try {
+            const response = await fetch('http://localhost:65535/divide-to-find-users-at-all-locations', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            console.log(data);
+            if (data.success) {
+                if (data.completed) {
+                    alert("You are a master. You have completed every trail we have to offer!");
+                } else {
+                    alert("You are on your way to hike every trail we offer!")
+                }
+                setError('');
             } else {
                 setError(data.error || 'Failed to fetch userhikestrails');
             }
@@ -56,10 +83,10 @@ const ProfileSection = () => {
                 }
             </div>
             <div className="profile-inputs">
-                <button className="positive">Complete All Locations?</button>
+                <button className="positive" onClick={handleCompleted}>Complete All Locations?</button>
             </div>
         </div>
     );
 };
 
-export default ProfileSection;
+export default UserHikesTrailSection;

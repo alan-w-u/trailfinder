@@ -493,7 +493,12 @@ async function divideForUserAtEveryLocation() {
             {},
             { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
-        return result.rows;
+
+        if (result.rows && result.rows.length > 0) {
+            return result.rows[0]["USERID"];
+        } else {
+            return -1;
+        }
     }).catch(() => {
         return -1; 
     })
