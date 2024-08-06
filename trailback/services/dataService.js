@@ -411,20 +411,49 @@ async function findUsersWithoutEquipment() {
     })
 }
 
-// Project arbitrary tables and attributes 
-async function projectAttributesAndTables(attributes, tables) {
+//Get all Tables
+async function getAllTables() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT :attributes
-            FROM :tables`,
-            { attributes: attributes, tables: tables },
-            { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "PROFILEPICTURE": { type: oracledb.BUFFER } } }
+            `SELECT table_name FROM user_tables`,
+            [],
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+        return result.rows.map(row => row.TABLE_NAME);
+    }).catch(() => {
+        return -1;
+    });
+}
+
+//Get all table attributes
+async function getTableAttributes(tableName) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT column_name FROM user_tab_columns WHERE table_name = :tableName`,
+            { tableName: tableName.toUpperCase() },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+        return result.rows.map(row => row.COLUMN_NAME);
+    }).catch(() => {
+        return -1;
+    });
+}
+
+// Project arbitrary tables and attributes
+async function projectAttributesAndTables(table, attributes) {
+    return await withOracleDB(async (connection) => {
+        const attributeString = attributes.join(', ');
+        const result = await connection.execute(
+            `SELECT ${attributeString} FROM ${table}`,
+            [],
+            { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "IMAGE": { type: oracledb.BUFFER }, "PROFILEPICTURE": { type: oracledb.BUFFER } } }
         );
         return result.rows;
     }).catch(() => {
-        return -1; 
-    })
+        return -1;
+    });
 }
+
 
 // Nested aggregation 
 async function findMaxTransportCostBelowAverageCost() {
@@ -466,6 +495,8 @@ export {
     getEquipment,
     findHeaviestEquipmentType,
     findUsersWithoutEquipment,
+    getAllTables,
+    getTableAttributes,
     projectAttributesAndTables,
     findMaxTransportCostBelowAverageCost
 };
