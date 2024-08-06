@@ -79,6 +79,85 @@ function HomePage() {
             // setError('Network error: ' + error.message);
         }
     };
+
+    const fetchTransportation = async () => {
+        try {
+            const response = await fetch(`http://localhost:65535/transportation`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            console.log(data);
+            if (data.success) {
+                setTransportation(data.transportation);
+            } else {
+                setError(data.error || 'Failed to fetch Transportation');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
+
+    const fetchFindCheapestTransportByType = async () => {
+        try {
+            const response = await fetch(`http://localhost:65535/find-cheapest-transport-by-type`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            console.log(data);
+            if (data.success) {
+                setTransportation(data.transportation);
+            } else {
+                setError(data.error || 'Failed to fetch Transportation');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
+
+    const fetchEquipment = async () => {
+        try {
+            const response = await fetch(`http://localhost:65535/equipment`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                setEquipment(data.equipment);
+            } else {
+                setError(data.error || 'Failed to fetch Equipment');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
+
+    const fetchFindHeaviestEquipmentType = async () => {
+        try {
+            const response = await fetch(`http://localhost:65535/find-heaviest-equipment-by-type`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                setEquipment(data.equipment);
+            } else {
+                setError(data.error || 'Failed to fetch Transportation');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
+
     const handleSearch = (event) => {
         setSearchText(event.target.value);
     };

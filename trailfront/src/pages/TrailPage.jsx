@@ -284,7 +284,7 @@ function TrailPage() {
             </div>
             <div className="trail-info">
                 <div className="full">
-                    <b>Reviews</b>
+                    <b>Reviews ({(ugc) ? ugc.length : 0})</b>
                     <p>&nbsp;</p>
                     <div className="new-review">
                         <input
