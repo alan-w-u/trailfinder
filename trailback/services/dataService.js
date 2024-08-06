@@ -308,25 +308,16 @@ async function getUGC(locationname, latitude, longitude, trailname) {
     });
 }
 
-// Project attributes from trail
-async function projectTrailAttributes(attributes) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `SELECT ${attributes} 
-            FROM TRAIL`);
-        return result.rows;
-    }).catch(() => {
-        return -1;
-    })
-}
-
 // Select to see what equipment people are bringing
 async function selectionEquipment(whereClause) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `SELECT * 
             FROM equipment 
-            WHERE ${whereClause}`);
+            WHERE :whereClause`,
+            { whereClause: whereClause },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
         return result.rows;
     }).catch(() => {
         return -1;
@@ -424,30 +415,44 @@ async function findHeaviestEquipmentType() {
     })
 }
 
-//find users without equipment
+// Find users without equipment
 async function findUsersWithoutEquipment() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(`SELECT userprofile.name, userprofile.email FROM userprofile MINUS (SELECT DISTINCT userprofile.name, userprofile.email FROM userprofile, equipment WHERE userprofile.userid = equipment.userid)`);
+        const result = await connection.execute(
+            `SELECT userprofile.name, userprofile.email 
+            FROM userprofile MINUS (SELECT DISTINCT userprofile.name, userprofile.email 
+                                    FROM userprofile, equipment 
+                                    WHERE userprofile.userid = equipment.userid)`);
         return result.rows;
     }).catch(() => {
         return -1; 
     })
 }
 
-//project arbitrary tables and attributes 
-async function projectAttributesAndTables(attributes, tableNames) {
+// Project arbitrary tables and attributes 
+async function projectAttributesAndTables(attributes, tables) {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(`SELECT ${attributes} FROM ${tableNames}`);
+        const result = await connection.execute(
+            `SELECT :attributes
+            FROM :tables`,
+            { attributes: attributes, tables: tables },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "PROFILEPICTURE": { type: oracledb.BUFFER } } }
+        );
         return result.rows;
     }).catch(() => {
         return -1; 
     })
 }
 
-//nested aggregation 
+// Nested aggregation 
 async function findMinTransportCostAboveAverageCost() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(`SELECT type, min(transportcost) FROM transportation WHERE transportcost > (SELECT avg(transportcost) FROM transportation WHERE transportcost > 0) GROUP BY type`);
+        const result = await connection.execute(
+            `SELECT type, MIN(transportcost) 
+            FROM transportation 
+            WHERE transportcost > (SELECT avg(transportcost) 
+                                    FROM transportation WHERE transportcost > 0) 
+                                    GROUP BY type`);
         return result.rows;
     }).catch(() => {
         return -1; 
@@ -469,7 +474,6 @@ export {
     getTransportationToLocation,
     getRetailerGear,
     getUGC,
-    projectTrailAttributes,
     selectionEquipment,
     joinUserUGC, 
     getTransportation,

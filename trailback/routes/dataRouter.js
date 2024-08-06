@@ -181,17 +181,6 @@ router.get('/selectEquipment', async (req, res) => {
     }
 });
 
-// Project attributes from trail
-router.get('/projectTrailAttributes', async (req, res) => {
-    const { projectionString } = req.body;
-    const result = await dataService.projectTrailAttributes(projectionString);
-    if (result === -1) {
-        res.status(500).json({ success: false, error: 'attributes Invalid or No Rows Exist' });
-    } else {
-        res.json({ success: true, data: result });
-    }
-})
-
 // Join user ugc review
 router.get("/join-user-ugc", async (req, res) => {
     const { locationname, latitude, longitude, trailname, rating } = req.query;
