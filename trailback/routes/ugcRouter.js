@@ -1,6 +1,7 @@
 import express from 'express';
 import * as userService from '../services/ugcService.js';
 import { authenticateToken } from "./authRouter.js";
+import * as dataService from "../services/dataService.js";
 
 const router = express.Router();
 
@@ -40,6 +41,16 @@ router.delete('/review', authenticateToken, async (req, res) => {
     });
 });
 
+router.get("/user", async (req, res) => {
+    const { locationname, latitude, longitude, trailname, rating } = req.query;
+    const result = await userService.joinUserUGC(locationname, latitude, longitude, trailname, rating);
+    if (result === -1) {
+        res.status(500).json({ success: false, error: 'attributes Invalid or No Rows Exist' });
+    } else {
+        console.log("Join UGC Review Success - 200");
+        res.json({ success: true, ugc: result });
+    }
+});
 
 
 export default router;

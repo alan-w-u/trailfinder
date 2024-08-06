@@ -324,25 +324,6 @@ async function selectionEquipment(whereClause) {
     });
 }
 
-// join
-async function joinUserUGC(locationname, latitude, longitude, trailname, rating) {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `SELECT *
-            FROM ugc
-            JOIN review r ON ugc.ugcid = r.ugcid
-            JOIN userprofile u ON ugc.userid = u.userid
-            WHERE ugc.locationname = :locationname AND ugc.latitude = :latitude AND ugc.longitude = :longitude AND ugc.trailname = :trailname AND rating = :rating`,
-            { locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname, rating: rating },
-            { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "PROFILEPICTURE": { type: oracledb.BUFFER } } }
-        );
-
-        return result.rows;
-    }).catch(() => {
-        return -1;
-    })
-}
-
 // Get transportation information
 async function getTransportation() {
     return await withOracleDB(async (connection) => {
@@ -476,7 +457,6 @@ export {
     getRetailerGear,
     getUGC,
     selectionEquipment,
-    joinUserUGC, 
     getTransportation,
     findCheapestTransportPerType,
     getEquipment,

@@ -181,17 +181,16 @@ router.get('/selectEquipment', async (req, res) => {
     }
 });
 
-// Join user ugc review
-router.get("/join-user-ugc", async (req, res) => {
-    const { locationname, latitude, longitude, trailname, rating } = req.query;
-    const result = await dataService.joinUserUGC(locationname, latitude, longitude, trailname, rating);
+// Project attributes from trail
+router.get('/projectTrailAttributes', async (req, res) => {
+    const { projectionString } = req.body;
+    const result = await dataService.projectTrailAttributes(projectionString);
     if (result === -1) {
         res.status(500).json({ success: false, error: 'attributes Invalid or No Rows Exist' });
     } else {
-        console.log("Join UGC Review Success - 200");
-        res.json({ success: true, ugc: result });
+        res.json({ success: true, data: result });
     }
-});
+})
 
 // Get transportation information
 router.get('/transportation', async (req, res) => {

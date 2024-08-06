@@ -112,7 +112,7 @@ function TrailPage() {
 
     const fetchJoinUserUGC = async () => {
         try {
-            const response = await fetch(`http://localhost:65535/join-user-ugc?locationname=${locationname}&latitude=${latitude}&longitude=${longitude}&trailname=${trailname}&rating=${rating}`, {
+            const response = await fetch(`http://localhost:65535/ugc/user?locationname=${locationname}&latitude=${latitude}&longitude=${longitude}&trailname=${trailname}&rating=${rating}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -145,6 +145,7 @@ function TrailPage() {
             });
             const data = await response.json();
             if (data.success) {
+                setRating(0);
                 await fetchUGC();
             } else {
                 setError(data.error || 'Failed to fetch UGC');
@@ -166,6 +167,7 @@ function TrailPage() {
             });
             const data = await response.json();
             if (data.success) {
+                setRating(0);
                 alert("delete review success");
                 setUGC(prevUGC => prevUGC.filter(item => item.UGCID !== ugcID));
             } else {
@@ -317,6 +319,7 @@ function TrailPage() {
                             </label>
                         ))}
                     </div>
+                    <button className="positive" onClick={() => setRating(0)}>Clear</button>
                     <p>&nbsp;</p>
                     {(ugc) ? ugc.map((item, index) => (
                         <li key={index}>

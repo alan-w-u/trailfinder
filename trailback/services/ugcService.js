@@ -59,19 +59,38 @@ async function addReview(message, rating, location, lat, lon, trail, userID) {
 }
 
 
-    async function deleteReview(ugcid) {
-        return await withOracleDB(async (connection) => {
-            const result = await connection.execute(
-                `DELETE FROM ugc WHERE ugcid = :ugcid`,
-                { ugcid: ugcid },
-                { autoCommit: true }
-            );
+async function deleteReview(ugcid) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `DELETE FROM ugc WHERE ugcid = :ugcid`,
+            { ugcid: ugcid },
+            { autoCommit: true }
+        );
 
-            return { success: true };
-        });
-    }
+        return { success: true };
+    });
+}
+
+async function joinUserUGC(locationname, latitude, longitude, trailname, rating) {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT *
+            FROM ugc
+            JOIN review r ON ugc.ugcid = r.ugcid
+            JOIN userprofile u ON ugc.userid = u.userid
+            WHERE ugc.locationname = :locationname AND ugc.latitude = :latitude AND ugc.longitude = :longitude AND ugc.trailname = :trailname AND rating = :rating`,
+            { locationname: locationname, latitude: latitude, longitude: longitude, trailname: trailname, rating: rating },
+            { outFormat: oracledb.OUT_FORMAT_OBJECT, fetchInfo: { "PROFILEPICTURE": { type: oracledb.BUFFER } } }
+        );
+
+        return result.rows;
+    }).catch(() => {
+        return -1;
+    })
+}
 
 export {
     addReview,
-    deleteReview
+    deleteReview,
+    joinUserUGC
 }
