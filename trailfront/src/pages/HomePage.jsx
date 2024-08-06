@@ -7,6 +7,7 @@ function HomePage() {
     const [searchText, setSearchText] = useState('');
     const [error, setError] = useState('');
     const [transportation, setTransportation] = useState([]);
+    const [transportation2, setTransportation2] = useState([]);
     const [equipment, setEquipment] = useState([]);
 
     const fetchTrails = async () => {
@@ -117,6 +118,25 @@ function HomePage() {
         }
     };
 
+    const fetchFindMaxTransportCostBelowAverageCost = async () => {
+        try {
+            const response = await fetch(`http://localhost:65535/find-max-transport-cost-above-average`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                setTransportation2(data.transportation);
+            } else {
+                setError(data.error || 'Failed to fetch Transportation');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
+
     const fetchEquipment = async () => {
         try {
             const response = await fetch(`http://localhost:65535/equipment`, {
@@ -166,6 +186,7 @@ function HomePage() {
         fetchPreviews();
         fetchTransportation();
         fetchEquipment();
+        fetchFindMaxTransportCostBelowAverageCost();
     }, []);
 
     if (!trails) return <div> No Trails Found (Or Loading)... </div>;
@@ -220,6 +241,16 @@ function HomePage() {
                     {transportation && transportation.map((item, index) => (
                         <li key={index}>
                             <b>{item.TYPE}</b> (${item.TRANSPORTCOST}/km)
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="home-info">
+                <h1>Optimized Price Transportation Methods</h1>
+                <ul>
+                    {transportation2 && transportation2.map((item2, index) => (
+                        <li key={index}>
+                            <b>{item2.TYPE}</b> (${item2.TRANSPORTCOST}/km)
                         </li>
                     ))}
                 </ul>

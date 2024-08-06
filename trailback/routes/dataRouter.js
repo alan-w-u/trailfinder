@@ -257,12 +257,12 @@ router.get("/projectAttributesAndTables", async (req, res) => {
     }
 })
 
-router.get("/findMinTransportCostAboveAverage", async (req, res) => {
-    const result = await dataService.findMinTransportCostAboveAverageCost(); 
+router.get("/find-max-transport-cost-above-average", async (req, res) => {
+    const result = await dataService.findMaxTransportCostBelowAverageCost(); 
     if (result === -1) {
         res.status(500).json({ success: false, error: 'Error or No Rows Exist' });
     } else {
-        res.json({ success: true, data: result });
+        res.json({ success: true, transportation: result });
     }
 })
 
