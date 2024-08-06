@@ -1,7 +1,6 @@
 import express from 'express';
 import * as userService from '../services/userService.js';
 import { authenticateToken } from "./authRouter.js";
-import { removeFriend } from "../services/userService.js";
 
 const router = express.Router();
 
@@ -60,7 +59,7 @@ router.put('/friends', authenticateToken, async (req, res) => {
 // Delete friend
 router.delete('/friend', authenticateToken, async (req, res) => {
     const { friendId } = req.body;
-    await removeFriend(friendId, req.user["userId"])
+    await userService.removeFriend(friendId, req.user["userId"])
         .then((result) => {
             console.log('Friends DELETE success - 200');
             res.json({ success: true });

@@ -16,6 +16,8 @@ DROP TABLE trail;
 DROP TABLE location;
 DROP TABLE userprofile;
 DROP SEQUENCE user_id_seq;
+DROP SEQUENCE ugc_id_seq;
+
 
 
 
@@ -266,7 +268,6 @@ INSERT ALL
     (13, 4, 'Backpack', 'The North Face', 1, 1.9)
     INTO equipment (equipmentid, userid, type, brand, amount, weight) VALUES
     (14, 2, 'Snow Shoes', 'Atlas Helium V2', 1, 4.5)
-
 SELECT * FROM DUAL;
 
 INSERT ALL
@@ -423,7 +424,7 @@ INSERT ALL
     (6, 5, 'Glacier National Park', 48.6806, -113.819230, 'Avalanche Lake Trail', DATE '2023-08-15')
     INTO ugc (ugcid, userid, locationname, latitude, longitude, trailname, dateposted) VALUES
     (7, 5, 'Glacier National Park', 48.719600, -113.682000, 'Grinnell Glacier Trail', DATE '2023-8-30')
-select * FROM DUAL;
+SELECT * FROM DUAL;
 
 INSERT ALL
     INTO review (ugcid, rating, description) VALUES
@@ -532,6 +533,12 @@ SELECT * FROM DUAL;
 
 CREATE SEQUENCE user_id_seq
     START WITH 6
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+CREATE SEQUENCE ugc_id_seq
+    START WITH 8
     INCREMENT BY 1
     NOCACHE
     NOCYCLE;

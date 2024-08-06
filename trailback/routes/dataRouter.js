@@ -134,10 +134,10 @@ router.get('/previews', async (req, res) => {
     }
 });
 
-// Get transportation information
-router.get('/transportation', async (req, res) => {
+// Get transportation to location information
+router.get('/transportation-to-location', async (req, res) => {
     const { locationname, latitude, longitude } = req.query;
-    const transportationResult = await dataService.getTransportation(locationname, latitude, longitude);
+    const transportationResult = await dataService.getTransportationToLocation(locationname, latitude, longitude);
     if (transportationResult) {
         console.log('Transportation GET success - 200');
         res.json({ success: true, transportation: transportationResult });
@@ -202,27 +202,49 @@ router.get("/join-user-ugc", async (req, res) => {
         console.log("Join UGC Review Success - 200");
         res.json({ success: true, ugc: result });
     }
-})
+});
 
-//find heaviest equipment by type
-router.get("/findHeaviestEquipmentByType", async (req, res) => {
-    const result = await dataService.findHeaviestEquipmentType(); 
-    if (result === -1) {
+// Get transportation information
+router.get('/transportation', async (req, res) => {
+    const transportationResult = await dataService.getTransportation();
+    if (transportationResult) {
+        console.log('Transportation GET success - 200');
+        res.json({ success: true, transportation: transportationResult });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to GET Transportation' })
+    }
+});
+
+// Find cheapest transport by type
+router.get("/find-cheapest-transport-by-type", async (req, res) => {
+    const transportationResult = await dataService.findCheapestTransportPerType(); 
+    if (transportationResult === -1) {
         res.status(500).json({ success: false, error: 'Error or No Rows Exist' });
     } else {
-        res.json({ success: true, data: result });
+        res.json({ success: true, transportation: transportationResult });
     }
 })
 
-//find cheapest transport by type
-router.get("/findCheapestTransportByType", async (req, res) => {
-    const result = await dataService.findCheapestTransportPerType(); 
-    if (result === -1) {
+// Get equipment information
+router.get('/equipment', async (req, res) => {
+    const equipmentResult = await dataService.getEquipment();
+    if (equipmentResult) {
+        console.log('Transportation GET success - 200');
+        res.json({ success: true, equipment: equipmentResult });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to GET Equipment' })
+    }
+});
+
+// Find heaviest equipment by type
+router.get("/find-heaviest-equipment-by-type", async (req, res) => {
+    const equipmentResult = await dataService.findHeaviestEquipmentType(); 
+    if (equipmentResult === -1) {
         res.status(500).json({ success: false, error: 'Error or No Rows Exist' });
     } else {
-        res.json({ success: true, data: result });
+        res.json({ success: true, equipment: equipmentResult });
     }
-})
+});
 
 //find users no equipment
 router.get("/findUsersWithoutEquipment", async (req, res) => {

@@ -238,8 +238,8 @@ async function getPreviews(locationname, latitude, longitude, trailname) {
     });
 }
 
-// Get transportation information
-async function getTransportation(locationname, latitude, longitude) {
+// Get transportation to location information
+async function getTransportationToLocation(locationname, latitude, longitude) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `SELECT t.transportid, t.type, t.transportcost,
@@ -352,24 +352,67 @@ async function joinUserUGC(locationname, latitude, longitude, trailname, rating)
     })
 }
 
-// Find heaviest equipment for each type // group by
-async function findHeaviestEquipmentType() {
+// Get transportation information
+async function getTransportation() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT type, max(weight)
-            FROM equipment 
-            WHERE weight > 1 GROUP BY type`
+            `SELECT *
+            FROM transportation`,
+            {},
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
         );
+
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            console.log("Transportation not found");
+            return [];
+        }
+    });
+}
+
+// Find cheapest transport cost that costs money // group by 
+async function findCheapestTransportPerType() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT type, MIN(transportcost) 
+            FROM transportation 
+            WHERE transportcost > 0 GROUP BY type`);
         return result.rows;
     }).catch(() => {
         return -1; 
     })
 }
 
-//find cheapest transport cost that costs money // group by 
-async function findCheapestTransportPerType() {
+// Get equipment information
+async function getEquipment() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(`SELECT type, min(transportcost) FROM transportation WHERE transportcost > 0 GROUP BY type`);
+        const result = await connection.execute(
+            `SELECT *
+            FROM equipment`,
+            {},
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            console.log("Equipment not found");
+            return [];
+        }
+    });
+}
+
+// Find heaviest equipment for each type // group by
+async function findHeaviestEquipmentType() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT type, MAX(weight)
+            FROM equipment 
+            WHERE weight > 1 
+            GROUP BY type
+            HAVING COUNT(*) > 1`
+        );
         return result.rows;
     }).catch(() => {
         return -1; 
@@ -418,14 +461,16 @@ export {
     getTrail,
     selectionTrails,
     getPreviews,
-    getTransportation,
+    getTransportationToLocation,
     getRetailerGear,
     getUGC,
     projectTrailAttributes,
     selectionEquipment,
     joinUserUGC, 
-    findHeaviestEquipmentType,
+    getTransportation,
     findCheapestTransportPerType,
+    getEquipment,
+    findHeaviestEquipmentType,
     findUsersWithoutEquipment,
     projectAttributesAndTables,
     findMinTransportCostAboveAverageCost

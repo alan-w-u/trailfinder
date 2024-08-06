@@ -7,6 +7,8 @@ function HomePage() {
     const [previews, setPreviews] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [error, setError] = useState('');
+    const [transportation, setTransportation] = useState([]);
+    const [equipment, setEquipment] = useState([]);
 
     const fetchTrails = async () => {
         try {
@@ -89,6 +91,8 @@ function HomePage() {
     useEffect(() => {
         fetchTrails();
         fetchPreviews();
+        fetchTransportation();
+        fetchEquipment();
     }, []);
 
     if (!trails) return <div> No Trails Found (Or Loading)... </div>;
@@ -103,7 +107,7 @@ function HomePage() {
                 <input
                     type="text"
                     className="searchbar"
-                    placeholder="Enter search query (e.g., hours <= 6 && difficulty = 4)"
+                    placeholder="Enter search query (e.g., hours <= 6 && difficulty = 5)"
                     value={searchText}
                     onChange={handleSearch}
                 />
@@ -131,11 +135,33 @@ function HomePage() {
             {/*        Use && for AND, || for OR, and less/greater than operators for numeric inequality search.*/}
             {/*    </p>*/}
             {/*</div>*/}
-            {error && <div>{(error.startsWith("ORA"))?"Invalid Query":error}</div>}
+            {error && <div>{(error.startsWith("ORA")) ? "Invalid Query" : error}</div>}
             <div className="trailwidgets">
                 {trails && trails.map(trail => (
-                    <TrailWidget key={trail.TRAILNAME} trail={trail} preview={previews[0]}/>
+                    <TrailWidget key={trail.TRAILNAME} trail={trail} preview={previews[0]} />
                 ))}
+            </div>
+            <div className="home-info">
+                <h1>Tranportation Methods</h1>
+                <button className="positive" onClick={fetchFindCheapestTransportByType}>Find Cheapest Tranportation Method</button>
+                <ul>
+                    {transportation && transportation.map((item, index) => (
+                        <li key={index}>
+                            <b>{item.TYPE}</b> (${item.TRANSPORTCOST}/km)
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="home-info">
+                <h1>All Recommended Equipment</h1>
+                <button className="positive" onClick={fetchFindHeaviestEquipmentType}>Find Heaviest Equipment By Type</button>
+                <ul>
+                    {equipment && equipment.map((item, index) => (
+                        <li key={index}>
+                            <b>{item.TYPE}</b> ({item.WEIGHT}kg)
+                        </li>
+                    ))}
+                </ul>
             </div>
         </div>
     );
