@@ -418,6 +418,16 @@ async function projectAttributesAndTables(attributes, tableNames) {
     })
 }
 
+//nested aggregation 
+async function findMinTransportCostAboveAverageCost() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(`SELECT type, min(transportcost) FROM transportation WHERE transportcost > (SELECT avg(transportcost) FROM transportation WHERE transportcost > 0) GROUP BY type`);
+        return result.rows;
+    }).catch(() => {
+        return -1; 
+    })
+}
+
 export {
     testOracleConnection,
     initializeDB,
@@ -440,5 +450,6 @@ export {
     getTransportation,
     findCheapestTransportPerType,
     findUsersWithoutEquipment,
-    projectAttributesAndTables
+    projectAttributesAndTables,
+    findMinTransportCostAboveAverageCost
 };

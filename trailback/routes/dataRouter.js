@@ -255,4 +255,13 @@ router.get("/projectAttributesAndTables", async (req, res) => {
     }
 })
 
+router.get("/findMinTransportCostAboveAverage", async (req, res) => {
+    const result = await dataService.findMinTransportCostAboveAverageCost(); 
+    if (result === -1) {
+        res.status(500).json({ success: false, error: 'Error or No Rows Exist' });
+    } else {
+        res.json({ success: true, data: result });
+    }
+})
+
 export default router;
