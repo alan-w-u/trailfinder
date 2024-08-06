@@ -149,7 +149,7 @@
     margin: 0.25rem 0 0 0;
 }
 
-.transportation {
+.home-info {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -161,20 +161,20 @@
     align-items: center;
 }
 
-.transportation ul {
+.home-info ul {
     display: flex;
     flex-wrap: wrap;
 }
 
-.transportation li {
+.home-info li {
     margin: 0 1rem;
 }
 
-.transportation li::marker {
+.home-info li::marker {
     content: '— ';
 }
 
-.transportation button {
+.home-info button {
     width: 40%;
     height: auto;
     padding: 0.5rem;

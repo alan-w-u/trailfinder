@@ -7,6 +7,7 @@ function HomePage() {
     const [searchText, setSearchText] = useState('');
     const [error, setError] = useState('');
     const [transportation, setTransportation] = useState([]);
+    const [equipment, setEquipment] = useState([]);
 
     const fetchTrails = async () => {
         try {
@@ -99,7 +100,7 @@ function HomePage() {
 
     const fetchFindCheapestTransportByType = async () => {
         try {
-            const response = await fetch(`http://localhost:65535/findCheapestTransportByType`, {
+            const response = await fetch(`http://localhost:65535/find-cheapest-transport-by-type`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -108,6 +109,25 @@ function HomePage() {
             const data = await response.json();
             if (data.success) {
                 setTransportation(data.transportation);
+            } else {
+                setError(data.error || 'Failed to fetch Transportation');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
+
+    const fetchFindHeaviestEquipmentType = async () => {
+        try {
+            const response = await fetch(`http://localhost:65535/find-heaviest-equipment-by-type`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                setTransportation(data.equipment);
             } else {
                 setError(data.error || 'Failed to fetch Transportation');
             }
@@ -171,13 +191,24 @@ function HomePage() {
                     <TrailWidget key={trail.TRAILNAME} trail={trail} preview={previews[0]} />
                 ))}
             </div>
-            <div className="transportation">
+            <div className="home-info">
                 <h1>Tranportation Methods</h1>
                 <button className="positive" onClick={fetchFindCheapestTransportByType}>Find Cheapest Tranportation Method</button>
                 <ul>
                     {transportation && transportation.map((item, index) => (
                         <li key={index}>
                             <b>{item.TYPE}</b> (${item.TRANSPORTCOST}/km)
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="home-info">
+                <h1>All Recommended Equipment</h1>
+                <button className="positive" onClick={fetchFindHeaviestEquipmentType}>Find Heaviest Equipment By Type</button>
+                <ul>
+                    {equipment && equipment.map((item, index) => (
+                        <li key={index}>
+                            <b>{item.TYPE}</b> ({item.WEIGHT}kg)
                         </li>
                     ))}
                 </ul>

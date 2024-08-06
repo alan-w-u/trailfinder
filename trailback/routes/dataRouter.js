@@ -202,17 +202,7 @@ router.get("/join-user-ugc", async (req, res) => {
         console.log("Join UGC Review Success - 200");
         res.json({ success: true, ugc: result });
     }
-})
-
-//find heaviest equipment by type
-router.get("/findHeaviestEquipmentByType", async (req, res) => {
-    const result = await dataService.findHeaviestEquipmentType(); 
-    if (result === -1) {
-        res.status(500).json({ success: false, error: 'Error or No Rows Exist' });
-    } else {
-        res.json({ success: true, data: result });
-    }
-})
+});
 
 // Get transportation information
 router.get('/transportation', async (req, res) => {
@@ -225,15 +215,25 @@ router.get('/transportation', async (req, res) => {
     }
 });
 
-//find cheapest transport by type
-router.get("/findCheapestTransportByType", async (req, res) => {
-    const result = await dataService.findCheapestTransportPerType(); 
-    if (result === -1) {
+// Find cheapest transport by type
+router.get("/find-cheapest-transport-by-type", async (req, res) => {
+    const transportationResult = await dataService.findCheapestTransportPerType(); 
+    if (transportationResult === -1) {
         res.status(500).json({ success: false, error: 'Error or No Rows Exist' });
     } else {
-        res.json({ success: true, data: result });
+        res.json({ success: true, transportation: transportationResult });
     }
 })
+
+// Find heaviest equipment by type
+router.get("/find-heaviest-equipment-by-type", async (req, res) => {
+    const equipmentResult = await dataService.findHeaviestEquipmentType(); 
+    if (equipmentResult === -1) {
+        res.status(500).json({ success: false, error: 'Error or No Rows Exist' });
+    } else {
+        res.json({ success: true, equipment: equipmentResult });
+    }
+});
 
 //find users no equipment
 router.get("/findUsersWithoutEquipment", async (req, res) => {

@@ -352,20 +352,6 @@ async function joinUserUGC(locationname, latitude, longitude, trailname, rating)
     })
 }
 
-// Find heaviest equipment for each type // group by
-async function findHeaviestEquipmentType() {
-    return await withOracleDB(async (connection) => {
-        const result = await connection.execute(
-            `SELECT type, max(weight)
-            FROM equipment 
-            WHERE weight > 1 GROUP BY type`
-        );
-        return result.rows;
-    }).catch(() => {
-        return -1; 
-    })
-}
-
 // Get transportation information
 async function getTransportation() {
     return await withOracleDB(async (connection) => {
@@ -389,9 +375,25 @@ async function getTransportation() {
 async function findCheapestTransportPerType() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT type, min(transportcost) 
+            `SELECT type, MIN(transportcost) 
             FROM transportation 
             WHERE transportcost > 0 GROUP BY type`);
+        return result.rows;
+    }).catch(() => {
+        return -1; 
+    })
+}
+
+// Find heaviest equipment for each type // group by
+async function findHeaviestEquipmentType() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT type, MAX(weight)
+            FROM equipment 
+            WHERE weight > 1 
+            GROUP BY type
+            HAVING COUNT(*) > 1`
+        );
         return result.rows;
     }).catch(() => {
         return -1; 
@@ -446,9 +448,9 @@ export {
     projectTrailAttributes,
     selectionEquipment,
     joinUserUGC, 
-    findHeaviestEquipmentType,
     getTransportation,
     findCheapestTransportPerType,
+    findHeaviestEquipmentType,
     findUsersWithoutEquipment,
     projectAttributesAndTables,
     findMinTransportCostAboveAverageCost
