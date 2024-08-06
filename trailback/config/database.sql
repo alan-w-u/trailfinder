@@ -16,6 +16,8 @@ DROP TABLE trail;
 DROP TABLE location;
 DROP TABLE userprofile;
 DROP SEQUENCE user_id_seq;
+DROP SEQUENCE ugc_id_seq;
+
 
 
 
@@ -532,6 +534,12 @@ SELECT * FROM DUAL;
 
 CREATE SEQUENCE user_id_seq
     START WITH 6
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+CREATE SEQUENCE ugc_id_seq
+    START WITH 8
     INCREMENT BY 1
     NOCACHE
     NOCYCLE;

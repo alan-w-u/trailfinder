@@ -51,13 +51,16 @@ const FriendsSection = ({ updateFriendCount }) => {
             });
             const data = await response.json();
             if (data.success) {
+                alert("add friend success");
                 await fetchFriends(); // Refetch the friends list
                 setFriendEmail(''); // Clear the input field
                 updateFriendCount(1); // Increment friend count
             } else {
+                alert("add friend failed");
                 setError(data.error);
             }
         } catch (e) {
+            alert("add friend failed");
             setError(e.message);
         } finally {
             setIsLoading(false);
@@ -78,12 +81,15 @@ const FriendsSection = ({ updateFriendCount }) => {
             });
             const data = await response.json();
             if (data.success) {
+                alert("delete friend success");
                 await fetchFriends();
                 updateFriendCount(-1); // Decrement friend count
             } else {
+                alert("delete friend failed");
                 setError(data.error);
             }
         } catch (e) {
+            alert("delete friend failed");
             setError(e.message);
         } finally {
             setIsLoading(false);

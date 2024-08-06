@@ -135,19 +135,17 @@ function TrailPage() {
 
     const handleAddReview = async () => {
         try {
-            const response = await fetch(`http://localhost:65535/addreview`, {
-                method: 'GET',
+            const response = await fetch(`http://localhost:65535/ugc/review`, {
+                method: 'PUT',
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({locationname, latitude, longitude, trailname, message: newDescription, rating: newRating})
             });
             const data = await response.json();
             if (data.success) {
-                if (data.ugc.length === 0) {
-                    setUGC(null);
-                } else {
-                    setUGC(data.ugc);
-                }
+                await fetchUGC();
             } else {
                 setError(data.error || 'Failed to fetch UGC');
             }
@@ -155,6 +153,30 @@ function TrailPage() {
             setError('Network error: ' + error.message);
         }
     }
+
+    const handleDeleteReview = async (ugcID) => {
+        try {
+            const response = await fetch(`http://localhost:65535/ugc/review`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ugcid: ugcID })
+            });
+            const data = await response.json();
+            if (data.success) {
+                alert("delete review success");
+                setUGC(prevUGC => prevUGC.filter(item => item.UGCID !== ugcID));
+            } else {
+                alert("delete review failed");
+                setError(data.error || 'Failed to delete review');
+            }
+        } catch (error) {
+            alert("delete review failed");
+            setError('Network error: ' + error.message);
+        }
+    };
 
     const handleRatingChange = (event) => {
         setRating(Number(event.target.value));
@@ -322,7 +344,7 @@ function TrailPage() {
                                 </>
                             }
                             <p>&nbsp;</p>
-                            {item.USERID == userID && <button className="delete-review-button negative">x</button>}
+                            {item.USERID == userID && <button className="delete-review-button negative" onClick={()=>handleDeleteReview(item.UGCID)}>x</button>}
                         </li>
                     )) : <div>No Reviews Found</div>}
                 </div>
