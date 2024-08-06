@@ -46,9 +46,9 @@ const EquipmentSection = () => {
                 )) : <div>Nothing to see here!</div>
                 }
             </div>
-            <div className="profile-inputs">
+            {/* <div className="profile-inputs">
                 <button className="positive">Add Equipment</button>
-            </div>
+            </div> */}
         </div>
     );
 };
