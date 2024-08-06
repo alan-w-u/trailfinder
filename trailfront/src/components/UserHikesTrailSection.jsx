@@ -69,7 +69,7 @@ const UserHikesTrailSection = () => {
                 {(trails && trails.length > 0) ? trails.map(trail => (
                     <div key={trail.TRAILNAME}>
                         <p>
-                            Trail Name: <b>{trail.NAME}</b>
+                            Trail Name: <b>{trail.TRAILNAME}</b>
                             <br />
                             Location Name: <b>{trail.LOCATIONNAME}</b>
                             <br />
