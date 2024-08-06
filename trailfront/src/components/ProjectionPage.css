@@ -1,3 +1,13 @@
+.projection-page {
+  padding: 1rem 0;
+  margin: auto;
+  align-items: center;
+}
+
+.projection-page form {
+  margin: 1rem 0;
+}
+
 .projection-button {
   width: auto;
   height: 2.5rem;
@@ -15,17 +25,10 @@
   transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.projection-table {
-  padding-top: 20px;
-  margin: auto;
-  align-items: center;
-  color: cyan;
-}
-
 th, tr, td {
-  border: solid white 1px;
+  border: 0.1rem solid var(--text);
 }
 
 td {
-  height: 40px;
+  height: 1.75rem;
 }
