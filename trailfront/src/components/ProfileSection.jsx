@@ -50,6 +50,7 @@ const ProfileSection = ({ handleLogout, profile, updateProfile }) => {
             });
             const data = await response.json();
             if (data.success) {
+                alert("update profile success");
                 if (data.token) {
                     login(data.token);
                 }
@@ -61,10 +62,12 @@ const ProfileSection = ({ handleLogout, profile, updateProfile }) => {
                 });
                 setIsEditing(false);
             } else {
+                alert("update profile failed");
                 setIsEditing(false);
                 setError(data.error || 'Failed to update profile');
             }
         } catch (error) {
+            alert("update profile failed");
             setError('Network error: ' + error.message);
         }
     };
