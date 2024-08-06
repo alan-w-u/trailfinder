@@ -319,7 +319,10 @@ function TrailPage() {
                             </label>
                         ))}
                     </div>
-                    <button className="positive" onClick={() => setRating(0)}>Clear</button>
+                    <button className="positive" onClick={() => {
+                        setRating(0);
+                        fetchUGC();
+                    }}>Clear</button>
                     <p>&nbsp;</p>
                     {(ugc) ? ugc.map((item, index) => (
                         <li key={index}>
