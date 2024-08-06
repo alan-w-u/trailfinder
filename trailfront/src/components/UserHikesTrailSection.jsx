@@ -39,7 +39,7 @@ const ProfileSection = () => {
         <div>
             <h1>Hiked At</h1>
             <div className="profile-list">
-                 {trails.map(trail => (
+                 {(trails && trails.length > 0) ? trails.map(trail => (
                     <div key={trail.TRAILNAME}>
                         <p>
                             Trail Name: <b>{trail.NAME}</b>
@@ -52,7 +52,8 @@ const ProfileSection = () => {
                             <br />
                         </p>
                     </div>
-                ))}
+                 )) : <div>Nothing to see here!</div>
+                 }
             </div>
         </div>
     );

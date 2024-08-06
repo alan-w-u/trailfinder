@@ -3,7 +3,7 @@ import React from 'react';
 const FriendList = ({ friends, deleteFriend }) => {
     return (
         <div className="profile-list">
-            {friends.map(friend => (
+            {(friends && friends.length > 0) ? friends.map(friend => (
                 <div key={friend.USERID}>
                     <img className="friend-picture"
                         src={(friend.PROFILEPICTURE) ? `data:image/jpeg;base64,${friend.PROFILEPICTURE}`
@@ -25,7 +25,8 @@ const FriendList = ({ friends, deleteFriend }) => {
                     </p>
                     <button className="delete-button negative" onClick={() => deleteFriend(friend.USERID)}>x</button>
                 </div>
-            ))}
+            )) : <div>Nothing to see here!</div>
+            }
         </div>
     );
 };

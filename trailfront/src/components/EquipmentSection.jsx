@@ -31,7 +31,7 @@ const EquipmentSection = () => {
         <div>
             <h1>Equipment</h1>
             <div className="profile-list">
-                {equipment.map(equip => (
+                {(equipment && equipment.length > 0) ? equipment.map(equip => (
                     <div>
                         <p key={equip.EQUIPMENTID}>
                             Type: <b>{equip.TYPE}</b>
@@ -43,7 +43,8 @@ const EquipmentSection = () => {
                             Weight: <b>{equip.WEIGHT}kg</b>
                         </p>
                     </div>
-                ))}
+                )) : <div>Nothing to see here!</div>
+                }
             </div>
             <div className="profile-inputs">
                 <button className="positive">Add Equipment</button>
