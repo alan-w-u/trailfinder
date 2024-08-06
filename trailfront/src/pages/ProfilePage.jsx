@@ -5,6 +5,7 @@ import ProfileSection from '../components/ProfileSection';
 import FriendsSection from '../components/FriendsSection';
 import EquipmentSection from '../components/EquipmentSection';
 import '../components/Profile.css';
+import UserHikesTrailSection from "../components/UserHikesTrailSection.jsx";
 
 const ProfilePage = () => {
     const { logout } = useAuth();
@@ -32,6 +33,7 @@ const ProfilePage = () => {
             <ProfileSection handleLogout={handleLogout} profile={profile} updateProfile={updateProfile} />
             <FriendsSection updateFriendCount={updateFriendCount} />
             <EquipmentSection />
+            <UserHikesTrailSection />
         </div>
     );
 }
