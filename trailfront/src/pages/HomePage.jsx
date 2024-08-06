@@ -146,7 +146,6 @@ function HomePage() {
                 }
             });
             const data = await response.json();
-            console.log(data);
             if (data.success) {
                 setEquipment(data.equipment);
             } else {
@@ -166,7 +165,6 @@ function HomePage() {
                 }
             });
             const data = await response.json();
-            console.log(data);
             if (data.success) {
                 setEquipment(data.equipment);
             } else {
@@ -248,9 +246,9 @@ function HomePage() {
             <div className="home-info">
                 <h1>Optimized Price Transportation Methods</h1>
                 <ul>
-                    {transportation2 && transportation2.map((item2, index) => (
+                    {transportation2 && transportation2.map((item, index) => (
                         <li key={index}>
-                            <b>{item2.TYPE}</b> (${item2.TRANSPORTCOST}/km)
+                            <b>{item.TYPE}</b> (${item.TRANSPORTCOST}/km)
                         </li>
                     ))}
                 </ul>

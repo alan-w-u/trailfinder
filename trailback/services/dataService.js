@@ -434,7 +434,10 @@ async function findMaxTransportCostBelowAverageCost() {
             WHERE transportcost < (SELECT AVG(transportcost) AS transportcost
                                     FROM transportation 
                                     WHERE transportcost > 0) 
-                                    GROUP BY type`);
+                                    GROUP BY type`,
+            {},
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
         return result.rows;
     }).catch(() => {
         return -1; 
