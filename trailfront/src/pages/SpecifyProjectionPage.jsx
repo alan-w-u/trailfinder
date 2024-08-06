@@ -44,7 +44,7 @@ const SpecifyProjection = () => {
                         onChange={(e) => setTableAttributes(e.target.value)}
                     />
                 </label>
-                <button onSubmit={submitForm}>Submit</button>
+                <button className="positive" onSubmit={submitForm}>Submit</button>
             </form>
             <table>
                 <tr>
