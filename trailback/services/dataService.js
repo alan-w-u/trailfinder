@@ -157,6 +157,7 @@ async function getTrail(locationname, latitude, longitude, trailname) {
     });
 }
 
+
 function buildWhereClause(conditions) {
     let whereClause = '';
     let params = {};

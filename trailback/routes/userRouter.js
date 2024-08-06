@@ -80,4 +80,17 @@ router.get('/equipment', authenticateToken, async (req, res) => {
     }
 });
 
+// Get specific userhikestrail information
+router.get('/userhikestrail', async (req, res) => {
+    const {userid, locationname, latitude, longitude, trailname, datehiked} = req.body; 
+    const userHikesTrailResult = await dataService.getUserHikesTrail(userid, locationname, latitude, longitude, trailname, datehiked);
+    if (userHikesTrailResult) {
+        console.log('UserHikesTrail GET success - 200');
+        res.json({ success: true, trail: trailResult });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to GET UserHikesTrail' })
+    }
+});
+
+
 export default router;
