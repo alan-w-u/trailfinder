@@ -53,9 +53,9 @@ function TrailPage() {
         }
     };
 
-    const fetchTransportation = async () => {
+    const fetchTransportationToLocation = async () => {
         try {
-            const response = await fetch(`http://localhost:65535/transportation?locationname=${locationname}&latitude=${latitude}&longitude=${longitude}`, {
+            const response = await fetch(`http://localhost:65535/transportation-to-location?locationname=${locationname}&latitude=${latitude}&longitude=${longitude}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -171,7 +171,7 @@ function TrailPage() {
     useEffect(() => {
         fetchUserID();
         fetchPreviews();
-        fetchTransportation();
+        fetchTransportationToLocation();
         fetchRetailerGear();
         fetchUGC();
     }, []);

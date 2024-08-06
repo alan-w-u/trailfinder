@@ -238,8 +238,8 @@ async function getPreviews(locationname, latitude, longitude, trailname) {
     });
 }
 
-// Get transportation information
-async function getTransportation(locationname, latitude, longitude) {
+// Get transportation to location information
+async function getTransportationToLocation(locationname, latitude, longitude) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
             `SELECT t.transportid, t.type, t.transportcost,
@@ -366,10 +366,32 @@ async function findHeaviestEquipmentType() {
     })
 }
 
-//find cheapest transport cost that costs money // group by 
+// Get transportation information
+async function getTransportation() {
+    return await withOracleDB(async (connection) => {
+        const result = await connection.execute(
+            `SELECT *
+            FROM transportation`,
+            {},
+            { outFormat: oracledb.OUT_FORMAT_OBJECT }
+        );
+
+        if (result.rows.length > 0) {
+            return result.rows;
+        } else {
+            console.log("Transportation not found");
+            return [];
+        }
+    });
+}
+
+// Find cheapest transport cost that costs money // group by 
 async function findCheapestTransportPerType() {
     return await withOracleDB(async (connection) => {
-        const result = await connection.execute(`SELECT type, min(transportcost) FROM transportation WHERE transportcost > 0 GROUP BY type`);
+        const result = await connection.execute(
+            `SELECT type, min(transportcost) 
+            FROM transportation 
+            WHERE transportcost > 0 GROUP BY type`);
         return result.rows;
     }).catch(() => {
         return -1; 
@@ -408,13 +430,14 @@ export {
     getTrail,
     selectionTrails,
     getPreviews,
-    getTransportation,
+    getTransportationToLocation,
     getRetailerGear,
     getUGC,
     projectTrailAttributes,
     selectionEquipment,
     joinUserUGC, 
     findHeaviestEquipmentType,
+    getTransportation,
     findCheapestTransportPerType,
     findUsersWithoutEquipment,
     projectAttributesAndTables

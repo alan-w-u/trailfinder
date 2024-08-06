@@ -134,10 +134,10 @@ router.get('/previews', async (req, res) => {
     }
 });
 
-// Get transportation information
-router.get('/transportation', async (req, res) => {
+// Get transportation to location information
+router.get('/transportation-to-location', async (req, res) => {
     const { locationname, latitude, longitude } = req.query;
-    const transportationResult = await dataService.getTransportation(locationname, latitude, longitude);
+    const transportationResult = await dataService.getTransportationToLocation(locationname, latitude, longitude);
     if (transportationResult) {
         console.log('Transportation GET success - 200');
         res.json({ success: true, transportation: transportationResult });
@@ -213,6 +213,17 @@ router.get("/findHeaviestEquipmentByType", async (req, res) => {
         res.json({ success: true, data: result });
     }
 })
+
+// Get transportation information
+router.get('/transportation', async (req, res) => {
+    const transportationResult = await dataService.getTransportation();
+    if (transportationResult) {
+        console.log('Transportation GET success - 200');
+        res.json({ success: true, transportation: transportationResult });
+    } else {
+        res.status(500).json({ success: false, error: 'Failed to GET Transportation' })
+    }
+});
 
 //find cheapest transport by type
 router.get("/findCheapestTransportByType", async (req, res) => {

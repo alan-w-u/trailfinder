@@ -6,6 +6,7 @@ function HomePage() {
     const [previews, setPreviews] = useState([]);
     const [searchText, setSearchText] = useState('');
     const [error, setError] = useState('');
+    const [transportation, setTransportation] = useState([]);
 
     const fetchTrails = async () => {
         try {
@@ -77,6 +78,44 @@ function HomePage() {
         }
     };
 
+    const fetchTransportation = async () => {
+        try {
+            const response = await fetch(`http://localhost:65535/transportation`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                setTransportation(data.transportation);
+            } else {
+                setError(data.error || 'Failed to fetch Transportation');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
+
+    const fetchFindCheapestTransportByType = async () => {
+        try {
+            const response = await fetch(`http://localhost:65535/findCheapestTransportByType`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            const data = await response.json();
+            if (data.success) {
+                setTransportation(data.transportation);
+            } else {
+                setError(data.error || 'Failed to fetch Transportation');
+            }
+        } catch (error) {
+            setError('Network error: ' + error.message);
+        }
+    };
+
     const handleSearch = (event) => {
         setSearchText(event.target.value);
     };
@@ -84,6 +123,7 @@ function HomePage() {
     useEffect(() => {
         fetchTrails();
         fetchPreviews();
+        fetchTransportation();
     }, []);
 
     if (!trails) return <div> No Trails Found (Or Loading)... </div>;
@@ -125,11 +165,22 @@ function HomePage() {
             {/*        Use && for AND, || for OR, and less/greater than operators for numeric inequality search.*/}
             {/*    </p>*/}
             {/*</div>*/}
-            {error && <div>{(error.startsWith("ORA"))?"Invalid Query":error}</div>}
+            {error && <div>{(error.startsWith("ORA")) ? "Invalid Query" : error}</div>}
             <div className="trailwidgets">
                 {trails && trails.map(trail => (
-                    <TrailWidget key={trail.TRAILNAME} trail={trail} preview={previews[0]}/>
+                    <TrailWidget key={trail.TRAILNAME} trail={trail} preview={previews[0]} />
                 ))}
+            </div>
+            <div className="transportation">
+                <h1>Tranportation Methods</h1>
+                <button className="positive" onClick={fetchFindCheapestTransportByType}>Find Cheapest Tranportation Method</button>
+                <ul>
+                    {transportation && transportation.map((item, index) => (
+                        <li key={index}>
+                            <b>{item.TYPE}</b> (${item.TRANSPORTCOST}/km)
+                        </li>
+                    ))}
+                </ul>
             </div>
         </div>
     );
