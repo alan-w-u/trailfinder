@@ -263,7 +263,7 @@ async function getEquipment(userid) {
     });
 }
 
-// Get specific trail information
+// Get userhikestrail information
 async function getUserHikesTrail(userid) {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
