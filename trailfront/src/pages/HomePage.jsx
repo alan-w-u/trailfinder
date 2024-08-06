@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import TrailWidget from '../components/TrailWidget.jsx';
-import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
     const [trails, setTrails] = useState([]);
@@ -162,11 +161,6 @@ function HomePage() {
         setSearchText(event.target.value);
     };
 
-    const navigate = useNavigate();
-    const handleProjection = (event) => {
-        navigate('/projectionpage');
-    }
-
     useEffect(() => {
         fetchTrails();
         fetchPreviews();
@@ -201,7 +195,6 @@ function HomePage() {
                     </div>
                 </div> */}
                 <button className="search-button" onClick={fetchSelectionTrails}>Search</button>
-                <button className="search-button" onClick={handleProjection}>Projection</button>
             </div>
             {/*<div>*/}
             {/*    <p>*/}

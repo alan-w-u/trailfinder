@@ -375,9 +375,11 @@ async function getTransportation() {
 async function findCheapestTransportPerType() {
     return await withOracleDB(async (connection) => {
         const result = await connection.execute(
-            `SELECT type, MIN(transportcost) 
+            `SELECT type, MIN(transportcost) AS transportcost
             FROM transportation 
-            WHERE transportcost > 0 GROUP BY type`);
+            WHERE transportcost > 0 GROUP BY type`,
+            {},
+            { outFormat: oracledb.OUT_FORMAT_OBJECT });
         return result.rows;
     }).catch(() => {
         return -1; 
