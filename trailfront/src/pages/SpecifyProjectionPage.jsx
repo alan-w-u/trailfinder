@@ -92,12 +92,17 @@ const SpecifyProjection = () => {
             <h1>Data Projection</h1>
             <p>Select a table and choose the attributes you want to view.</p>
             <form onSubmit={submitProjection}>
-                <select value={selectedTable} onChange={handleTableChange}>
-                    <option value="">Select a table</option>
-                    {tables.map(table => (
-                        <option key={table} value={table}>{table}</option>
-                    ))}
-                </select>
+                <div>
+                    <select value={selectedTable} onChange={handleTableChange}>
+                        <option value="">Select a table</option>
+                        {tables.map(table => (
+                            <option key={table} value={table}>{table}</option>
+                        ))}
+                    </select>
+                    <button type="submit" className="positive" disabled={!selectedTable || selectedAttributes.length === 0}>
+                        Project Data
+                    </button>
+                </div>
                 {selectedTable && (
                     <div>
                         <h3>Select Attributes:</h3>
@@ -114,30 +119,27 @@ const SpecifyProjection = () => {
                         ))}
                     </div>
                 )}
-                <button type="submit" disabled={!selectedTable || selectedAttributes.length === 0}>
-                    Project Data
-                </button>
             </form>
             {message && <div>{message}</div>}
             {projectionResult && (
                 <div>
-                    <h2>Projection Result:</h2>
+                    <h2>Projection Result</h2>
                     <table>
                         <thead>
-                        <tr>
-                            {selectedAttributes.map(attr => (
-                                <th key={attr}>{attr}</th>
-                            ))}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {projectionResult.map((row, index) => (
-                            <tr key={index}>
+                            <tr>
                                 {selectedAttributes.map(attr => (
-                                    <td key={attr}>{row[attr]}</td>
+                                    <th key={attr}>{attr}</th>
                                 ))}
                             </tr>
-                        ))}
+                        </thead>
+                        <tbody>
+                            {projectionResult.map((row, index) => (
+                                <tr key={index}>
+                                    {selectedAttributes.map(attr => (
+                                        <td key={attr}>{row[attr]}</td>
+                                    ))}
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
